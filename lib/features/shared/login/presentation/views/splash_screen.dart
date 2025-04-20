@@ -4,6 +4,7 @@ import 'package:safe_bus/core/styles/image_strings.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/core/styles/spacing_style.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/widgets/role_container.dart';
+import 'package:safe_bus/features/shared/login/presentation/views/widgets/splash_main_title.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -16,39 +17,7 @@ class SplashScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Image.asset(KImage.busPng, height: 100),
-              SizedBox(height: KSizes.xl),
-              Text(
-                "WELCOME TO SAFE",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: KSizes.fonstSizexLg,
-                  color: KColors.splashFontColors,
-                  letterSpacing: 2.5,
-                ),
-              ),
-              SizedBox(height: KSizes.sm),
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: KColors.splashFontColors,
-                    fontSize: KSizes.fonstSizeSm,
-                  ),
-                  children: [
-                    TextSpan(text: "Built on "),
-                    TextSpan(
-                      text: "Trust",
-                      style: TextStyle(color: KColors.greenSecondary),
-                    ),
-                    TextSpan(text: ", Designed for "),
-                    TextSpan(
-                      text: "Safety",
-                      style: TextStyle(color: KColors.greenSecondary),
-                    ),
-                    TextSpan(text: "."),
-                  ],
-                ),
-              ),
+              SplashMainTitle(),
               SizedBox(height: KSizes.xxl),
               Text(
                 "I am a",
