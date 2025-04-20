@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_bus/core/theme/theme.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
 import 'package:safe_bus/core/utils/service_locator.dart';
 
@@ -15,7 +16,7 @@ class SafeApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Sofia'),
+      theme: KAppTheme.lighTheme,
     );
   }
 }

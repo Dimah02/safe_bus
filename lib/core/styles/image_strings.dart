@@ -5,5 +5,7 @@ class KImage {
   static const paretImage = "assets/images/background/Parent.svg";
   static const driverImage = "assets/images/background/Driver.svg";
   static const adminImage = "assets/images/background/Admin.svg";
+  static const bus = "assets/images/background/busBackground.svg";
+  static const busPng = "assets/images/background/bus.png";
   static const schoolImage = "assets/images/background/school.png";
 }

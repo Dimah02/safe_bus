@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class KColors {
   KColors._();
 
-  static const background = Color(0xffF8F8FF);
+  static const white = Color(0xffF8F8FF);
 
   static const greenPrimary = Color(0xff00814B);
   static const greenSecondary = Color(0xff44C07D);
