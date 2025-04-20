@@ -35,6 +35,8 @@ class KColors {
   static const grey = Color(0xff969696);
   static const lightGrey = Color(0xffD1D1D1);
 
+  static const splashFontColors = Color(0xff323232);
+
   static const iconBackground = Color.fromRGBO(118, 118, 128, 0.12);
   static const labelSecondary = Color.fromRGBO(60, 60, 67, 0.6);
 
