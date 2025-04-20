@@ -15,6 +15,7 @@ class SafeApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Sofia'),
     );
   }
 }
