@@ -9,4 +9,9 @@ class KSpacingStyle {
         start: KSizes.defaultSpace,
         end: KSizes.defaultSpace,
       );
+  static const EdgeInsetsGeometry paddingNoTop = EdgeInsetsDirectional.only(
+    bottom: KSizes.defaultSpace,
+    start: KSizes.defaultSpace,
+    end: KSizes.defaultSpace,
+  );
 }
