@@ -32,8 +32,9 @@ class KColors {
 
   static const black = Color(0xff171E1B);
   static const darkGrey = Color(0xff4D4F4E);
-  static const grey = Color(0xff969696);
-  static const lightGrey = Color(0xffD1D1D1);
+  static const grey = Color(0xff6C7278);
+  static const lightGrey = Color(0xff969696);
+  static const lighterGrey = Color(0xffD1D1D1);
 
   static const splashFontColors = Color(0xff323232);
 
@@ -41,4 +42,8 @@ class KColors {
   static const labelSecondary = Color.fromRGBO(60, 60, 67, 0.6);
 
   static const routeRed = Color.fromRGBO(236, 56, 11, 0.98);
+
+  static const textFieldHintColor = Color(0xff9CA3AF);
+  static const textFieldStrok = Color(0xffDFE4EA);
+  static const textFieldLable = Color(0xff2A2A2A);
 }

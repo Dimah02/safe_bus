@@ -6,32 +6,35 @@ class KTextFieldTheme {
 
   static InputDecorationTheme lightInputDecorationTheme = InputDecorationTheme(
     errorMaxLines: 3,
-    prefixIconColor: KColors.greenPrimary,
-    suffixIconColor: KColors.greenPrimary,
+
+    prefixIconColor: KColors.textFieldHintColor,
+    suffixIconColor: KColors.textFieldHintColor,
     labelStyle: const TextStyle().copyWith(
       fontSize: 12,
-      color: KColors.greenPrimary,
+      color: KColors.textFieldLable,
     ),
     hintStyle: const TextStyle().copyWith(
       fontSize: 12,
-      color: KColors.greenPrimary,
+      color: KColors.textFieldHintColor,
     ),
     errorStyle: const TextStyle().copyWith(
       fontSize: 12,
       fontStyle: FontStyle.normal,
     ),
-    floatingLabelStyle: const TextStyle().copyWith(color: KColors.greenPrimary),
+    floatingLabelStyle: const TextStyle().copyWith(
+      color: KColors.textFieldLable,
+    ),
     border: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 1, color: KColors.greenPrimary),
+      borderSide: const BorderSide(width: 1, color: KColors.textFieldStrok),
     ),
     enabledBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 1, color: KColors.greenPrimary),
+      borderSide: const BorderSide(width: 1, color: KColors.textFieldStrok),
     ),
     focusedBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 1, color: KColors.greenPrimary),
+      borderSide: const BorderSide(width: 1, color: KColors.textFieldStrok),
     ),
     errorBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(12),

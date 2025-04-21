@@ -7,17 +7,17 @@ class KElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       elevation: 0,
       foregroundColor: Colors.white,
-      backgroundColor: KColors.greenPrimary,
+      backgroundColor: KColors.greenSecondary,
       disabledForegroundColor: Colors.grey,
       disabledBackgroundColor: Colors.grey,
-      side: const BorderSide(color: KColors.greenPrimary),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      side: const BorderSide(color: KColors.greenSecondary),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
       textStyle: const TextStyle(
         fontSize: 16,
-        color: Colors.white,
-        fontWeight: FontWeight.w500,
+        color: KColors.white,
+        fontWeight: FontWeight.w700,
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(36)),
     ),
   );
 

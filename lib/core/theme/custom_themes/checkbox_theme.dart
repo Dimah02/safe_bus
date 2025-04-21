@@ -5,16 +5,17 @@ class KCheckboxTheme {
   KCheckboxTheme._();
   static CheckboxThemeData lightCheckboxTheme = CheckboxThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+    side: BorderSide(color: KColors.grey, width: 2),
     checkColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
         return KColors.white;
       } else {
-        return KColors.black;
+        return KColors.grey;
       }
     }),
     fillColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return KColors.greenPrimary;
+        return KColors.greenSecondary;
       } else {
         return Colors.transparent;
       }
