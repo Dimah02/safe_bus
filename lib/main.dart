@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:safe_bus/core/theme/theme.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
 import 'package:safe_bus/core/utils/service_locator.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   setupServiceLocator();
   runApp(const SafeApp());
 }
