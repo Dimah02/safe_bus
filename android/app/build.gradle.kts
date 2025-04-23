@@ -28,7 +28,6 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        manifestPlaceholders = [androidmapsApiKey: "$System.env.ANDROIDMAPS"]
     }
 
     buildTypes {
