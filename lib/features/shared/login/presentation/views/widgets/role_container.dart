@@ -21,7 +21,10 @@ class RoleContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).push(AppRouter.login);
+        GoRouter.of(context).push(
+          AppRouter.login,
+          extra: {'selectedRole': name},
+        );
       },
       child: Container(
         height: 130,
