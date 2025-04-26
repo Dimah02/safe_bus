@@ -12,6 +12,7 @@ abstract class AppRouter {
   static final String login = "/login";
   static final String driverMap = "/driverMap";
   static final router = GoRouter(
+    initialLocation: driverMap,
     routes: [
       GoRoute(path: splash, builder: (context, state) => const SplashScreen()),
       GoRoute(path: login, builder: (context, state) => const LoginScreen()),
