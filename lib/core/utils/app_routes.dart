@@ -54,10 +54,6 @@ abstract class AppRouter {
         path: adminDashboard,
         builder: (context, state) => const ParentDashboardScreen(),
       ),
-      GoRoute(path: login, builder: (context, state) => const LoginScreen()),
-      GoRoute(path: driverMap, builder: (context, state) => const DriverMapScreen(),),
-      GoRoute(path: parentHomePage, builder: (context, state) => const ParentHomeScreen(),),
     ],
-    initialLocation: parentHomePage,
   );
 }
