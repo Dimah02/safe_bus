@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'student_attendance_dialog.dart';
+import 'package:safe_bus/features/teacher/attendance_overview/student_attendance_dialog.dart';
 
 class AttendanceOverviewScreen extends StatefulWidget {
   const AttendanceOverviewScreen({super.key});

@@ -3,7 +3,7 @@ import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_history_item.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_tab_selector.dart';
 
-import '../attendance_overview_screen.dart';
+import '../attendance_overview/attendance_overview_screen.dart';
 import '../models/trip.dart';
 
 class TeacherDashboardScreen extends StatefulWidget {
