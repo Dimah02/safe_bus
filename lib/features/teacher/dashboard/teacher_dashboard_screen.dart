@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
-import 'package:safe_bus/features/teacher/dashboard/trip_history_item.dart';
+import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_tab_selector.dart';
 
 import '../attendance_overview/attendance_overview_screen.dart';
@@ -225,9 +225,9 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             final trip = _recentTrips[index];
             return Padding(
               padding: EdgeInsets.only(
-                bottom: index < _recentTrips.length - 1 ? 15.0 : 0,
+                bottom: 15.0,
               ),
-              child: TripHistoryItem(
+              child: RecentTripItem(
                 trip: trip,
                 onDetailsPressed: _navigateToAttendanceScreen,
               ),
