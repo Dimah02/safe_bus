@@ -15,6 +15,7 @@ class KSizes {
   static const double iconSm = 16.0;
   static const double iconMd = 24.0;
   static const double iconLg = 32.0;
+  static const double iconXlg = 48.0;
 
   // Font sizes
   static const double fonstSizexSm = 12.0;
@@ -44,6 +45,7 @@ class KSizes {
   static const double borderRadiusSm = 4.0;
   static const double bordarRadiusMd = 8.0;
   static const double borderRadiusLg = 12.0;
+  static const double borderRadiusxLg = 20.0;
 
   //Input field
   static const double inputFieldRAdius = 12.0;

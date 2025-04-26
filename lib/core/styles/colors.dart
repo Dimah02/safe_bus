@@ -42,7 +42,9 @@ class KColors {
   static const labelSecondary = Color.fromRGBO(60, 60, 67, 0.6);
 
   static const routeRed = Color.fromRGBO(236, 56, 11, 0.98);
-
+  static const fadedRed = Color.fromRGBO(200, 72, 72, 1);
+    static const pinkishRed = Color.fromRGBO(200, 72, 72, 0.1);
+  
   static const textFieldHintColor = Color(0xff9CA3AF);
   static const textFieldStrok = Color(0xffDFE4EA);
   static const textFieldLable = Color(0xff2A2A2A);
