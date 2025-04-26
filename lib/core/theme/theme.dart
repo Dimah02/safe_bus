@@ -15,6 +15,7 @@ class KAppTheme {
   static ThemeData lighTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Sofia',
+    focusColor: KColors.fontColor,
     brightness: Brightness.light,
     primaryColor: KColors.greenPrimary,
     scaffoldBackgroundColor: Colors.white,
