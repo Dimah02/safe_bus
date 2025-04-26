@@ -1,4 +1,3 @@
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/services/location_service.dart';
@@ -50,6 +49,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
           zoomControlsEnabled: false,
           initialCameraPosition: initialCameraPosition,
           myLocationEnabled: true,
+          myLocationButtonEnabled: false,
           markers: markers,
           polylines: polylines,
           onMapCreated: (controller) {
@@ -57,21 +57,21 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
             updateCurrentLocation();
           },
         ),
-        Positioned(
-          bottom: 24,
-          right: 16,
-          child: IconButton(
-            color: Colors.white,
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(Colors.grey),
-            ),
-            icon: Icon(FontAwesomeIcons.locationCrosshairs, size: 32),
-            onPressed: () {
-              MapServices.routeDisplayed = false;
-              setState(() {});
-            },
-          ),
-        ),
+        // Positioned(
+        //   bottom: 24,
+        //   right: 16,
+        //   child: IconButton(
+        //     color: Colors.white,
+        //     style: ButtonStyle(
+        //       backgroundColor: WidgetStatePropertyAll(Colors.grey),
+        //     ),
+        //     icon: Icon(FontAwesomeIcons.locationCrosshairs, size: 32),
+        //     onPressed: () {
+        //       MapServices.routeDisplayed = false;
+        //       setState(() {});
+        //     },
+        //   ),
+        // ),
       ],
     );
   }
