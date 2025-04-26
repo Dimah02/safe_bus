@@ -3,8 +3,8 @@ import 'package:safe_bus/features/driver/map/presentation/driver_map_screen.dart
 import 'package:safe_bus/features/shared/login/presentation/views/login_screen.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/splash_screen.dart';
 
-import '../../features/shared/login/presentation/views/widgets/parent/parent_dashboard_screen.dart';
-import '../../features/shared/login/presentation/views/widgets/teacher/teacher_dashboard_screen.dart';
+import '../../features/parent/parent_dashboard_screen.dart';
+import '../../features/teacher/teacher_dashboard_screen.dart';
 
 //GoRouter.of(context).push(AppRouter.login);
 
