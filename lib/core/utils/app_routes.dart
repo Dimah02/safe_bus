@@ -4,7 +4,7 @@ import 'package:safe_bus/features/shared/login/presentation/views/login_screen.d
 import 'package:safe_bus/features/shared/login/presentation/views/splash_screen.dart';
 
 import '../../features/parent/parent_dashboard_screen.dart';
-import '../../features/teacher/teacher_dashboard_screen.dart';
+import '../../features/teacher/dashboard/teacher_dashboard_screen.dart';
 
 //GoRouter.of(context).push(AppRouter.login);
 
