@@ -10,7 +10,7 @@ class SplashMainTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.asset(KImage.busPng, height: 100),
+        Image.asset(KImage.busGif, height: 100),
         SizedBox(height: KSizes.xl),
         Text(
           "WELCOME TO SAFE",
