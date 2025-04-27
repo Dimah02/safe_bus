@@ -9,26 +9,18 @@ import 'package:safe_bus/core/utils/app_routes.dart';
 class LoginScreen extends StatelessWidget {
   final Map<String, dynamic>? extraData;
 
-  const LoginScreen({
-    super.key,
-    this.extraData,
-  });
+  LoginScreen({super.key, this.extraData});
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final String selectedRole = extraData?['selectedRole'] ?? 'Unknown';
-
-    final formKey = GlobalKey<FormState>();
-
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: KColors.white),
-        title: Text(
-          "$selectedRole Login",
-          style: TextStyle(color: KColors.white),
-        ),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -167,9 +159,9 @@ class LoginScreen extends StatelessWidget {
         GoRouter.of(context).push(AppRouter.parentDashboard);
         break;
       default:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Unknown role: $role')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Unknown role: $role')));
     }
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:safe_bus/core/styles/colors.dart';
+import 'package:safe_bus/core/styles/sizes.dart';
 import '../models/trip.dart';
 
 class TripCard extends StatelessWidget {
@@ -15,52 +17,44 @@ class TripCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: isActive ? Colors.green : Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            trip.zoneName,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: isActive ? Colors.white : Colors.black,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          trip.zoneName,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: isActive ? Colors.white : Colors.black,
           ),
-          Text(
-            trip.getTimeLeftString(),
-            style: TextStyle(
-              fontSize: 14,
-              color: isActive ? Colors.white : Colors.black,
-            ),
+        ),
+        Text(
+          trip.getTimeLeftString(),
+          style: TextStyle(
+            fontSize: 14,
+            color: isActive ? Colors.white : Colors.black,
           ),
-          const Spacer(),
-          Center(
-            child: ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    isActive
-                        ? Colors.white.withOpacity(0.3)
-                        : Colors.grey.shade300,
-                foregroundColor: isActive ? Colors.white : Colors.grey,
-                minimumSize: const Size(120, 36),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
+        ),
+        SizedBox(height: KSizes.spaceBtwItems),
+        Center(
+          child: ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  isActive
+                      ? Colors.white.withOpacity(0.3)
+                      : Colors.grey.shade300,
+              foregroundColor: isActive ? Colors.white : Colors.grey,
+              minimumSize: const Size(120, 36),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              child: const Text('Trip Details', style: TextStyle(fontSize: 13)),
             ),
+            child: const Text('Trip Details', style: TextStyle(fontSize: 13)),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -76,7 +70,7 @@ class EmptyTripCard extends StatelessWidget {
       height: 130,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: isActive ? Colors.green : Colors.grey.shade200,
+        color: isActive ? KColors.greenSecondary : Colors.grey.shade200,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

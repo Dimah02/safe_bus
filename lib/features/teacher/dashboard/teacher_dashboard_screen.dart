@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
 import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
 
@@ -74,21 +75,22 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     ];
 
     _currentTrip = _allTrips.firstWhere(
-          (trip) => trip.status == TripStatus.current,
+      (trip) => trip.status == TripStatus.current,
       orElse: () => _allTrips.first,
     );
 
     _upcomingTrip = _allTrips.firstWhere(
-          (trip) => trip.status == TripStatus.upcoming,
+      (trip) => trip.status == TripStatus.upcoming,
     );
 
-    _recentTrips = _allTrips
-        .where(
-          (trip) =>
-      trip.status == TripStatus.completed ||
-          trip.status == TripStatus.pending,
-    )
-        .toList();
+    _recentTrips =
+        _allTrips
+            .where(
+              (trip) =>
+                  trip.status == TripStatus.completed ||
+                  trip.status == TripStatus.pending,
+            )
+            .toList();
   }
 
   @override
@@ -99,8 +101,8 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 10.0,
+              horizontal: 16.0,
+              vertical: 16.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,10 +159,10 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
       children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(12),
+              color: KColors.greenSecondary,
+              borderRadius: BorderRadius.circular(16),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,25 +175,25 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 _currentTrip != null
                     ? TripCard(
-                  trip: _currentTrip!,
-                  isActive: true, // Keep green styling
-                  onPressed: _navigateToAttendanceScreen,
-                )
+                      trip: _currentTrip!,
+                      isActive: true, // Keep green styling
+                      onPressed: _navigateToAttendanceScreen,
+                    )
                     : const EmptyTripCard(isActive: true),
               ],
             ),
           ),
         ),
-        const SizedBox(width: 15),
+        const SizedBox(width: 16),
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(16),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,13 +206,13 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                     color: Colors.orange,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 _upcomingTrip != null
                     ? TripCard(
-                  trip: _upcomingTrip!,
-                  isActive: false, // Keep grey styling
-                  onPressed: _navigateToAttendanceScreen,
-                )
+                      trip: _upcomingTrip!,
+                      isActive: false, // Keep grey styling
+                      onPressed: _navigateToAttendanceScreen,
+                    )
                     : const EmptyTripCard(isActive: false),
               ],
             ),
