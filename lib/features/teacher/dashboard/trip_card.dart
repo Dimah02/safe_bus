@@ -7,16 +7,16 @@ class TripCard extends StatelessWidget {
   final VoidCallback onPressed;
 
   const TripCard({
-    Key? key,
+    super.key,
     required this.trip,
     required this.isActive,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130,
+      height: 150,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: isActive ? Colors.green : Colors.grey.shade200,
@@ -46,19 +46,17 @@ class TripCard extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isActive
-                    ? Colors.white.withOpacity(0.3)
-                    : Colors.grey.shade300,
+                backgroundColor:
+                    isActive
+                        ? Colors.white.withOpacity(0.3)
+                        : Colors.grey.shade300,
                 foregroundColor: isActive ? Colors.white : Colors.grey,
                 minimumSize: const Size(120, 36),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: const Text(
-                'Trip Details',
-                style: TextStyle(fontSize: 13),
-              ),
+              child: const Text('Trip Details', style: TextStyle(fontSize: 13)),
             ),
           ),
         ],
@@ -70,10 +68,7 @@ class TripCard extends StatelessWidget {
 class EmptyTripCard extends StatelessWidget {
   final bool isActive;
 
-  const EmptyTripCard({
-    Key? key,
-    required this.isActive,
-  }) : super(key: key);
+  const EmptyTripCard({super.key, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
