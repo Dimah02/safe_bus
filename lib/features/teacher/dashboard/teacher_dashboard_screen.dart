@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
-import 'package:safe_bus/features/teacher/dashboard/trip_history_item.dart';
-import 'package:safe_bus/features/teacher/dashboard/trip_tab_selector.dart';
+import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
 
 import '../attendance_overview/attendance_overview_screen.dart';
 import '../models/trip.dart';
@@ -19,7 +18,6 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
   late Trip? _currentTrip;
   late Trip? _upcomingTrip;
   late List<Trip> _recentTrips;
-  bool _isCurrentTabSelected = true;
 
   @override
   void initState() {
@@ -76,22 +74,21 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     ];
 
     _currentTrip = _allTrips.firstWhere(
-      (trip) => trip.status == TripStatus.current,
+          (trip) => trip.status == TripStatus.current,
       orElse: () => _allTrips.first,
     );
 
     _upcomingTrip = _allTrips.firstWhere(
-      (trip) => trip.status == TripStatus.upcoming,
+          (trip) => trip.status == TripStatus.upcoming,
     );
 
-    _recentTrips =
-        _allTrips
-            .where(
-              (trip) =>
-                  trip.status == TripStatus.completed ||
-                  trip.status == TripStatus.pending,
-            )
-            .toList();
+    _recentTrips = _allTrips
+        .where(
+          (trip) =>
+      trip.status == TripStatus.completed ||
+          trip.status == TripStatus.pending,
+    )
+        .toList();
   }
 
   @override
@@ -156,40 +153,68 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
   }
 
   Widget _buildTripCardsSection() {
-    return Column(
+    return Row(
       children: [
-        TabSelector(
-          tabs: const ['CURRENT TRIP', 'UPCOMING TRIP'],
-          selectedIndex: _isCurrentTabSelected ? 0 : 1,
-          onTabSelected: (index) {
-            setState(() => _isCurrentTabSelected = index == 0);
-          },
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'CURRENT TRIP',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _currentTrip != null
+                    ? TripCard(
+                  trip: _currentTrip!,
+                  isActive: true, // Keep green styling
+                  onPressed: _navigateToAttendanceScreen,
+                )
+                    : const EmptyTripCard(isActive: true),
+              ],
+            ),
+          ),
         ),
-        const SizedBox(height: 15),
-        Row(
-          children: [
-            Expanded(
-              child:
-                  _currentTrip != null
-                      ? TripCard(
-                        trip: _currentTrip!,
-                        isActive: _isCurrentTabSelected,
-                        onPressed: _navigateToAttendanceScreen,
-                      )
-                      : EmptyTripCard(isActive: _isCurrentTabSelected),
+        const SizedBox(width: 15),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(12),
             ),
-            const SizedBox(width: 15),
-            Expanded(
-              child:
-                  _upcomingTrip != null
-                      ? TripCard(
-                        trip: _upcomingTrip!,
-                        isActive: !_isCurrentTabSelected,
-                        onPressed: _navigateToAttendanceScreen,
-                      )
-                      : EmptyTripCard(isActive: !_isCurrentTabSelected),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'UPCOMING TRIP',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.orange,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _upcomingTrip != null
+                    ? TripCard(
+                  trip: _upcomingTrip!,
+                  isActive: false, // Keep grey styling
+                  onPressed: _navigateToAttendanceScreen,
+                )
+                    : const EmptyTripCard(isActive: false),
+              ],
             ),
-          ],
+          ),
         ),
       ],
     );
@@ -224,10 +249,8 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
           ...List.generate(_recentTrips.length, (index) {
             final trip = _recentTrips[index];
             return Padding(
-              padding: EdgeInsets.only(
-                bottom: index < _recentTrips.length - 1 ? 15.0 : 0,
-              ),
-              child: TripHistoryItem(
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: RecentTripItem(
                 trip: trip,
                 onDetailsPressed: _navigateToAttendanceScreen,
               ),
@@ -240,7 +263,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
   void _navigateToAttendanceScreen() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AttendanceOverviewScreen()),
+      MaterialPageRoute(builder: (context) => const AttendanceOverviewScreen()),
     );
   }
 

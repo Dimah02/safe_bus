@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:safe_bus/features/driver/map/presentation/driver_map_screen.dart';
+import 'package:safe_bus/features/parent/home/presentation/parent_home_screen.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/login_screen.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/splash_screen.dart';
 
@@ -14,6 +15,7 @@ abstract class AppRouter {
   static final String splash = "/";
   static final String login = "/login";
   static final String driverMap = "/driverMap";
+  static final String parentHomePage = "/parentHomePage";
   static final String parentDashboard = "/parentDashboard";
   static final String teacherDashboard = "/teacherDashboard";
   static final String driverDashboard = "/driverDashboard";
@@ -28,6 +30,10 @@ abstract class AppRouter {
           final extraData = state.extra as Map<String, dynamic>?;
           return LoginScreen(extraData: extraData);
         },
+      ),
+      GoRoute(
+        path: parentHomePage,
+        builder: (context, state) => const ParentHomeScreen(),
       ),
       GoRoute(
         path: driverMap,

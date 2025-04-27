@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import '../models/trip.dart';
 
-class TripHistoryItem extends StatelessWidget {
+class RecentTripItem extends StatelessWidget {
   final Trip trip;
   final VoidCallback onDetailsPressed;
 
-  const TripHistoryItem({
-    Key? key,
+  const RecentTripItem({
+    super.key,
     required this.trip,
     required this.onDetailsPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
