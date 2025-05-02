@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safe_bus/core/styles/colors.dart';
+import 'package:safe_bus/core/utils/app_routes.dart';
 import 'package:safe_bus/features/teacher/attendance_overview/attendance_overview_screen.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
 import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
@@ -262,10 +264,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
   }
 
   void _navigateToAttendanceScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AttendanceOverviewScreen()),
-    );
+    GoRouter.of(context).push(AppRouter.driverMap);
   }
 
   Widget _buildBottomNavBar() {
