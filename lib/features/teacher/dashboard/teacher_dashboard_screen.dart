@@ -276,7 +276,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: const Color.fromARGB(5, 0, 0, 0),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),

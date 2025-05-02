@@ -13,11 +13,11 @@ class AbsenceSwitch extends StatefulWidget {
 
 class _AbsenceSwitch extends State<AbsenceSwitch> {
   bool isAbsent = false;
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(KSizes.sm, 0, KSizes.sm, KSizes.xs),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         border: Border.all(color: KColors.lighterGrey),
         borderRadius: BorderRadius.all(Radius.circular(KSizes.buttonRadius)),
@@ -25,37 +25,42 @@ class _AbsenceSwitch extends State<AbsenceSwitch> {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Report Absence",
+              Text(
+                "Report Absence",
                 style: TextStyle(
-                  color: KColors.black,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   fontSize: KSizes.fontSizeMd,
                 ),
               ),
-              Spacer(),
-              Switch(
-                value: isAbsent,
-                activeColor: KColors.white,
-                activeTrackColor: KColors.blueAccent,
-                inactiveThumbColor: KColors.white,
-                inactiveTrackColor: KColors.lighterGrey,
-                trackOutlineColor: WidgetStatePropertyAll(KColors.lighterGrey),
-                onChanged: (value) {
-                  setState(() {
-                    isAbsent = value;
-                  });
-                  widget.onChanged(value);
-                },
-              )
+              SizedBox(
+                height: 24,
+                child: Switch(
+                  padding: EdgeInsets.all(0),
+                  value: isAbsent,
+                  activeColor: KColors.white,
+                  activeTrackColor: KColors.blueAccent,
+                  inactiveTrackColor: KColors.lighterGrey,
+                  overlayColor: WidgetStatePropertyAll(KColors.lighterGrey),
+                  trackOutlineColor: WidgetStatePropertyAll(
+                    KColors.lighterGrey,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      isAbsent = value;
+                    });
+                    widget.onChanged(value);
+                  },
+                ),
+              ),
             ],
           ),
-          Text("Toggle if Adam will not be attending school today.",
-            style: TextStyle(
-              color: KColors.lighterGrey,
-              fontSize: KSizes.fonstSizeSm,
-            ),
-          )
+          SizedBox(height: 16),
+          Text(
+            "Toggle if Adam will not be attending school today.",
+            style: TextStyle(color: KColors.grey, fontSize: KSizes.fonstSizeSm),
+          ),
         ],
       ),
     );

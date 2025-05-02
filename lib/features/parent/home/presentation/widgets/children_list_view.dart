@@ -10,41 +10,59 @@ class ChildrenList extends StatefulWidget {
 }
 
 class _ChildrenListState extends State<ChildrenList> {
-  final List<String> children = ["Adam", "Lina"];
+  final List<String> children = ["Adam", "Lina", "Hamza"];
   String selectedChild = "Adam";
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 152,
-      padding: EdgeInsets.all(KSizes.lg),
+    return SizedBox(
+      height: 35,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: children.length,
-        itemBuilder:(context, index) {
-        final currentChild = children[index];
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: ChoiceChip(
-            label: Text(currentChild,
-              style: TextStyle(
-                color: KColors.black,
-                fontSize: KSizes.fonstSizeSm
+        itemCount: children.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Padding(
+              padding: EdgeInsets.only(top: 8, bottom: 8, right: 16),
+              child: Text(
+                "Children",
+                style: TextStyle(
+                  color: KColors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: KSizes.fonstSizeLg,
+                ),
               ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(KSizes.borderRadiusxLg)
-            ),
-            selected: selectedChild == currentChild,
-            onSelected: (selected) {
-              setState((){
+            );
+          }
+          index--;
+          final currentChild = children[index];
+          return GestureDetector(
+            onTap: () {
+              setState(() {
                 selectedChild = currentChild;
               });
             },
-          )
-        );
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color:
+                    selectedChild == currentChild
+                        ? KColors.greenPrimary
+                        : KColors.greenAccent,
+              ),
+              child: Text(
+                currentChild,
+                style: TextStyle(
+                  color: KColors.white,
+                  fontSize: KSizes.fontSizeMd,
+                ),
+              ),
+            ),
+          );
         },
-      )
+      ),
     );
   }
 }

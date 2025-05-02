@@ -147,16 +147,16 @@ class LoginScreen extends StatelessWidget {
   void _navigateToRolePage(BuildContext context, String role) {
     switch (role.toLowerCase()) {
       case 'parent':
-        GoRouter.of(context).push(AppRouter.parentDashboard);
+        GoRouter.of(context).push(AppRouter.parentHomePage);
         break;
       case 'teacher':
         GoRouter.of(context).push(AppRouter.teacherDashboard);
         break;
       case 'driver':
-        GoRouter.of(context).push(AppRouter.parentDashboard);
+        GoRouter.of(context).push(AppRouter.driverDashboard);
         break;
       case 'admin':
-        GoRouter.of(context).push(AppRouter.parentDashboard);
+        GoRouter.of(context).push(AppRouter.teacherDashboard);
         break;
       default:
         ScaffoldMessenger.of(
