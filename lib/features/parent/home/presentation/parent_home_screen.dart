@@ -19,110 +19,123 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
   bool isAbsent = false;
 
   @override
-  Widget build(BuildContext context) { //header
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(KSizes.md, KSizes.lg, KSizes.md, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(KSizes.md, KSizes.sm, KSizes.md, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildHeader(),
+                AbsenceSwitch(
+                  onChanged: (value) {
+                    setState(() {
+                      isAbsent = value;
+                    });
+                  },
+                ),
+                SizedBox(height: KSizes.defaultSpace,),
+                if(isAbsent)
+                  AbsenceReport()
+                else
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Good morning,",
-                        style: TextStyle(
-                          color: KColors.darkGrey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: KSizes.fonstSizexLg,
-                          height: 0
-                        )
-                      ),
-                      Text("Ahmad",
+                      Text("Morning Period Bus",
                         style: TextStyle(
                           color: KColors.black,
-                          fontWeight: FontWeight.bold,
                           fontSize: KSizes.fonstSizexLg,
-                          height: 0
-                        )
+                        ),
+                      textAlign: TextAlign.end,
                       ),
+                      BusSchedule(),
+                      Text("Afternoon Period Bus",
+                        style: TextStyle(
+                          color: KColors.black,
+                          fontSize: KSizes.fonstSizexLg,
+                        ),
+                      textAlign: TextAlign.end,
+                      ),
+                      BusSchedule(),
                     ],
-                  ),
-                  Spacer(),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: KColors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(KSizes.buttonRadius)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: KColors.lighterGrey,
-                          blurRadius: 10,
-                          spreadRadius: 0.5,
-                          offset: Offset(0, 8)
-                        )
-                      ]
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.notifications),
-                      iconSize: KSizes.iconMd,
-                      onPressed: () { //ToDo:
-                        GoRouter.of(context).push(AppRouter.splash);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              Row(
+                  )
+              ],
+            ),
+          ),
+        ),
+      )
+    );
+  }
+
+  Widget _buildHeader(){
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Children",
+                  Text("Good morning,",
+                    style: TextStyle(
+                      color: KColors.darkGrey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: KSizes.fonstSizexLg,
+                      height: 0
+                    )
+                  ),
+                  Text("Ahmad",
                     style: TextStyle(
                       color: KColors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: KSizes.fonstSizeLg,
-                    ),
+                      fontSize: KSizes.fonstSizexLg,
+                      height: 0
+                    )
                   ),
-                  Expanded(child: ChildrenList())
                 ],
               ),
-              AbsenceSwitch(
-                onChanged: (value) {
-                  setState(() {
-                    isAbsent = value;
-                  });
-                },
+              Spacer(),
+              Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: KColors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(KSizes.buttonRadius)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: KColors.lighterGrey,
+                      blurRadius: 10,
+                      spreadRadius: 0.5,
+                      offset: Offset(0, 8)
+                    )
+                  ]
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.notifications),
+                  iconSize: KSizes.iconMd,
+                  onPressed: () { //ToDo:
+                    GoRouter.of(context).push(AppRouter.splash);
+                  },
+                ),
               ),
-              SizedBox(height: KSizes.defaultSpace,),
-              if(isAbsent)
-                AbsenceReport()
-              else
-                Column(
-                  children: [
-                    Text("Morning Period Bus",
-                      style: TextStyle(
-                        color: KColors.black,
-                        fontSize: KSizes.fonstSizexLg,
-                      ),
-                    textAlign: TextAlign.end,
-                    ),
-                    BusSchedule(),
-                    Text("Afternoon Period Bus",
-                      style: TextStyle(
-                        color: KColors.black,
-                        fontSize: KSizes.fonstSizexLg,
-                      ),
-                    textAlign: TextAlign.end,
-                    ),
-                    BusSchedule(),
-                  ],
-                )
             ],
           ),
-        ),
-      ),
+          Row(
+            children: [
+              Text("Children",
+                style: TextStyle(
+                  color: KColors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: KSizes.fonstSizeLg,
+                ),
+              ),
+            Expanded(child: ChildrenList())
+            ],
+          ),         
+        ]
+      )
     );
   }
 }
+ 
