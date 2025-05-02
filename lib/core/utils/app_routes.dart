@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:safe_bus/features/driver/dashboard/driver_dashboard_screen.dart';
 import 'package:safe_bus/features/driver/map/presentation/driver_map_screen.dart';
 import 'package:safe_bus/features/parent/map/presentation/parent_map_screen.dart';
 import 'package:safe_bus/features/parent/home/presentation/parent_home_screen.dart';
@@ -39,7 +40,7 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: driverDashboard,
-        builder: (context, state) => const TeacherDashboardScreen(),
+        builder: (context, state) => const DriverDashboardScreen(),
       ),
       GoRoute(
         path: driverMap,
