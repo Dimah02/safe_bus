@@ -10,7 +10,7 @@ class ChildrenList extends StatefulWidget {
 }
 
 class _ChildrenListState extends State<ChildrenList> {
-  final List<String> children = ["Adam", "Lina"];
+  final List<String> children = ["Adam", "Lina", "Hamza"];
   String selectedChild = "Adam";
 
   @override

@@ -13,69 +13,88 @@ class _AbsenceReportState extends State<AbsenceReport> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment(0, 0),
-      padding: EdgeInsets.fromLTRB(KSizes.sm, KSizes.xs, KSizes.sm, KSizes.xs),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
         border: Border.all(color: KColors.lighterGrey),
-        borderRadius: BorderRadius.all(Radius.circular(KSizes.buttonRadius)),
+        borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             height: 60,
             width: 60,
-            margin: EdgeInsets.fromLTRB(0, KSizes.md, 0, KSizes.lg),
             child: CircleAvatar(
               backgroundColor: KColors.pinkishRed,
-              child: Icon(Icons.favorite_border, color: KColors.fadedRed, size: KSizes.iconXlg,),
+              child: Icon(
+                Icons.favorite_border,
+                color: KColors.fadedRed,
+                size: KSizes.iconXlg,
+              ),
             ),
           ),
-          Text("Adam is reported absent today",
+          SizedBox(height: 16),
+          Text(
+            "Adam is reported absent today",
             style: TextStyle(
-              color: KColors.black,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w800,
               fontSize: KSizes.fonstSizeLg,
             ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: KSizes.spaceBtwItems),
-          Text("We hope Adam is doing fine and will be back soon!",
+          Text(
+            "We hope Adam is doing fine and will be back soon!",
             style: TextStyle(
               color: KColors.lighterGrey,
               fontSize: KSizes.fonstSizeSm,
             ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: KSizes.spaceBtwSections),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(KColors.fadedRed),
-              side: WidgetStatePropertyAll(BorderSide(color: KColors.fadedRed))
-            ),
-            child: Text("Cancel absence report",
-              style: TextStyle(
-                color: KColors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: KSizes.fonstSizeSm
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(KColors.fadedRed),
+                side: WidgetStatePropertyAll(
+                  BorderSide(color: KColors.fadedRed),
+                ),
               ),
+              child: Text(
+                "Cancel absence report",
+                style: TextStyle(
+                  color: KColors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: KSizes.fonstSizeSm,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  //ToDo:
+                });
+              },
             ),
-            onPressed: () {
-              setState(() {
-                //ToDo:
-              });
-            },
           ),
-          SizedBox(height: KSizes.xs),
+          SizedBox(height: KSizes.sm),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.access_time, color: KColors.lighterGrey, size: KSizes.iconSm),
-              Text("Cancellation available for 29:51",
+              Icon(
+                Icons.access_time,
+                color: KColors.lighterGrey,
+                size: KSizes.iconSm,
+              ),
+              SizedBox(width: 4),
+              Text(
+                "Cancellation available for 29:51",
                 style: TextStyle(
                   color: KColors.lighterGrey,
-                  fontSize: KSizes.fonstSizeSm
+                  fontSize: KSizes.fonstSizeSm,
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

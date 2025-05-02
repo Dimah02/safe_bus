@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import '../models/trip.dart';
+import 'package:safe_bus/features/teacher/models/trip.dart';
 
 class TripCard extends StatelessWidget {
   final Trip trip;

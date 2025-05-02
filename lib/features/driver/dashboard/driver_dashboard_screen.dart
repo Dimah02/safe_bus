@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safe_bus/core/styles/colors.dart';
-import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
+import 'package:safe_bus/core/utils/app_routes.dart';
+import 'package:safe_bus/features/teacher/attendance_overview/attendance_overview_screen.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
 import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
+import 'package:safe_bus/features/teacher/models/trip.dart';
 
-import '../attendance_overview/attendance_overview_screen.dart';
-import '../models/trip.dart';
-
-class TeacherDashboardScreen extends StatefulWidget {
-  const TeacherDashboardScreen({super.key});
+class DriverDashboardScreen extends StatefulWidget {
+  const DriverDashboardScreen({super.key});
 
   @override
-  State<TeacherDashboardScreen> createState() => _TeacherDashboardScreenState();
+  State<DriverDashboardScreen> createState() => _DriverDashboardScreenState();
 }
 
-class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
+class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
   int _currentIndex = 1;
   late List<Trip> _allTrips;
   late Trip? _currentTrip;
@@ -138,8 +137,8 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Text(
-              BlocProvider.of<AuthCubit>(context).user.name ?? "Ahmad",
+            const Text(
+              'Ahmad',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -265,10 +264,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
   }
 
   void _navigateToAttendanceScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AttendanceOverviewScreen()),
-    );
+    GoRouter.of(context).push(AppRouter.driverMap);
   }
 
   Widget _buildBottomNavBar() {

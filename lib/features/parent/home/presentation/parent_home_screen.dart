@@ -132,7 +132,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               ),
             Expanded(child: ChildrenList())
             ],
-          ),         
+          ),
         ]
       )
     );

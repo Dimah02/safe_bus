@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:safe_bus/core/theme/theme.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
 import 'package:safe_bus/core/utils/service_locator.dart';
+import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -15,10 +17,13 @@ class SafeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: AppRouter.router,
-      debugShowCheckedModeBanner: false,
-      theme: KAppTheme.lighTheme,
+    return BlocProvider(
+      create: (context) => AuthCubit(),
+      child: MaterialApp.router(
+        routerConfig: AppRouter.router,
+        debugShowCheckedModeBanner: false,
+        theme: KAppTheme.lighTheme,
+      ),
     );
   }
 }
