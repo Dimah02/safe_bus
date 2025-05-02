@@ -3,14 +3,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class KHTTP {
-  static const String _baseURL = "";
+  static const String _baseURL =
+      "https://safe-api-hbgkbrbwaqh0g6ge.eastus-01.azurewebsites.net/api/";
+  // "https://10.0.2.2:7149/api/";
+  //"https://safe-api-hbgkbrbwaqh0g6ge.eastus-01.azurewebsites.net/api/";
 
   static Future<dynamic> get({required String endpoint, String? token}) async {
     Map<String, String> headers = {};
     if (token != null) {
       headers.addAll({"Authorization": "Bearer $token"});
     }
-
     http.Response response = await http.get(
       Uri.parse('$_baseURL$endpoint'),
       headers: headers,
@@ -19,9 +21,7 @@ class KHTTP {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return await jsonDecode(response.body);
     } else {
-      throw Exception(
-        'Failed to get data from the API ${response.statusCode} with body ${jsonDecode(response.body)}',
-      );
+      throw Exception('${jsonDecode(response.body)}');
     }
   }
 

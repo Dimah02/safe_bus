@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/colors.dart';
+import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
 import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
 
@@ -136,8 +138,8 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const Text(
-              'Ahmad',
+            Text(
+              BlocProvider.of<AuthCubit>(context).user.name ?? "Ahmad",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
