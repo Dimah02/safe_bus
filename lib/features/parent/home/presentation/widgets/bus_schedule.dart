@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
+import 'package:safe_bus/core/utils/app_routes.dart';
 
 class BusSchedule extends StatefulWidget {
   const BusSchedule({super.key});
@@ -46,7 +48,9 @@ class _BusScheduleState extends State<BusSchedule> {
                   fontSize: KSizes.fonstSizeSm,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                GoRouter.of(context).push(AppRouter.parentMap);
+              },
             ),
           ),
         ],
