@@ -35,11 +35,12 @@ class LoginRepo {
   Future<UserModel> signIn({
     required String email,
     required String password,
+    required int userType,
   }) async {
     try {
       var data = await KHTTP.post(
         endpoint: "Auth/login",
-        body: {"email": email, "password": password},
+        body: {"email": email, "password": password, "userType": userType},
       );
       await storeToken(data["accessToken"]);
       await storeID(data["user"]["userId"].toString());

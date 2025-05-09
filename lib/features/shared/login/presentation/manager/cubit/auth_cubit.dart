@@ -9,10 +9,18 @@ class AuthCubit extends Cubit<AuthState> {
 
   late UserModel user;
 
-  Future<void> signIn({required String email, required String password}) async {
+  Future<void> signIn({
+    required String email,
+    required String password,
+    required int userType,
+  }) async {
     emit(AuthLoading());
     try {
-      user = await LoginRepo.instance.signIn(email: email, password: password);
+      user = await LoginRepo.instance.signIn(
+        email: email,
+        password: password,
+        userType: userType,
+      );
       emit(AuthSuccess());
     } catch (e) {
       emit(AuthFailure(e.toString()));

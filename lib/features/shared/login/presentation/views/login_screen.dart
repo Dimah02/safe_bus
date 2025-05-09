@@ -122,6 +122,7 @@ class LoginScreen extends StatelessWidget {
                                 BlocProvider.of<AuthCubit>(context).signIn(
                                   email: _email.text,
                                   password: _password.text,
+                                  userType: _getUserRole(selectedRole),
                                 );
                               }
                             },
@@ -191,6 +192,23 @@ class LoginScreen extends StatelessWidget {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('Unknown role: $role')));
+    }
+  }
+
+  int _getUserRole(String type) {
+    switch (type) {
+      case "user":
+        return 0;
+      case "admin":
+        return 1;
+      case "driver":
+        return 2;
+      case "teacher":
+        return 3;
+      case "parent":
+        return 4;
+      default:
+        return 5;
     }
   }
 }
