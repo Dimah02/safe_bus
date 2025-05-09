@@ -21,7 +21,6 @@ abstract class AppRouter {
   static final String driverDashboard = "/driverDashboard";
   static final String adminDashboard = "/adminDashboard";
   static final router = GoRouter(
-    initialLocation: parentHomePage,
     routes: [
       GoRoute(path: splash, builder: (context, state) => const SplashScreen()),
       GoRoute(
