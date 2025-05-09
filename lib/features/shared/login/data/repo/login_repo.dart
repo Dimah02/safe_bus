@@ -38,7 +38,7 @@ class LoginRepo {
     required int userType,
   }) async {
     try {
-      var data = await KHTTP.post(
+      var data = await KHTTP.instance.post(
         endpoint: "Auth/login",
         body: {"email": email, "password": password, "userType": userType},
       );

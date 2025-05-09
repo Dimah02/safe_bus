@@ -1,20 +1,43 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart';
+import 'package:http/io_client.dart';
 
 class KHTTP {
-  static const String _baseURL =
-      "https://safe-api-hbgkbrbwaqh0g6ge.eastus-01.azurewebsites.net/api/";
-  // "https://10.0.2.2:7149/api/";
-  //"https://safe-api-hbgkbrbwaqh0g6ge.eastus-01.azurewebsites.net/api/";
+  late IOClient http;
+  static final KHTTP instance = KHTTP._constructor();
+  KHTTP._constructor() {
+    try {
+      final ioc = HttpClient();
+      ioc.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      http = IOClient(ioc);
+    } catch (_) {}
+  }
 
-  static Future<dynamic> get({required String endpoint, String? token}) async {
+  String _baseURL() {
+    String ipAddress = dotenv.env["IP_ADDRESS"] ?? '';
+    String url = "https://$ipAddress:7149/api/";
+    if (Platform.isAndroid || Platform.isIOS) {
+      url = "https://$ipAddress:7149/api/";
+    } else if (Platform.isWindows) {
+      url = "https://localhost:7149/api/";
+    }
+    // url = "https://safe-api-hbgkbrbwaqh0g6ge.eastus-01.azurewebsites.net/api/";
+    return url;
+  }
+
+  Future<dynamic> get({required String endpoint, String? token}) async {
     Map<String, String> headers = {};
     if (token != null) {
       headers.addAll({"Authorization": "Bearer $token"});
     }
-    http.Response response = await http.get(
-      Uri.parse('$_baseURL$endpoint'),
+    String url = _baseURL();
+
+    Response response = await http.get(
+      Uri.parse('$url$endpoint'),
       headers: headers,
     );
 
@@ -25,7 +48,7 @@ class KHTTP {
     }
   }
 
-  static Future<dynamic> post({
+  Future<dynamic> post({
     required String endpoint,
     dynamic body,
     String? token,
@@ -36,8 +59,12 @@ class KHTTP {
     }
     headers.addAll({"Content-Type": "application/json"});
     body ??= {};
-    http.Response response = await http.post(
-      Uri.parse('$_baseURL$endpoint'),
+    print(body);
+
+    String url = _baseURL();
+
+    Response response = await http.post(
+      Uri.parse('$url$endpoint'),
       headers: headers,
       body: json.encode(body),
     );
@@ -52,7 +79,7 @@ class KHTTP {
     }
   }
 
-  static Future<dynamic> put({
+  Future<dynamic> put({
     required String endpoint,
     dynamic body,
     String? token,
@@ -64,8 +91,10 @@ class KHTTP {
     headers.addAll({"Content-Type": "application/json"});
     body ??= {};
 
-    http.Response response = await http.put(
-      Uri.parse('$_baseURL$endpoint'),
+    String url = _baseURL();
+
+    Response response = await http.put(
+      Uri.parse('$url$endpoint'),
       headers: headers,
       body: json.encode(body),
     );
@@ -80,18 +109,16 @@ class KHTTP {
     }
   }
 
-  static Future<dynamic> delete({
-    required String endpoint,
-    String? token,
-  }) async {
+  Future<dynamic> delete({required String endpoint, String? token}) async {
     Map<String, String> headers = {};
     if (token != null) {
       headers.addAll({"Authorization": "Bearer $token"});
     }
     headers.addAll({"Content-Type": "application/json"});
+    String url = _baseURL();
 
-    http.Response response = await http.delete(
-      Uri.parse('$_baseURL$endpoint'),
+    Response response = await http.delete(
+      Uri.parse('$url$endpoint'),
       headers: headers,
     );
 

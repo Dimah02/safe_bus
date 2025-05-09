@@ -195,8 +195,8 @@ class LoginScreen extends StatelessWidget {
     }
   }
 
-  int _getUserRole(String type) {
-    switch (type) {
+  int _getUserRole(String role) {
+    switch (role.toLowerCase()) {
       case "user":
         return 0;
       case "admin":
