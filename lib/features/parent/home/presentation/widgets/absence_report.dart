@@ -14,6 +14,7 @@ class _AbsenceReportState extends State<AbsenceReport> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+
       decoration: BoxDecoration(
         border: Border.all(color: KColors.lighterGrey),
         borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -24,6 +25,7 @@ class _AbsenceReportState extends State<AbsenceReport> {
           SizedBox(
             height: 60,
             width: 60,
+
             child: CircleAvatar(
               backgroundColor: KColors.pinkishRed,
               child: Icon(
@@ -38,6 +40,7 @@ class _AbsenceReportState extends State<AbsenceReport> {
             "Adam is reported absent today",
             style: TextStyle(
               fontWeight: FontWeight.w800,
+
               fontSize: KSizes.fonstSizeLg,
             ),
             textAlign: TextAlign.center,

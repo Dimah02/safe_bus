@@ -15,42 +15,55 @@ class _ChildrenListState extends State<ChildrenList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(0, KSizes.sm, 0, KSizes.md),
-      child: SizedBox(
-        height: 40,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: children.length,
-          itemBuilder:(context, index) {
-          final currentChild = children[index];
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: ChoiceChip(
-              backgroundColor: KColors.lightGreen,
-              side: BorderSide(
-                color: KColors.lightGreen
-              ),
-              label: Text(currentChild,
+    return SizedBox(
+      height: 35,
+
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: children.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Padding(
+              padding: EdgeInsets.only(top: 8, bottom: 8, right: 16),
+              child: Text(
+                "Children",
                 style: TextStyle(
                   color: KColors.black,
-                  fontSize: KSizes.fonstSizeSm
+                  fontWeight: FontWeight.bold,
+                  fontSize: KSizes.fonstSizeLg,
                 ),
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(KSizes.borderRadiusxLg)
+            );
+          }
+          index--;
+          final currentChild = children[index];
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedChild = currentChild;
+              });
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color:
+                    selectedChild == currentChild
+                        ? KColors.greenPrimary
+                        : KColors.greenAccent,
               ),
-              selected: selectedChild == currentChild,
-              onSelected: (selected) {
-                setState((){
-                  selectedChild = currentChild;
-                });
-              },
-            )
+              child: Text(
+                currentChild,
+                style: TextStyle(
+                  color: KColors.white,
+                  fontSize: KSizes.fontSizeMd,
+                ),
+              ),
+            ),
           );
-          },
-        )
-      )
+        },
+      ),
     );
   }
 }

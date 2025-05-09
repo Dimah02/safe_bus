@@ -31,6 +31,7 @@ class _AbsenceSwitch extends State<AbsenceSwitch> {
                 "Report Absence",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
+
                   fontSize: KSizes.fontSizeMd,
                 ),
               ),
