@@ -34,22 +34,31 @@ class RecentTripItem extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          _buildInfoRow(
-            Icons.access_time,
-            trip.getFormattedDate(),
-          ),
+          _buildInfoRow(Icons.access_time, trip.getFormattedDate()),
           const SizedBox(height: 10),
           Row(
             children: [
               Expanded(child: _buildInfoRow(Icons.tag, trip.tripNumber)),
-              Expanded(child: _buildInfoRow(Icons.route, '${trip.distance.toInt()} Km')),
+              Expanded(
+                child: _buildInfoRow(
+                  Icons.route,
+                  '${trip.distance.toInt()} Km',
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              Expanded(child: _buildInfoRow(Icons.people, '${trip.studentCount} Students')),
-              Expanded(child: _buildInfoRow(Icons.timer, trip.getDurationString())),
+              Expanded(
+                child: _buildInfoRow(
+                  Icons.people,
+                  '${trip.studentCount} Students',
+                ),
+              ),
+              Expanded(
+                child: _buildInfoRow(Icons.timer, trip.getDurationString()),
+              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -70,13 +79,7 @@ class RecentTripItem extends StatelessWidget {
       children: [
         Icon(icon, size: 16, color: Colors.grey.shade700),
         const SizedBox(width: 5),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey.shade700,
-          ),
-        ),
+        Text(text, style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
       ],
     );
   }
@@ -85,7 +88,7 @@ class RecentTripItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withAlpha(100),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: color),
       ),
@@ -105,16 +108,9 @@ class RecentTripItem extends StatelessWidget {
       onPressed: onDetailsPressed,
       icon: const Text(
         'Details',
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.blue,
-        ),
+        style: TextStyle(fontSize: 14, color: Colors.blue),
       ),
-      label: const Icon(
-        Icons.chevron_right,
-        size: 18,
-        color: Colors.blue,
-      ),
+      label: const Icon(Icons.chevron_right, size: 18, color: Colors.blue),
     );
   }
 }

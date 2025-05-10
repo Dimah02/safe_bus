@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
-import 'package:safe_bus/features/teacher/attendance_overview/attendance_overview_screen.dart';
 import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
 import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
 import 'package:safe_bus/features/teacher/models/trip.dart';
@@ -133,7 +132,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
               'Good Morning,',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.black.withOpacity(0.7),
+                color: KColors.darkGrey,
                 fontWeight: FontWeight.w500,
               ),
             ),

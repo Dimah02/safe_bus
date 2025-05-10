@@ -59,7 +59,6 @@ class KHTTP {
     }
     headers.addAll({"Content-Type": "application/json"});
     body ??= {};
-    print(body);
 
     String url = _baseURL();
 

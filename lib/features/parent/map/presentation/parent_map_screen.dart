@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
-import 'package:safe_bus/core/styles/image_strings.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/features/driver/map/presentation/widgets/busroute_listview_header.dart';
 import 'package:safe_bus/features/driver/map/presentation/widgets/custom_google_map.dart';

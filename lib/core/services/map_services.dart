@@ -1,4 +1,4 @@
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -99,10 +99,10 @@ class MapServices {
     double minLng = double.infinity;
     double maxLng = double.negativeInfinity;
     for (var point in points) {
-      minLat = Math.min(minLat, point.latitude);
-      maxLat = Math.max(maxLat, point.latitude);
-      minLng = Math.min(minLng, point.longitude);
-      maxLng = Math.max(maxLng, point.longitude);
+      minLat = math.min(minLat, point.latitude);
+      maxLat = math.max(maxLat, point.latitude);
+      minLng = math.min(minLng, point.longitude);
+      maxLng = math.max(maxLng, point.longitude);
     }
     return LatLngBounds(
       southwest: LatLng(minLat, minLng),

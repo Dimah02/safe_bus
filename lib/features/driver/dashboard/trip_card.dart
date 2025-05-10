@@ -43,7 +43,7 @@ class TripCard extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor:
                   isActive
-                      ? Colors.white.withOpacity(0.3)
+                      ? const Color.fromARGB(48, 255, 255, 255)
                       : Colors.grey.shade300,
               foregroundColor: isActive ? Colors.white : Colors.grey,
               minimumSize: const Size(120, 36),

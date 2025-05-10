@@ -134,7 +134,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
               'Good Morning,',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.black.withOpacity(0.7),
+                color: KColors.darkGrey,
                 fontWeight: FontWeight.w500,
               ),
             ),

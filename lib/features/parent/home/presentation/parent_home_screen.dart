@@ -91,7 +91,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               'Good Morning,',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.black.withOpacity(0.7),
+                color: KColors.darkGrey,
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -86,9 +86,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         },
       );
       setState(() {});
-    } on LocationServiceException catch (e) {
+    } on LocationServiceException {
       // TODO
-    } on LocationPermissionException catch (e) {
+    } on LocationPermissionException {
       //TODO
     } catch (e) {
       //TODO

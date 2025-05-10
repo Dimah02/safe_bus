@@ -50,7 +50,6 @@ class PlacesService {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      print(data);
       return PlaceDetailsModel.fromJson(data);
     } else {
       throw Exception(
