@@ -6,6 +6,7 @@ import 'package:safe_bus/core/styles/image_strings.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/core/styles/spacing_style.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
+import 'package:safe_bus/core/utils/toast.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -31,6 +32,9 @@ class LoginScreen extends StatelessWidget {
           if (state is AuthSuccess) {
             _navigateToRolePage(context, selectedRole);
           } else if (state is AuthFailure) {
+            Toast(
+              context,
+            ).showToast(message: state.errMessage, color: KColors.fadedRed);
             print(state.errMessage);
           }
         },

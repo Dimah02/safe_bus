@@ -48,6 +48,9 @@ class LoginRepo {
       UserModel user = UserModel.fromJson(data);
       return user;
     } catch (e) {
+      if (e.toString().contains("Invalid credentials")) {
+        throw Exception("Invalid credentials");
+      }
       throw Exception(e.toString());
     }
   }
