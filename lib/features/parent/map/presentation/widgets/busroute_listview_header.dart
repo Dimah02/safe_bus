@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/driver/map/presentation/widgets/route_info.dart';
+import 'package:safe_bus/features/driver/map/presentation/views/widgets/route_info.dart';
 
 class BusRouteListViewHeader extends StatelessWidget {
   const BusRouteListViewHeader({

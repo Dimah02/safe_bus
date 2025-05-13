@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/driver/map/presentation/widgets/busroute_listview_header.dart';
-import 'package:safe_bus/features/driver/map/presentation/widgets/custom_google_map.dart';
+import 'package:safe_bus/features/driver/map/presentation/views/widgets/busroute_listview_header.dart';
+import 'package:safe_bus/features/driver/map/presentation/views/widgets/custom_driver_map.dart';
 
 class ParentMapScreen extends StatelessWidget {
   const ParentMapScreen({super.key});
@@ -19,7 +19,7 @@ class ParentMapScreen extends StatelessWidget {
                 (context, constraints) => SizedBox(
                   height:
                       constraints.maxHeight - (constraints.maxHeight * 0.25),
-                  child: CustomGoogleMap(),
+                  child: CustomDriverMap(),
                 ),
           ),
 

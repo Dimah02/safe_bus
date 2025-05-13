@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:safe_bus/core/services/models/location_info/location_info_model.dart';
+import 'package:safe_bus/core/services/models/routes_model/intermediates.dart';
 import 'package:safe_bus/core/services/models/routes_model/routes_model.dart';
 
 class RoutesService {
@@ -11,6 +12,7 @@ class RoutesService {
   Future<RoutesModel> fetchRoutes({
     required LocationInfoModel origin,
     required LocationInfoModel destination,
+    required Intermediates intermediates,
   }) async {
     Map<String, String> headers = {};
     headers['Content-Type'] = 'application/json';
@@ -24,6 +26,7 @@ class RoutesService {
       body: json.encode({
         "origin": origin.toJson(),
         "destination": destination.toJson(),
+        "intermediates": intermediates.toJson(),
         "travelMode": "DRIVE",
         "routingPreference": "TRAFFIC_AWARE",
         "computeAlternativeRoutes": false,

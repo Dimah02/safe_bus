@@ -2,8 +2,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/services/location_service.dart';
 import 'package:safe_bus/core/services/map_services.dart';
-import 'package:safe_bus/core/services/places_service.dart';
-import 'package:safe_bus/core/services/routes_service.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -29,11 +27,6 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     super.initState();
     uuid = Uuid();
     initialCameraPosition = const CameraPosition(target: LatLng(0, 0), zoom: 0);
-    mapServices = MapServices(
-      locationService: LocationService(),
-      placesService: PlacesService(),
-      routesService: RoutesService(),
-    );
   }
 
   @override
@@ -80,7 +73,6 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     try {
       mapServices.updateCurrentLocation(
         googleMapController: googleMapController,
-        markers: markers,
         onUpdateCurrentLocation: () {
           setState(() {});
         },

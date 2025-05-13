@@ -7,43 +7,20 @@ import 'package:safe_bus/core/services/location_service.dart';
 import 'package:safe_bus/core/services/models/location_info/lat_lng.dart';
 import 'package:safe_bus/core/services/models/location_info/location_info_model.dart';
 import 'package:safe_bus/core/services/models/location_info/location_model.dart';
-import 'package:safe_bus/core/services/models/place_auto_complete_model/place_auto_complete_model.dart';
-import 'package:safe_bus/core/services/models/place_details_model/place_details_model.dart';
-import 'package:safe_bus/core/services/places_service.dart';
+import 'package:safe_bus/core/services/models/routes_model/intermediates.dart';
 import 'package:safe_bus/core/services/routes_service.dart';
 
 class MapServices {
   final LocationService locationService;
-  final PlacesService placesService;
   final RoutesService routesService;
   static bool routeDisplayed = false;
   LatLng? currentLocation;
 
-  MapServices({
-    required this.locationService,
-    required this.placesService,
-    required this.routesService,
-  });
-
-  getPredictions({
-    required String input,
-    required String token,
-    required List<PlaceAutoCompleteModel> places,
-  }) async {
-    if (input.isNotEmpty) {
-      var result = await placesService.getPredictions(
-        input: input,
-        token: token,
-      );
-      places.clear();
-      if (input.isNotEmpty) places.addAll(result);
-    } else {
-      places.clear();
-    }
-  }
+  MapServices({required this.locationService, required this.routesService});
 
   Future<List<LatLng>> getRouteData({
     required LatLng currentDestination,
+    required List<LatLng> waypoints,
   }) async {
     LocationInfoModel origin, destination;
     origin = LocationInfoModel(
@@ -62,9 +39,25 @@ class MapServices {
         ),
       ),
     );
+    List<LocationInfoModel> locations = List.empty();
+    locations =
+        waypoints
+            .map(
+              (e) => LocationInfoModel(
+                location: LocationModel(
+                  latLng: LatLngModel(
+                    latitude: e.latitude,
+                    longitude: e.longitude,
+                  ),
+                ),
+              ),
+            )
+            .toList();
+    Intermediates intermediates = Intermediates(intermediates: locations);
     var routes = await routesService.fetchRoutes(
       origin: origin,
       destination: destination,
+      intermediates: intermediates,
     );
     PolylinePoints polylinePoints = PolylinePoints();
 
@@ -110,8 +103,9 @@ class MapServices {
     );
   }
 
-  void displayDestinationMarker({
+  void displayMarkers({
     required LatLng currentDestination,
+    required List<LatLng> waypoints,
     required Set<Marker> markers,
   }) {
     Marker destinationMarker = Marker(
@@ -119,16 +113,22 @@ class MapServices {
       position: currentDestination,
     );
     markers.clear();
+
+    for (int i = 0; i < waypoints.length; i++) {
+      markers.add(
+        Marker(markerId: MarkerId("waypoint${i + 1}"), position: waypoints[i]),
+      );
+    }
     markers.add(destinationMarker);
   }
 
-  void updateCurrentLocation({
+  Future<void> updateCurrentLocation({
     required GoogleMapController googleMapController,
-    required Set<Marker> markers,
     required Function onUpdateCurrentLocation,
-  }) {
+  }) async {
     locationService.getRealTimeLocationData((locationData) {
       currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
+
       // Marker currentLocationMarker = Marker(
       //   markerId: MarkerId("Current Location"),
       //   position: currentLocation!,
@@ -139,19 +139,10 @@ class MapServices {
         zoom: 16,
       );
 
-      if (routeDisplayed == false) {
-        googleMapController.animateCamera(
-          CameraUpdate.newCameraPosition(cameraPosition),
-        );
-      }
+      googleMapController.animateCamera(
+        CameraUpdate.newCameraPosition(cameraPosition),
+      );
       onUpdateCurrentLocation();
     });
-  }
-
-  Future<PlaceDetailsModel> getPlaceDetails({
-    required String placeId,
-    required String token,
-  }) async {
-    return await placesService.getPlaceDetails(token: token, placeId: placeId);
   }
 }
