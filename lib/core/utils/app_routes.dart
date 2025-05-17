@@ -23,7 +23,6 @@ abstract class AppRouter {
   static final String adminDashboard = "/adminDashboard";
   static final String attendance = "/attendance";
   static final router = GoRouter(
-    initialLocation: driverDashboard,
     routes: [
       GoRoute(
         path: attendance,
