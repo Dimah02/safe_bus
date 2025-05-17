@@ -9,12 +9,12 @@ class KHTTP {
   late IOClient http;
   static final KHTTP instance = KHTTP._constructor();
   KHTTP._constructor() {
-    try {
-      final ioc = HttpClient();
-      ioc.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      http = IOClient(ioc);
-    } catch (_) {}
+    // try {
+    //   final ioc = HttpClient();
+    //   ioc.badCertificateCallback =
+    //       (X509Certificate cert, String host, int port) => true;
+    //   http = IOClient(ioc);
+    // } catch (_) {}
   }
 
   String _baseURL() {
