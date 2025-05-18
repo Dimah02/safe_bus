@@ -1,37 +1,36 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/services/signal_r_service.dart';
-import 'package:safe_bus/features/driver/map/presentation/managers/cubit/driver_map_cubit.dart';
+import 'package:safe_bus/features/parent/map/presentation/managers/cubit/map_cubit.dart';
 
-class CustomDriverMap extends StatefulWidget {
+class CustomParentMap extends StatefulWidget {
   final int busRouteId;
   final String authToken;
-  const CustomDriverMap({
+  const CustomParentMap({
     super.key,
     required this.busRouteId,
     required this.authToken,
   });
 
   @override
-  State<CustomDriverMap> createState() => _CustomDriverMapState();
+  State<CustomParentMap> createState() => _CustomParentMapState();
 }
 
-class _CustomDriverMapState extends State<CustomDriverMap> {
+class _CustomParentMapState extends State<CustomParentMap> {
   late final SignalRService _signalRService;
-  late final DriverMapCubit _cubit;
+  late final MapCubit _cubit;
   @override
   void initState() {
     super.initState();
+    String baseurl = dotenv.env["BASEURL"] ?? '';
     _signalRService = SignalRService(
-      baseUrl: 'https://your-api-url.com', // Replace with your API URL
+      baseUrl: baseurl,
       hubName: 'busTrackingHub',
       token: widget.authToken,
     );
-    _cubit = DriverMapCubit(
-      busRouteId: widget.busRouteId,
-      signalRService: _signalRService,
-    );
+    _cubit = MapCubit(widget.busRouteId, _signalRService);
   }
 
   @override
@@ -46,15 +45,12 @@ class _CustomDriverMapState extends State<CustomDriverMap> {
       create: (context) => _cubit,
       child: Stack(
         children: [
-          BlocConsumer<DriverMapCubit, DriverMapState>(
+          BlocConsumer<MapCubit, MapState>(
             listener: (context, state) async {
-              if (state is DriverMapFailure) {
-                print(state.errMessage);
+              if (state is MapFailure) {
+                print(state.errorMessage);
               }
-              if (state is DriverMapRouteFailure) {
-                print(state.errMessage);
-              }
-              if (state is DriverMapSuccess || state is DriverMapRouteSuccess) {
+              if (state is MapSuccess) {
                 setState(() {});
               }
             },
@@ -62,15 +58,11 @@ class _CustomDriverMapState extends State<CustomDriverMap> {
               return GoogleMap(
                 zoomControlsEnabled: false,
                 initialCameraPosition:
-                    BlocProvider.of<DriverMapCubit>(
-                      context,
-                    ).initialCameraPosition,
+                    BlocProvider.of<MapCubit>(context).initialCameraPosition,
                 myLocationEnabled: true,
                 myLocationButtonEnabled: false,
-                markers: BlocProvider.of<DriverMapCubit>(context).markers,
-                polylines: BlocProvider.of<DriverMapCubit>(context).polylines,
-                onMapCreated:
-                    BlocProvider.of<DriverMapCubit>(context).onMapCreated,
+                markers: BlocProvider.of<MapCubit>(context).markers,
+                onMapCreated: BlocProvider.of<MapCubit>(context).onMapCreated,
               );
             },
           ),
