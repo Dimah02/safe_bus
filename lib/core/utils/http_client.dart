@@ -15,6 +15,7 @@ class KHTTP {
     //       (X509Certificate cert, String host, int port) => true;
     //   http = IOClient(ioc);
     // } catch (_) {}
+    http = IOClient();
   }
 
   String _baseURL() {
