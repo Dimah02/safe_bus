@@ -26,7 +26,6 @@ class _CustomDriverMapState extends State<CustomDriverMap> {
     _signalRService = SignalRService(
       baseUrl: 'https://your-api-url.com', // Replace with your API URL
       hubName: 'busTrackingHub',
-      token: widget.authToken,
     );
     _cubit = DriverMapCubit(
       busRouteId: widget.busRouteId,

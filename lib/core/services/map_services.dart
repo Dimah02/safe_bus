@@ -13,10 +13,15 @@ import 'package:safe_bus/core/services/routes_service.dart';
 class MapServices {
   final LocationService locationService;
   final RoutesService routesService;
+  int updateCameraOnce; // if 0 yes if one  no
   static bool routeDisplayed = false;
   LatLng? currentLocation;
 
-  MapServices({required this.locationService, required this.routesService});
+  MapServices({
+    required this.locationService,
+    required this.routesService,
+    this.updateCameraOnce = 1,
+  });
 
   Future<List<LatLng>> getRouteData({
     required LatLng currentDestination,
@@ -124,25 +129,27 @@ class MapServices {
 
   Future<void> updateCurrentLocation({
     required GoogleMapController googleMapController,
-    required Function onUpdateCurrentLocation,
+    required Function(LatLng? newLocation) onUpdateCurrentLocation,
   }) async {
     locationService.getRealTimeLocationData((locationData) {
       currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
 
-      // Marker currentLocationMarker = Marker(
-      //   markerId: MarkerId("Current Location"),
-      //   position: currentLocation!,
-      // );
-      //markers.add(currentLocationMarker);
       CameraPosition cameraPosition = CameraPosition(
         target: currentLocation!,
         zoom: 16,
       );
 
-      googleMapController.animateCamera(
-        CameraUpdate.newCameraPosition(cameraPosition),
-      );
-      onUpdateCurrentLocation();
+      if (updateCameraOnce == 0) {
+        googleMapController.animateCamera(
+          CameraUpdate.newCameraPosition(cameraPosition),
+        );
+        updateCameraOnce = 2;
+      } else if (updateCameraOnce == 1) {
+        googleMapController.animateCamera(
+          CameraUpdate.newCameraPosition(cameraPosition),
+        );
+      }
+      onUpdateCurrentLocation(currentLocation);
     });
   }
 }

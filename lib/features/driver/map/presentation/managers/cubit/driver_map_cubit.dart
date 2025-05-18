@@ -21,6 +21,7 @@ class DriverMapCubit extends Cubit<DriverMapState> {
   late GoogleMapController googleMapController;
   final int busRouteId;
   final SignalRService signalRService;
+  LatLng? currentLocation;
 
   Set<Marker> markers = {};
   Set<Polyline> polylines = {};
@@ -152,7 +153,7 @@ class DriverMapCubit extends Cubit<DriverMapState> {
     try {
       await mapServices.updateCurrentLocation(
         googleMapController: googleMapController,
-        onUpdateCurrentLocation: () {
+        onUpdateCurrentLocation: (location) {
           displayRoute();
         },
       );

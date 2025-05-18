@@ -19,7 +19,7 @@ class ParentMapScreen extends StatelessWidget {
                 (context, constraints) => SizedBox(
                   height:
                       constraints.maxHeight - (constraints.maxHeight * 0.25),
-                  child: CustomParentMap(authToken: "token", busRouteId: 1),
+                  child: CustomParentMap(busRouteId: 1),
                 ),
           ),
 
