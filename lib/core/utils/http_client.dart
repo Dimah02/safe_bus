@@ -27,7 +27,8 @@ class KHTTP {
     } else if (Platform.isWindows) {
       url = "https://localhost:$port/api/";
     }
-    url = "https://safe-api-hbgkbrbwaqh0g6ge.eastus2-01.azurewebsites.net/api/";
+    String baseURL = dotenv.env["BASEURL"] ?? '';
+    url = baseURL;
     return url;
   }
 

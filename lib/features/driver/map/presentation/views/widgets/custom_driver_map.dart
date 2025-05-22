@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/services/signal_r_service.dart';
@@ -23,8 +24,9 @@ class _CustomDriverMapState extends State<CustomDriverMap> {
   @override
   void initState() {
     super.initState();
+    String baseurl = dotenv.env["SOCKETURL"] ?? '';
     _signalRService = SignalRService(
-      baseUrl: 'https://your-api-url.com', // Replace with your API URL
+      baseUrl: baseurl,
       hubName: 'busTrackingHub',
     );
     _cubit = DriverMapCubit(

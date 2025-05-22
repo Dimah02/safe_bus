@@ -87,7 +87,7 @@ class MapServices {
     polylines.add(route);
 
     LatLngBounds bounds = getLatLngBound(points);
-    googleMapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 16));
+    googleMapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 24));
     routeDisplayed = true;
   }
 

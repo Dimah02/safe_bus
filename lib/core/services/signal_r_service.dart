@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:safe_bus/features/shared/login/data/repo/login_repo.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:uuid/uuid.dart';
 
 class SignalRService {
@@ -23,8 +25,9 @@ class SignalRService {
   Future<void> connect() async {
     // 1. Negotiate with server to get connection details
     String? token = await LoginRepo.instance.getToken();
+    String domain = dotenv.env["BASEDOMAIN"] ?? '';
     final negotiateUrl =
-        'https://safe-api-hbgkbrbwaqh0g6ge.eastus2-01.azurewebsites.net/$_hubName/negotiate?negotiateVersion=1';
+        'https://$domain/$_hubName/negotiate?negotiateVersion=1';
     final response = await http.post(
       Uri.parse(negotiateUrl),
       //headers: {'Authorization': 'Bearer $token'},
@@ -33,7 +36,6 @@ class SignalRService {
     if (response.statusCode != 200) {
       throw Exception('Failed to negotiate: ${response.body}');
     }
-
     final negotiateResponse = jsonDecode(response.body);
     _connectionId = negotiateResponse['connectionId'];
 
@@ -43,7 +45,6 @@ class SignalRService {
     //'&access_token=$token';
 
     _channel = WebSocketChannel.connect(Uri.parse(wsUrl));
-
     // 3. Listen for messages
     _channel!.stream.listen(
       (message) {
@@ -54,8 +55,10 @@ class SignalRService {
         if (message.endsWith('\u001e')) {
           message = message.substring(0, message.length - 1);
         }
-
+        final messages = message.split('\u001e').where((m) => m.isNotEmpty);
+        message = messages.first;
         final data = jsonDecode(message);
+
         if (data["type"] != null) {
           if (data['type'] == 1) {
             // Invocation message

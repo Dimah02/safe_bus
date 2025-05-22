@@ -17,6 +17,7 @@ class DriverMapCubit extends Cubit<DriverMapState> {
   MapServices mapServices = MapServices(
     locationService: LocationService(),
     routesService: RoutesService(),
+    updateCameraOnce: 0,
   );
   late GoogleMapController googleMapController;
   final int busRouteId;
@@ -48,25 +49,19 @@ class DriverMapCubit extends Cubit<DriverMapState> {
 
   Future<void> _initializeSignalR() async {
     try {
-      // Connect to SignalR
       await signalRService.connect();
 
-      // Register as driver for this bus route
       await signalRService.invoke('RegisterAsDriver', [busRouteId.toString()]);
 
-      // Start periodic location updates
       _startLocationUpdates();
     } catch (e) {
       emit(DriverMapFailure('Failed to connect to real-time service: $e'));
-      // Implement retry logic here if needed
     }
   }
 
   void _startLocationUpdates() {
-    // Stop any existing timer
     _locationUpdateTimer?.cancel();
 
-    // Send updates every 5 seconds
     _locationUpdateTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
       await _sendCurrentLocation();
     });
