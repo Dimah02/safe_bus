@@ -6,7 +6,8 @@ class AttendanceOverviewScreen extends StatefulWidget {
   const AttendanceOverviewScreen({super.key});
 
   @override
-  State<AttendanceOverviewScreen> createState() => _AttendanceOverviewScreenState();
+  State<AttendanceOverviewScreen> createState() =>
+      _AttendanceOverviewScreenState();
 }
 
 class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
@@ -88,7 +89,8 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
   void _updateStudentStatus(int index, bool isPresent) {
     setState(() {
       studentAttendance[index]['status'] = isPresent ? 'P' : 'A';
-      studentAttendance[index]['statusColor'] = isPresent ? Colors.green : Colors.red;
+      studentAttendance[index]['statusColor'] =
+          isPresent ? Colors.green : Colors.red;
     });
   }
 
@@ -121,7 +123,10 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
             child: Text(
               'Tuesday, 7:30-8:30',
               style: TextStyle(color: Colors.grey[600], fontSize: 16),
@@ -135,17 +140,17 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                   children: [
                     Expanded(
                       child: _buildStatCard(
-                          'Total Students',
-                          '$totalStudents',
-                          Colors.blue.shade200
+                        'Total Students',
+                        '$totalStudents',
+                        Colors.blue.shade200,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: _buildStatCard(
-                          'Total Present',
-                          '$totalPresent',
-                          Colors.green.shade200
+                        'Total Present',
+                        '$totalPresent',
+                        Colors.green.shade200,
                       ),
                     ),
                   ],
@@ -155,17 +160,17 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                   children: [
                     Expanded(
                       child: _buildStatCard(
-                          'Total Absent',
-                          '$totalAbsent',
-                          Colors.red.shade200
+                        'Total Absent',
+                        '$totalAbsent',
+                        Colors.red.shade200,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: _buildStatCard(
-                          'Not Marked',
-                          '$notMarked',
-                          Colors.grey.shade200
+                        'Not Marked',
+                        '$notMarked',
+                        Colors.grey.shade200,
                       ),
                     ),
                   ],
@@ -175,7 +180,10 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
           ),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -189,7 +197,10 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
           ),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search',
@@ -215,13 +226,14 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.grey[200],
-                      child: student['avatar'] != null
-                          ? SvgPicture.asset(
-                        student['avatar'],
-                        width: 40,
-                        height: 40,
-                      )
-                          : Icon(Icons.person, color: Colors.grey[400]),
+                      child:
+                          student['avatar'] != null
+                              ? SvgPicture.asset(
+                                student['avatar'],
+                                width: 40,
+                                height: 40,
+                              )
+                              : Icon(Icons.person, color: Colors.grey[400]),
                     ),
                     title: Text(student['name'] as String),
                     trailing: Row(
@@ -229,16 +241,20 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                       children: [
                         _buildAttendanceButton(
                           'P',
-                          student['status'] == 'P' ? Colors.green : Colors.grey.shade300,
+                          student['status'] == 'P'
+                              ? Colors.green
+                              : Colors.grey.shade300,
                           student['status'] == 'P' ? Colors.white : Colors.grey,
-                              () => _updateStudentStatus(index, true),
+                          () => _updateStudentStatus(index, true),
                         ),
                         const SizedBox(width: 8),
                         _buildAttendanceButton(
                           'A',
-                          student['status'] == 'A' ? Colors.red : Colors.grey.shade300,
+                          student['status'] == 'A'
+                              ? Colors.red
+                              : Colors.grey.shade300,
                           student['status'] == 'A' ? Colors.white : Colors.grey,
-                              () => _updateStudentStatus(index, false),
+                          () => _updateStudentStatus(index, false),
                         ),
                       ],
                     ),
@@ -264,10 +280,7 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-            ),
+            style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
           const SizedBox(height: 4),
           Text(
@@ -284,11 +297,11 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
   }
 
   Widget _buildAttendanceButton(
-      String text,
-      Color backgroundColor,
-      Color textColor,
-      VoidCallback onPressed,
-      ) {
+    String text,
+    Color backgroundColor,
+    Color textColor,
+    VoidCallback onPressed,
+  ) {
     return InkWell(
       onTap: onPressed,
       child: CircleAvatar(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/teacher/models/trip.dart';
+import 'package:safe_bus/features/teacher/Home/data/models/teacher_home/trip.dart';
 
 class TripCard extends StatelessWidget {
   final Trip trip;
@@ -22,7 +22,7 @@ class TripCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          trip.zoneName,
+          trip.zoneName!,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

@@ -6,7 +6,7 @@ import 'package:safe_bus/features/parent/home/presentation/parent_home_screen.da
 import 'package:safe_bus/features/shared/login/presentation/views/login_screen.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/splash_screen.dart';
 import 'package:safe_bus/features/teacher/attendance_overview/attendance_overview_screen.dart';
-import 'package:safe_bus/features/teacher/dashboard/teacher_dashboard_screen.dart';
+import 'package:safe_bus/features/teacher/Home/presentation/views/teacher_dashboard_screen.dart';
 
 //GoRouter.of(context).push(AppRouter.login);
 

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
-import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
-import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
-import 'package:safe_bus/features/teacher/models/trip.dart';
+import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/trip_card.dart';
+import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/recent_trip_item.dart';
+import 'package:safe_bus/features/teacher/Home/data/models/teacher_home/trip.dart';
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});
@@ -29,7 +29,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
   void _loadTripData() {
     final now = DateTime.now();
 
-    _allTrips = [
+    /*_allTrips = [
       Trip(
         id: '1',
         zoneName: 'Zone Three',
@@ -72,7 +72,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
         duration: const Duration(hours: 2, minutes: 30),
         status: TripStatus.completed,
       ),
-    ];
+    ];*/
 
     _currentTrip = _allTrips.firstWhere(
       (trip) => trip.status == TripStatus.current,

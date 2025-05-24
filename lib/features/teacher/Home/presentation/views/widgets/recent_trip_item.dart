@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/trip.dart';
+import '../../../data/models/teacher_home/trip.dart';
 
 class RecentTripItem extends StatelessWidget {
   final Trip trip;
@@ -13,8 +13,8 @@ class RecentTripItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String status = trip.status.name;
-    final Color statusColor = trip.status.color;
+    final String status = trip.status!.name;
+    final Color statusColor = trip.status!.color;
 
     return Container(
       padding: const EdgeInsets.all(15),
@@ -26,7 +26,7 @@ class RecentTripItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            trip.zoneName,
+            trip.zoneName!,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -38,11 +38,11 @@ class RecentTripItem extends StatelessWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              Expanded(child: _buildInfoRow(Icons.tag, trip.tripNumber)),
+              Expanded(child: _buildInfoRow(Icons.tag, trip.tripNumber!)),
               Expanded(
                 child: _buildInfoRow(
                   Icons.route,
-                  '${trip.distance.toInt()} Km',
+                  '${trip.distance!.toInt()} Km',
                 ),
               ),
             ],

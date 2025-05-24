@@ -26,7 +26,7 @@ class Toast {
         children: [
           Icon(icon, color: fontColor),
           SizedBox(width: 12.0),
-          Text(message, style: TextStyle(color: fontColor)),
+          Expanded(child: Text(message, style: TextStyle(color: fontColor))),
         ],
       ),
     );
