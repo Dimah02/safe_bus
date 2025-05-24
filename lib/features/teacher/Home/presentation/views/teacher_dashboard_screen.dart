@@ -8,7 +8,7 @@ import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/trip_c
 import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/recent_trip_item.dart';
 import 'package:safe_bus/features/teacher/Home/data/models/teacher_home/trip.dart';
 
-import '../../../attendance_overview/attendance_overview_screen.dart';
+import '../../../attendance_overview/presentation/views/attendance_overview_screen.dart';
 
 class TeacherDashboardScreen extends StatefulWidget {
   const TeacherDashboardScreen({super.key});
