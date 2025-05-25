@@ -21,9 +21,9 @@ class StudentsAttendanceCubit extends Cubit<StudentsAttendanceState> {
       totalStudents = students.length;
       totalPresent = totalAbsent = notMarked = markedIndividually = 0;
       for (var student in students) {
-        if (student.activeLocations!.first.isPresent()) {
+        if (student.isPresent()) {
           totalPresent++;
-        } else if (student.activeLocations!.first.isPending()) {
+        } else if (student.isPending()) {
           notMarked++;
         } else {
           totalAbsent++;

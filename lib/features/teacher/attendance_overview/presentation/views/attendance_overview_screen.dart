@@ -28,10 +28,10 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
   void _updateStudentStatus(int index, bool isPresent) {
     setState(() {
       if (isPresent) {
-        students[index].activeLocations!.first.rideStatus = 1;
+        students[index].rideStatus = 1;
         students[index].activeLocations!.first.statusColor = Colors.green;
       } else {
-        students[index].activeLocations!.first.rideStatus = 2;
+        students[index].rideStatus = 2;
         students[index].activeLocations!.first.statusColor = Colors.red;
       }
     });
@@ -210,12 +210,10 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                             children: [
                               _buildAttendanceButton(
                                 'P',
-                                student.activeLocations?.first.isPresent() ??
-                                        false
+                                student.isPresent()
                                     ? Colors.green
                                     : Colors.grey.shade300,
-                                student.activeLocations?.first.isPresent() ??
-                                        false
+                                student.isPresent()
                                     ? Colors.white
                                     : Colors.grey,
                                 () => _updateStudentStatus(index, true),
@@ -223,14 +221,10 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                               const SizedBox(width: 8),
                               _buildAttendanceButton(
                                 'A',
-                                student.activeLocations?.first.isAbsent() ??
-                                        false
+                                student.isAbsent()
                                     ? Colors.red
                                     : Colors.grey.shade300,
-                                student.activeLocations?.first.isAbsent() ??
-                                        false
-                                    ? Colors.white
-                                    : Colors.grey,
+                                student.isAbsent() ? Colors.white : Colors.grey,
                                 () => _updateStudentStatus(index, false),
                               ),
                             ],

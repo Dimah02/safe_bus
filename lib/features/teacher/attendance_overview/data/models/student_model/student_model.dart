@@ -6,6 +6,8 @@ class StudentModel {
   int? grade;
   int? gender;
   String? image;
+  int? rideStatus;
+
   List<ActiveLocation>? activeLocations;
 
   StudentModel({
@@ -15,6 +17,7 @@ class StudentModel {
     this.gender,
     this.image,
     this.activeLocations,
+    this.rideStatus,
   });
 
   factory StudentModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +31,7 @@ class StudentModel {
           (json['activeLocations'] as List<dynamic>?)
               ?.map((e) => ActiveLocation.fromJson(e as Map<String, dynamic>))
               .toList(),
+      rideStatus: json['rideStatus'] as int?,
     );
   }
 
@@ -40,5 +44,17 @@ class StudentModel {
       'image': image,
       'activeLocations': activeLocations?.map((e) => e.toJson()).toList(),
     };
+  }
+
+  bool isPending() {
+    return rideStatus == 0;
+  }
+
+  bool isPresent() {
+    return rideStatus == 1;
+  }
+
+  bool isAbsent() {
+    return rideStatus == 2;
   }
 }
