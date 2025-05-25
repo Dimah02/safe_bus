@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+
 class ActiveLocation {
   int? locationId;
   String? name;
@@ -6,6 +10,8 @@ class ActiveLocation {
   double? longitude;
   int? order;
   int? locationType;
+  int? rideStatus;
+  Color statusColor = Colors.grey;
 
   ActiveLocation({
     this.locationId,
@@ -15,6 +21,7 @@ class ActiveLocation {
     this.longitude,
     this.order,
     this.locationType,
+    this.rideStatus,
   });
 
   factory ActiveLocation.fromJson(Map<String, dynamic> json) {
@@ -26,7 +33,20 @@ class ActiveLocation {
       longitude: (json['longitude'] as num?)?.toDouble(),
       order: json['order'] as int?,
       locationType: json['locationType'] as int?,
+      rideStatus: json['rideStatus'] as int?,
     );
+  }
+
+  bool isPending() {
+    return rideStatus == 0;
+  }
+
+  bool isPresent() {
+    return rideStatus == 1;
+  }
+
+  bool isAbsent() {
+    return rideStatus == 2;
   }
 
   Map<String, dynamic> toJson() {

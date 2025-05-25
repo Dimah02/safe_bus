@@ -12,6 +12,7 @@ class HomeRepo {
       int id = int.parse(usreID!);
       var data = await KHTTP.instance.get(endpoint: "BusRoutes/Home/$id");
       TeacherHome homeData = TeacherHome.fromJson(data);
+
       return homeData;
     } catch (e) {
       throw Exception(e.toString());

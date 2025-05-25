@@ -151,7 +151,9 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                     ? TripCard(
                       trip: _currentTrip!,
                       isActive: true, // Keep green styling
-                      onPressed: _navigateToAttendanceScreen,
+                      onPressed:
+                          () =>
+                              _navigateToAttendanceScreen(trip: _currentTrip!),
                     )
                     : const EmptyTripCard(isActive: true),
               ],
@@ -182,7 +184,9 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                     ? TripCard(
                       trip: _upcomingTrip!,
                       isActive: false, // Keep grey styling
-                      onPressed: _navigateToAttendanceScreen,
+                      onPressed:
+                          () =>
+                              _navigateToAttendanceScreen(trip: _upcomingTrip!),
                     )
                     : const EmptyTripCard(isActive: false),
               ],
@@ -225,7 +229,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
               padding: const EdgeInsets.only(bottom: 15.0),
               child: RecentTripItem(
                 trip: trip,
-                onDetailsPressed: _navigateToAttendanceScreen,
+                onDetailsPressed: () => _navigateToAttendanceScreen(trip: trip),
               ),
             );
           }),
@@ -233,10 +237,12 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     );
   }
 
-  void _navigateToAttendanceScreen() {
+  void _navigateToAttendanceScreen({required Trip trip}) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AttendanceOverviewScreen()),
+      MaterialPageRoute(
+        builder: (context) => AttendanceOverviewScreen(trip: trip),
+      ),
     );
   }
 

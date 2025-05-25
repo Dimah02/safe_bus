@@ -6,7 +6,6 @@ class StudentAttendanceDialog extends StatelessWidget {
   final String location;
   final String recordedBy;
   final String remarks;
-  final String currentStatus;
   final Function(bool isPresent) onStatusChanged;
 
   const StudentAttendanceDialog({
@@ -16,7 +15,6 @@ class StudentAttendanceDialog extends StatelessWidget {
     required this.location,
     required this.recordedBy,
     required this.remarks,
-    required this.currentStatus,
     required this.onStatusChanged,
   });
 
@@ -27,7 +25,6 @@ class StudentAttendanceDialog extends StatelessWidget {
     required String location,
     required String recordedBy,
     required String remarks,
-    required String currentStatus,
     required Function(bool isPresent) onStatusChanged,
   }) {
     showDialog(
@@ -39,7 +36,6 @@ class StudentAttendanceDialog extends StatelessWidget {
             location: location,
             recordedBy: recordedBy,
             remarks: remarks,
-            currentStatus: currentStatus,
             onStatusChanged: onStatusChanged,
           ),
     );

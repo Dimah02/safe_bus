@@ -67,6 +67,14 @@ class Trip {
       studentCount: 10,
       duration: Duration(hours: 2),
       status: TripStatus.current,
+      startTime:
+          json['startTime'] != null
+              ? DateTime.parse(json['startTime'])
+              : DateTime.now(),
+      endTime:
+          json['endTime'] != null
+              ? DateTime.parse(json['endTime'])
+              : DateTime.now().add(Duration(hours: 1, minutes: 30)),
     );
   }
 
@@ -93,6 +101,12 @@ class Trip {
     final weekday = _getWeekdayName(date!.weekday);
 
     return '$weekday, $day $month $year';
+  }
+
+  String getFormattedDate2() {
+    final weekday = _getWeekdayName(date!.weekday);
+
+    return '$weekday, ${startTime!.hour}:${startTime!.minute} to ${endTime!.hour}:${endTime!.minute}';
   }
 
   String _getMonthName(int month) {
