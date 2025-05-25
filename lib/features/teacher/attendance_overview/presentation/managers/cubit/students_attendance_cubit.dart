@@ -12,6 +12,7 @@ class StudentsAttendanceCubit extends Cubit<StudentsAttendanceState> {
   int totalAbsent = 0;
   int notMarked = 0;
   int markedIndividually = 0;
+  List<StudentModel> allstudents = [];
 
   Future<void> getStudentsAttendance({required int busRouteId}) async {
     emit(StudentsAttendanceLoading());
@@ -29,7 +30,24 @@ class StudentsAttendanceCubit extends Cubit<StudentsAttendanceState> {
           totalAbsent++;
         }
       }
+      allstudents = students;
       emit(StudentsAttendanceSuccess(students: students));
+    } catch (e) {
+      emit(StudentsAttendanceFailure(errMessage: e.toString()));
+    }
+  }
+
+  Future<void> updateStudentStatus({
+    required int ridId,
+    required int status,
+  }) async {
+    emit(StudentsAttendanceLoading());
+    try {
+      await StudentAttendanceRepo.instance.updateStudentStatus(
+        ridId: ridId,
+        status: status,
+      );
+      emit(StudentUpdateStatusSuccess());
     } catch (e) {
       emit(StudentsAttendanceFailure(errMessage: e.toString()));
     }

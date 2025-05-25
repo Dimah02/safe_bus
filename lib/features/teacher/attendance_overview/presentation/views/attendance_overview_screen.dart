@@ -68,6 +68,11 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
         ),
         body: BlocConsumer<StudentsAttendanceCubit, StudentsAttendanceState>(
           listener: (context, state) {
+            if (state is StudentUpdateStatusSuccess) {
+              BlocProvider.of<StudentsAttendanceCubit>(
+                context,
+              ).getStudentsAttendance(busRouteId: widget.trip.busRouteId!);
+            }
             if (state is StudentsAttendanceSuccess) {
               students = state.students;
             }
@@ -178,6 +183,25 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                       fillColor: Colors.grey.shade200,
                       contentPadding: const EdgeInsets.symmetric(vertical: 0),
                     ),
+                    onTapOutside: (event) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    onChanged: (value) {
+                      if (BlocProvider.of<StudentsAttendanceCubit>(
+                        context,
+                      ).allstudents.isNotEmpty) {
+                        students =
+                            BlocProvider.of<StudentsAttendanceCubit>(context)
+                                .allstudents
+                                .where(
+                                  (item) => item.studentName!
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase()),
+                                )
+                                .toList();
+                        setState(() {});
+                      }
+                    },
                   ),
                 ),
 
@@ -216,7 +240,15 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                                 student.isPresent()
                                     ? Colors.white
                                     : Colors.grey,
-                                () => _updateStudentStatus(index, true),
+                                () async {
+                                  _updateStudentStatus(index, true);
+                                  await BlocProvider.of<
+                                    StudentsAttendanceCubit
+                                  >(context).updateStudentStatus(
+                                    ridId: student.rideId!,
+                                    status: 1,
+                                  );
+                                },
                               ),
                               const SizedBox(width: 8),
                               _buildAttendanceButton(
@@ -225,7 +257,15 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                                     ? Colors.red
                                     : Colors.grey.shade300,
                                 student.isAbsent() ? Colors.white : Colors.grey,
-                                () => _updateStudentStatus(index, false),
+                                () async {
+                                  await BlocProvider.of<
+                                    StudentsAttendanceCubit
+                                  >(context).updateStudentStatus(
+                                    ridId: student.rideId!,
+                                    status: 2,
+                                  );
+                                  _updateStudentStatus(index, false);
+                                },
                               ),
                             ],
                           ),

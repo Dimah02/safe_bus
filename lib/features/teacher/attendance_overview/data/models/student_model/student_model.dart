@@ -2,6 +2,7 @@ import 'active_location.dart';
 
 class StudentModel {
   int? studentId;
+  int? rideId;
   String? studentName;
   int? grade;
   int? gender;
@@ -18,10 +19,12 @@ class StudentModel {
     this.image,
     this.activeLocations,
     this.rideStatus,
+    this.rideId,
   });
 
   factory StudentModel.fromJson(Map<String, dynamic> json) {
     return StudentModel(
+      rideId: json['rideId'] as int?,
       studentId: json['studentId'] as int?,
       studentName: json['studentName'] as String?,
       grade: json['grade'] as int?,

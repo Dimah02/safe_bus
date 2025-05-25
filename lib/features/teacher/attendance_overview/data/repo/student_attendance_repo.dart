@@ -20,4 +20,17 @@ class StudentAttendanceRepo {
       throw Exception(e.toString());
     }
   }
+
+  Future<void> updateStudentStatus({
+    required int ridId,
+    required int status,
+  }) async {
+    try {
+      await KHTTP.instance.patch(
+        endpoint: "Rides/UpdateStatus/$ridId?status=$status",
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

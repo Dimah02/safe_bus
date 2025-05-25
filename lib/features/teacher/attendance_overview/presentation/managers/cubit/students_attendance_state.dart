@@ -18,3 +18,5 @@ final class StudentsAttendanceSuccess extends StudentsAttendanceState {
 
   StudentsAttendanceSuccess({required this.students});
 }
+
+final class StudentUpdateStatusSuccess extends StudentsAttendanceState {}

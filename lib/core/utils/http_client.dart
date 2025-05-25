@@ -111,6 +111,36 @@ class KHTTP {
     }
   }
 
+  Future<dynamic> patch({
+    required String endpoint,
+    dynamic body,
+    String? token,
+  }) async {
+    Map<String, String> headers = {};
+    if (token != null) {
+      headers.addAll({"Authorization": "Bearer $token"});
+    }
+    headers.addAll({"Content-Type": "application/json"});
+    body ??= {};
+
+    String url = _baseURL();
+
+    Response response = await http.patch(
+      Uri.parse('$url$endpoint'),
+      headers: headers,
+      body: json.encode(body),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      return data;
+    } else {
+      throw Exception(
+        'Failed to get data from the API ${response.statusCode} with body ${jsonDecode(response.body)}',
+      );
+    }
+  }
+
   Future<dynamic> delete({required String endpoint, String? token}) async {
     Map<String, String> headers = {};
     if (token != null) {
