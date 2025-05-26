@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:safe_bus/features/driver/dashboard/driver_dashboard_screen.dart';
+import 'package:safe_bus/features/driver/dashboard/presentation/views/driver_dashboard_screen.dart';
 import 'package:safe_bus/features/driver/map/presentation/views/driver_map_screen.dart';
 import 'package:safe_bus/features/parent/map/presentation/views/parent_map_screen.dart';
 import 'package:safe_bus/features/parent/home/presentation/parent_home_screen.dart';
