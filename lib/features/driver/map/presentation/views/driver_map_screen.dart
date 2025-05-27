@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:safe_bus/features/driver/dashboard/data/models/driver_home/trip.dart';
 import 'package:safe_bus/features/driver/map/presentation/views/widgets/children_list_view.dart';
 import 'package:safe_bus/features/driver/map/presentation/views/widgets/custom_driver_map.dart';
 
 class DriverMapScreen extends StatelessWidget {
-  const DriverMapScreen({super.key});
+  const DriverMapScreen({super.key, required this.trip});
+  final Trip trip;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,10 @@ class DriverMapScreen extends StatelessWidget {
                 (context, constraints) => SizedBox(
                   height:
                       constraints.maxHeight - (constraints.maxHeight * 0.25),
-                  child: CustomDriverMap(busRouteId: 1, authToken: "token"),
+                  child: CustomDriverMap(
+                    busRouteId: trip.busRouteId!,
+                    authToken: "token",
+                  ),
                 ),
           ),
 
