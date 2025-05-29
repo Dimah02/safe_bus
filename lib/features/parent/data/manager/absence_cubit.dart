@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:safe_bus/features/parent/data/models/absences_model.dart';
 import 'package:safe_bus/features/parent/data/repo/absence_repository.dart';
 
