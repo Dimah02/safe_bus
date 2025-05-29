@@ -161,21 +161,4 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
       ],
     );
   }
-
-  Widget skeletonLoder() {
-    return Shimmer.fromColors(
-      baseColor: KColors.lightGrey,
-      highlightColor: KColors.lighterGrey,
-      enabled: true,
-      child: Container(
-        height: 100,
-        width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        )
-      )
-    );
-  }
 }
