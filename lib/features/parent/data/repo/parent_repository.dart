@@ -4,6 +4,9 @@ import 'package:safe_bus/features/parent/data/models/students_model.dart';
 import 'package:safe_bus/features/shared/login/data/repo/login_repo.dart';
 
 class ParentRepository {
+  static final ParentRepository instance = ParentRepository._();
+  ParentRepository._();
+  
   Future<Parents> getParent() async {
     final userId = await LoginRepo.instance.getID();
     

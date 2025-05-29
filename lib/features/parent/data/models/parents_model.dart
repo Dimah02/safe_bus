@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:safe_bus/features/parent/data/models/students_model.dart';
 
 List<Parents> parentsFromJson(String str) => List<Parents>.from(json.decode(str).map((x) => Parents.fromJson(x)));
 
@@ -6,7 +7,7 @@ String parentsToJson(List<Parents> data) => json.encode(List<dynamic>.from(data.
 
 class Parents {
     final String emergencyContact;
-    late final dynamic students;
+    late List<Students> students;
     final int userId;
     final String name;
     final String phoneNo;
@@ -35,7 +36,7 @@ class Parents {
 
     factory Parents.fromJson(Map<String, dynamic> json) => Parents(
         emergencyContact: json["emergencyContact"],
-        students: json["students"],
+        students: [],
         userId: json["userId"],
         name: json["name"],
         phoneNo: json["phoneNo"],
@@ -50,7 +51,7 @@ class Parents {
 
     Map<String, dynamic> toJson() => {
         "emergencyContact": emergencyContact,
-        "students": students,
+        "students": students.map((s) => s.toJson()).toList(),
         "userId": userId,
         "name": name,
         "phoneNo": phoneNo,

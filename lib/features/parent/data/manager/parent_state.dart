@@ -7,7 +7,7 @@ final class ParentInitial extends ParentState {}
 
 final class ParentLoading extends ParentState {}
 
-class ParentLoaded extends ParentState {
+final class ParentLoaded extends ParentState {
   final Parents parent;
 
   ParentLoaded(this.parent);

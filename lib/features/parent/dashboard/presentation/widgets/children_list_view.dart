@@ -6,7 +6,9 @@ import 'package:safe_bus/features/parent/data/models/students_model.dart';
 
 class ChildrenList extends StatefulWidget {
   final Parents parent;
-  const ChildrenList({super.key, required this.parent});
+  final Function(Students) onChildSelected;
+  
+  const ChildrenList({super.key, required this.parent, required this.onChildSelected});
 
   @override
   State<ChildrenList> createState() => _ChildrenListState();
@@ -20,6 +22,8 @@ class _ChildrenListState extends State<ChildrenList> {
   void initState() {
     super.initState();
     children = widget.parent.students;
+    selectedChild = children.first;
+    //widget.onChildSelected(selectedChild);
   }
 
   @override
@@ -51,6 +55,7 @@ class _ChildrenListState extends State<ChildrenList> {
               setState(() {
                 selectedChild = currentChild;
               });
+              widget.onChildSelected(currentChild);
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 5),

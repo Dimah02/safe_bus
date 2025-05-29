@@ -25,7 +25,7 @@ class KHTTP {
     } else if (Platform.isWindows) {
       url = "https://localhost:7149/api/";
     }
-    url = "https://safe-api-hbgkbrbwaqh0g6ge.eastus2-01.azurewebsites.net/api/";
+    url = "http://safebus.runasp.net/api/";
     return url;
   }
 

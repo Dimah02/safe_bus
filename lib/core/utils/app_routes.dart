@@ -42,7 +42,7 @@ abstract class AppRouter {
       GoRoute(
         path: parentDashboard,
         builder: (context, state) => BlocProvider(
-          create: (_) => ParentCubit(ParentRepository())..getParent(),
+          create: (_) => ParentCubit(ParentRepository.instance)..getParent(),
           child: const ParentHomeScreen(),
         )
       ),

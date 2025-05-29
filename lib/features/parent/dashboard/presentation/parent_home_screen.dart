@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/core/styles/colors.dart';
-import 'package:safe_bus/features/parent/dashboard/presentation/widgets/absence_report.dart';
-import 'package:safe_bus/features/parent/dashboard/presentation/widgets/absence_switch_button.dart';
+import 'package:safe_bus/features/parent/dashboard/presentation/widgets/absence_button.dart';
 import 'package:safe_bus/features/parent/dashboard/presentation/widgets/bus_schedule.dart';
 import 'package:safe_bus/features/parent/dashboard/presentation/widgets/children_list_view.dart';
+import 'package:safe_bus/features/parent/dashboard/presentation/widgets/send_absence_report.dart';
+import 'package:safe_bus/features/parent/data/manager/absence_cubit.dart';
 import 'package:safe_bus/features/parent/data/manager/parent_cubit.dart';
 import 'package:safe_bus/features/parent/data/models/parents_model.dart';
 import 'package:safe_bus/features/parent/data/models/students_model.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:safe_bus/features/parent/data/repo/absence_repository.dart';
 
 class ParentHomeScreen extends StatefulWidget {
   const ParentHomeScreen({super.key});
@@ -19,40 +20,44 @@ class ParentHomeScreen extends StatefulWidget {
 }
 
 class _ParentHomeScreenState extends State<ParentHomeScreen> {
-  late Parents parent;
-  bool isAbsent = false;
+  Parents? parent;
+  Students? selectedChild;
+  Map<int, bool> absenceMap = {};
 
   @override
   void initState() {
     super.initState();
     BlocProvider.of<ParentCubit>(context).getParent();
   }
-
-  Widget buildBlocWidget() {
-    return BlocBuilder<ParentCubit, ParentState>(
-      builder: (context, state) {
-        if (state is ParentLoaded) {
-          parent = (state).parent;
-          return buildHomePage();
-        } else if (state is ParentError) {
-          return Center(child: Text('Error: ${state.message}'));
-        } else {
-          return skeletonLoder();
-        }
-      },
-    );
-  }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: buildBlocWidget()
+        child: BlocBuilder<ParentCubit, ParentState>(
+          builder: (context, state) {
+            if (state is ParentLoaded) {
+              if(parent == null || selectedChild == null){
+                parent = (state).parent;
+              selectedChild = parent!.students.first;
+              }
+              return buildHomePage();
+            } else if (state is ParentError) {
+              return Center(child: Text('Error: ${state.message}'));
+            } else {
+              return Center(
+                child: CircularProgressIndicator(color: KColors.greenAccent),
+              );
+            }
+          },
+        )
       ),
     );
   }
 
   Widget buildHomePage(){
+    final isAbsent = absenceMap[selectedChild!.studentId] ?? false;
+    
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -61,51 +66,72 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
         ),
         child: Column(
           children: [
-              _buildHeader(),
-              SizedBox(height: KSizes.spaceBtwItems),
-              ChildrenList(parent: parent),
-              SizedBox(height: KSizes.defaultSpace),
-              AbsenceSwitch(
-                  onChanged: (value) {
-                  setState(() {
-                    isAbsent = value;
-                  });
-                },
-              ),
-              SizedBox(height: KSizes.defaultSpace),
-              if (isAbsent)
-                AbsenceReport()
-              else
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Morning Period Bus",
-                      style: TextStyle(
-                        color: KColors.black,
-                        fontSize: KSizes.fonstSizexLg,
-                      ),
-                    ),
-                    SizedBox(height: KSizes.sm),
-                    BusSchedule(),
-                    SizedBox(height: KSizes.spaceBtwItems),
-                    Text(
-                      "Afternoon Period Bus",
-                      style: TextStyle(
-                        color: KColors.black,
-                        fontSize: KSizes.fonstSizexLg,
-                      ),
-                      textAlign: TextAlign.end,
-                    ),
-                    SizedBox(height: KSizes.sm),
-                    BusSchedule(),
-                    SizedBox(height: KSizes.spaceBtwItems),
-                  ],
-                ),
-              ],
+            _buildHeader(),
+            SizedBox(height: KSizes.spaceBtwItems),
+            ChildrenList(
+              parent: parent!,
+              onChildSelected: (child) {
+                setState(() {
+                  selectedChild = child;
+                });
+              },
             ),
-          ),
-        );
+            SizedBox(height: KSizes.defaultSpace),
+            AbsenceButton(
+              student: selectedChild!,
+              onAbsent: (absent){
+                setState(() {
+                  absenceMap[selectedChild!.studentId] = absent;
+                });
+              },
+            ),
+            SizedBox(height: KSizes.defaultSpace),
+            isAbsent
+              ? BlocProvider(
+                create: (_) => AbsenceCubit(AbsenceRepository.instance),
+                child: AbsenceReport(
+                  student: selectedChild!,
+                  onAbsenceCancelled: (absent){
+                    setState(() {
+                      absenceMap[selectedChild!.studentId] = absent;
+                    });
+                  }
+                ),
+              )
+              : Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Morning Period Bus",
+                          style: TextStyle(
+                          color: KColors.black,
+                          fontSize: KSizes.fonstSizexLg,
+                        ),
+                      ),
+                      SizedBox(height: KSizes.sm),
+                      BusSchedule(),
+                      SizedBox(height: KSizes.spaceBtwItems),
+                      Text(
+                        "Afternoon Period Bus",
+                        style: TextStyle(
+                          color: KColors.black,
+                          fontSize: KSizes.fonstSizexLg,
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                      SizedBox(height: KSizes.sm),
+                      BusSchedule(),
+                      SizedBox(height: KSizes.spaceBtwItems),
+                    ]
+                  )
+                ],
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildHeader() {
@@ -124,7 +150,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               ),
             ),
             Text(
-              parent.name,
+              parent?.name ?? '',
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,

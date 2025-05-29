@@ -8,7 +8,7 @@ import 'package:safe_bus/core/utils/service_locator.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
 
 void main() async {
-  //await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: ".env");
   setupServiceLocator();
   runApp(const SafeApp());
 }
