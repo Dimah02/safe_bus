@@ -13,4 +13,8 @@ final class TripStudentsFailure extends TripStudentsState {
   TripStudentsFailure({required this.errMessage});
 }
 
-final class TripStudentsSuccess extends TripStudentsState {}
+final class TripStudentsSuccess extends TripStudentsState {
+  final List<StudentModel> students;
+
+  TripStudentsSuccess({required this.students});
+}

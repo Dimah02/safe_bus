@@ -25,9 +25,7 @@ class SignalRService {
   Future<void> connect() async {
     // 1. Negotiate with server to get connection details
     String? token = await LoginRepo.instance.getToken();
-    String domain = dotenv.env["BASEDOMAIN"] ?? '';
-    final negotiateUrl =
-        'https://$domain/$_hubName/negotiate?negotiateVersion=1';
+    String negotiateUrl = dotenv.env["NEGOTIATE_URL"] ?? '';
     final response = await http.post(
       Uri.parse(negotiateUrl),
       //headers: {'Authorization': 'Bearer $token'},

@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
 import 'package:safe_bus/core/utils/toast.dart';
+import 'package:safe_bus/features/driver/dashboard/data/models/driver_home/trip.dart';
 import 'package:safe_bus/features/driver/dashboard/presentation/manager/cubit/driver_home_cubit.dart';
+import 'package:safe_bus/features/driver/dashboard/presentation/views/widgets/recent_trip_item.dart';
+import 'package:safe_bus/features/driver/dashboard/presentation/views/widgets/trip_card.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
-import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/trip_card.dart';
-import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/recent_trip_item.dart';
-import 'package:safe_bus/features/teacher/Home/data/models/teacher_home/trip.dart';
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});

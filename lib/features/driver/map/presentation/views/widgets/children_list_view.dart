@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/image_strings.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/driver/map/presentation/views/widgets/busroute_listview_header.dart';
+import 'package:safe_bus/features/driver/map/data/models/student_model/student_model.dart';
 
 class ChildrenListView extends StatelessWidget {
-  const ChildrenListView({super.key, required this.controller});
+  const ChildrenListView({
+    super.key,
+    required this.controller,
+    required this.students,
+    required this.header,
+  });
+  final List<StudentModel> students;
   final ScrollController controller;
+  final Widget header;
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +23,10 @@ class ChildrenListView extends StatelessWidget {
         padding: EdgeInsets.all(KSizes.md),
         physics: ClampingScrollPhysics(),
         controller: controller,
-        itemCount: 5 + 1,
+        itemCount: students.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
-            return BusRouteListViewHeader(
-              zoneName: "Bus 01 Zoned Route",
-              cityName: "Amman, Shafa Bdran",
-              time: "1 Hour and 30 Minutes",
-              distance: "9 KM",
-            );
+            return header;
           }
           index--;
           return Padding(
@@ -46,14 +48,19 @@ class ChildrenListView extends StatelessWidget {
                 ),
                 SizedBox(width: KSizes.sm),
                 Text(
-                  "Farah Abdullah",
+                  students[index].studentName ?? '',
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                SizedBox(width: KSizes.lg),
-                Text(
-                  "Present",
-                  style: TextStyle(color: KColors.greenSecondary),
-                ),
+                Spacer(),
+                students[index].rideStatus == 0
+                    ? Text("Pending", style: TextStyle(color: KColors.darkGrey))
+                    : students[index].rideStatus == 1
+                    ? Text(
+                      "Present",
+                      style: TextStyle(color: KColors.greenSecondary),
+                    )
+                    : Text("Absent", style: TextStyle(color: KColors.fadedRed)),
+                SizedBox(width: KSizes.md),
               ],
             ),
           );

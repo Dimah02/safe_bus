@@ -1,4 +1,4 @@
-import 'package:safe_bus/features/teacher/Home/data/models/teacher_home/trip.dart';
+import 'package:safe_bus/features/driver/dashboard/data/models/driver_home/trip.dart';
 
 class DriverHome {
   int? userId;

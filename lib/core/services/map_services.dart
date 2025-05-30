@@ -9,6 +9,8 @@ import 'package:safe_bus/core/services/models/location_info/location_info_model.
 import 'package:safe_bus/core/services/models/location_info/location_model.dart';
 import 'package:safe_bus/core/services/models/routes_model/intermediates.dart';
 import 'package:safe_bus/core/services/routes_service.dart';
+import 'package:safe_bus/core/styles/image_strings.dart';
+import 'package:safe_bus/features/driver/map/data/models/student_model/student_model.dart';
 
 class MapServices {
   final LocationService locationService;
@@ -110,18 +112,39 @@ class MapServices {
 
   void displayMarkers({
     required LatLng currentDestination,
-    required List<LatLng> waypoints,
     required Set<Marker> markers,
-  }) {
+    required List<StudentModel> students,
+  }) async {
+    BitmapDescriptor customIcon;
+    customIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.shoolIcon,
+    );
     Marker destinationMarker = Marker(
       markerId: MarkerId("Destination"),
       position: currentDestination,
+      icon: customIcon,
     );
     markers.clear();
+    for (var student in students) {
+      if (student.activeLocations?.first.latitude == null) {
+        continue;
+      }
 
-    for (int i = 0; i < waypoints.length; i++) {
+      LatLng loc = LatLng(
+        student.activeLocations!.first.latitude!,
+        student.activeLocations!.first.longitude!,
+      );
       markers.add(
-        Marker(markerId: MarkerId("waypoint${i + 1}"), position: waypoints[i]),
+        Marker(
+          markerId: MarkerId("waypoint ${student.studentId}"),
+          position: loc,
+
+          infoWindow: InfoWindow(
+            title: "${student.studentName}",
+            snippet: student.activeLocations?.first.description ?? '',
+          ),
+        ),
       );
     }
     markers.add(destinationMarker);

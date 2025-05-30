@@ -20,6 +20,8 @@ class Trip {
   TripStatus? status;
   final DateTime? startTime;
   final DateTime? endTime;
+  final double schoolLatitude;
+  final double schoolLongitude;
 
   Trip({
     required this.busRouteId,
@@ -38,6 +40,8 @@ class Trip {
     required this.status,
     this.startTime,
     this.endTime,
+    required this.schoolLatitude,
+    required this.schoolLongitude,
   });
 
   factory Trip.fromJson(Map<String, dynamic> json) {
@@ -75,6 +79,8 @@ class Trip {
           json['endTime'] != null
               ? DateTime.parse(json['endTime'])
               : DateTime.now().add(Duration(hours: 1, minutes: 30)),
+      schoolLatitude: json['schoolLatitude'],
+      schoolLongitude: json['schoolLongitude'],
     );
   }
 
