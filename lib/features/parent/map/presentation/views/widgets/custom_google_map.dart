@@ -7,12 +7,7 @@ import 'package:safe_bus/features/parent/map/presentation/managers/cubit/map_cub
 
 class CustomParentMap extends StatefulWidget {
   final int busRouteId;
-  final String authToken;
-  const CustomParentMap({
-    super.key,
-    required this.busRouteId,
-    required this.authToken,
-  });
+  const CustomParentMap({super.key, required this.busRouteId});
 
   @override
   State<CustomParentMap> createState() => _CustomParentMapState();
@@ -24,11 +19,10 @@ class _CustomParentMapState extends State<CustomParentMap> {
   @override
   void initState() {
     super.initState();
-    String baseurl = dotenv.env["BASEURL"] ?? '';
+    String baseurl = dotenv.env["SOCKETURL"] ?? '';
     _signalRService = SignalRService(
       baseUrl: baseurl,
       hubName: 'busTrackingHub',
-      token: widget.authToken,
     );
     _cubit = MapCubit(widget.busRouteId, _signalRService);
   }
@@ -43,19 +37,19 @@ class _CustomParentMapState extends State<CustomParentMap> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _cubit,
-      child: Stack(
-        children: [
-          BlocConsumer<MapCubit, MapState>(
-            listener: (context, state) async {
-              if (state is MapFailure) {
-                print(state.errorMessage);
-              }
-              if (state is MapSuccess) {
-                setState(() {});
-              }
-            },
-            builder: (context, state) {
-              return GoogleMap(
+      child: BlocConsumer<MapCubit, MapState>(
+        listener: (context, state) async {
+          if (state is MapFailure) {
+            print(state.errorMessage);
+          }
+          if (state is MapSuccess) {
+            setState(() {});
+          }
+        },
+        builder: (context, state) {
+          return Stack(
+            children: [
+              GoogleMap(
                 zoomControlsEnabled: false,
                 initialCameraPosition:
                     BlocProvider.of<MapCubit>(context).initialCameraPosition,
@@ -63,10 +57,10 @@ class _CustomParentMapState extends State<CustomParentMap> {
                 myLocationButtonEnabled: false,
                 markers: BlocProvider.of<MapCubit>(context).markers,
                 onMapCreated: BlocProvider.of<MapCubit>(context).onMapCreated,
-              );
-            },
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

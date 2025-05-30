@@ -8,19 +8,28 @@ import 'package:safe_bus/core/services/location_service.dart';
 import 'package:safe_bus/core/services/map_services.dart';
 import 'package:safe_bus/core/services/routes_service.dart';
 import 'package:safe_bus/core/services/signal_r_service.dart';
+import 'package:safe_bus/features/driver/map/data/models/student_model/student_model.dart';
+import 'package:safe_bus/features/driver/map/data/repo/trip_students_repo.dart';
 
 part 'driver_map_state.dart';
 
 class DriverMapCubit extends Cubit<DriverMapState> {
-  DriverMapCubit({required this.busRouteId, required this.signalRService})
-    : super(DriverMapInitial());
+  DriverMapCubit({
+    required this.busRouteId,
+    required this.signalRService,
+    required this.currentDestination,
+  }) : super(DriverMapInitial());
+
   MapServices mapServices = MapServices(
     locationService: LocationService(),
     routesService: RoutesService(),
+    updateCameraOnce: 0,
   );
   late GoogleMapController googleMapController;
   final int busRouteId;
   final SignalRService signalRService;
+  late List<StudentModel> students;
+  LatLng? currentLocation;
 
   Set<Marker> markers = {};
   Set<Polyline> polylines = {};
@@ -28,7 +37,7 @@ class DriverMapCubit extends Cubit<DriverMapState> {
     target: LatLng(0, 0),
     zoom: 0,
   );
-  LatLng currentDestination = LatLng(31.986629415135333, 35.949454055114884);
+  final LatLng currentDestination;
   Timer? _locationUpdateTimer;
   Position? _lastSentPosition;
 
@@ -37,7 +46,13 @@ class DriverMapCubit extends Cubit<DriverMapState> {
     try {
       googleMapController = controller;
       await _initializeSignalR();
-      await updateCurrentLocation();
+
+      emit(StudnetsLoading());
+      students = await TripStudentsRepo.instance.getStudents(
+        busRouteId: busRouteId,
+      );
+      emit(StudnetsSuccess());
+      await updateCurrentLocation(studnets: students);
 
       emit(DriverMapSuccess());
     } catch (e) {
@@ -47,25 +62,19 @@ class DriverMapCubit extends Cubit<DriverMapState> {
 
   Future<void> _initializeSignalR() async {
     try {
-      // Connect to SignalR
       await signalRService.connect();
 
-      // Register as driver for this bus route
       await signalRService.invoke('RegisterAsDriver', [busRouteId.toString()]);
 
-      // Start periodic location updates
       _startLocationUpdates();
     } catch (e) {
       emit(DriverMapFailure('Failed to connect to real-time service: $e'));
-      // Implement retry logic here if needed
     }
   }
 
   void _startLocationUpdates() {
-    // Stop any existing timer
     _locationUpdateTimer?.cancel();
 
-    // Send updates every 5 seconds
     _locationUpdateTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
       await _sendCurrentLocation();
     });
@@ -114,16 +123,23 @@ class DriverMapCubit extends Cubit<DriverMapState> {
     return super.close();
   }
 
-  Future<void> displayRoute() async {
+  Future<void> displayRoute({required List<StudentModel> students}) async {
     emit(DriverMapRouteLoading());
     try {
       List<LatLng> waypoints = [];
-      waypoints.add(LatLng(31.987850868590268, 35.94694823912341));
-      waypoints.add(LatLng(31.988279377767896, 35.945522788491516));
-      waypoints.add(LatLng(31.98695558402733, 35.94400711946519));
-      waypoints.add(LatLng(31.986274549735082, 35.94539648273253));
-      waypoints.add(LatLng(31.984078370999274, 35.944963434365185));
-      waypoints.add(LatLng(31.985057857904316, 35.948869890889995));
+      for (var student in students) {
+        LatLng loc = LatLng(
+          student.activeLocations!.first.latitude!,
+          student.activeLocations!.first.longitude!,
+        );
+        waypoints.add(loc);
+      }
+      // waypoints.add(LatLng(31.987850868590268, 35.94694823912341));
+      // waypoints.add(LatLng(31.988279377767896, 35.945522788491516));
+      // waypoints.add(LatLng(31.98695558402733, 35.94400711946519));
+      // waypoints.add(LatLng(31.986274549735082, 35.94539648273253));
+      // waypoints.add(LatLng(31.984078370999274, 35.944963434365185));
+      // waypoints.add(LatLng(31.985057857904316, 35.948869890889995));
 
       await mapServices
           .getRouteData(
@@ -132,8 +148,8 @@ class DriverMapCubit extends Cubit<DriverMapState> {
           )
           .then((value) {
             mapServices.displayMarkers(
+              students: students,
               currentDestination: currentDestination,
-              waypoints: waypoints,
               markers: markers,
             );
             return mapServices.displayRoute(
@@ -148,12 +164,14 @@ class DriverMapCubit extends Cubit<DriverMapState> {
     }
   }
 
-  Future<void> updateCurrentLocation() async {
+  Future<void> updateCurrentLocation({
+    required List<StudentModel> studnets,
+  }) async {
     try {
       await mapServices.updateCurrentLocation(
         googleMapController: googleMapController,
-        onUpdateCurrentLocation: () {
-          displayRoute();
+        onUpdateCurrentLocation: (location) {
+          displayRoute(students: studnets);
         },
       );
     } on LocationServiceException {

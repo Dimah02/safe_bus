@@ -6,7 +6,6 @@ class StudentAttendanceDialog extends StatelessWidget {
   final String location;
   final String recordedBy;
   final String remarks;
-  final String currentStatus;
   final Function(bool isPresent) onStatusChanged;
 
   const StudentAttendanceDialog({
@@ -16,7 +15,6 @@ class StudentAttendanceDialog extends StatelessWidget {
     required this.location,
     required this.recordedBy,
     required this.remarks,
-    required this.currentStatus,
     required this.onStatusChanged,
   });
 
@@ -27,29 +25,26 @@ class StudentAttendanceDialog extends StatelessWidget {
     required String location,
     required String recordedBy,
     required String remarks,
-    required String currentStatus,
     required Function(bool isPresent) onStatusChanged,
   }) {
     showDialog(
       context: context,
-      builder: (context) => StudentAttendanceDialog(
-        studentName: studentName,
-        timeRecorded: timeRecorded,
-        location: location,
-        recordedBy: recordedBy,
-        remarks: remarks,
-        currentStatus: currentStatus,
-        onStatusChanged: onStatusChanged,
-      ),
+      builder:
+          (context) => StudentAttendanceDialog(
+            studentName: studentName,
+            timeRecorded: timeRecorded,
+            location: location,
+            recordedBy: recordedBy,
+            remarks: remarks,
+            onStatusChanged: onStatusChanged,
+          ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: _buildDialogContent(context),
@@ -96,7 +91,10 @@ class StudentAttendanceDialog extends StatelessWidget {
           ),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 8.0,
+            ),
             child: Column(
               children: [
                 _buildDetailRow('Time of Absence Recorded:', timeRecorded),
@@ -147,7 +145,10 @@ class StudentAttendanceDialog extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    child: const Text('Present', style: TextStyle(fontSize: 16)),
+                    child: const Text(
+                      'Present',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
                 ),
               ],
@@ -166,10 +167,7 @@ class StudentAttendanceDialog extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black87,
-              ),
+              style: const TextStyle(fontSize: 14, color: Colors.black87),
             ),
           ),
           Expanded(

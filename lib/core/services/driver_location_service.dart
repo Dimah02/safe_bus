@@ -14,7 +14,6 @@ class DriverLocationService {
   }) : _signalRService = SignalRService(
          baseUrl: baseUrl,
          hubName: 'busTrackingHub',
-         token: token,
        ),
        _busRouteId = busRouteId;
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
@@ -13,10 +15,12 @@ class MapCubit extends Cubit<MapState> {
   MapServices mapServices = MapServices(
     locationService: LocationService(),
     routesService: RoutesService(),
+    updateCameraOnce: 0,
   );
   final int busRouteId;
   final SignalRService signalRService;
   late GoogleMapController googleMapController;
+  static LatLng? currentLocation;
   Set<Marker> markers = {};
   CameraPosition initialCameraPosition = const CameraPosition(
     target: LatLng(0, 0),
@@ -50,6 +54,7 @@ class MapCubit extends Cubit<MapState> {
       // Listen for location updates
       signalRService.on('LocationUpdated', _handleLocationUpdate);
     } catch (e) {
+      print(e.toString());
       emit(
         MapFailure(errorMessage: 'Failed to connect to real-time service: $e'),
       );
@@ -58,22 +63,48 @@ class MapCubit extends Cubit<MapState> {
   }
 
   void _handleLocationUpdate(dynamic data) {
-    if (data is List && data.isNotEmpty) {
-      final location = data[0] as Map<String, dynamic>;
-      final lat = location['latitude'] as double;
-      final lng = location['longitude'] as double;
-      final bearing = location['bearing'] as double? ?? 0;
+    if (data != null && data.isNotEmpty) {
+      //{busRouteId: 1, latitude: 31.993227496908702, longitude: 35.93561771597489, speed: 15, bearing: 0, timestamp: 2023-11-15T14:30:45.123456}
+      final lat = data['latitude'] as double;
+      final lng = data['longitude'] as double;
+      final bearing = data['bearing'].toDouble() ?? 0;
 
       // Update bus marker
       _updateBusMarker(lat, lng, bearing);
 
       // Move camera to follow bus (optional)
-      googleMapController.animateCamera(
-        CameraUpdate.newLatLng(LatLng(lat, lng)),
-      );
+      if (currentLocation != null) {
+        googleMapController.animateCamera(
+          //CameraUpdate.newLatLng(LatLng(lat, lng)),
+          CameraUpdate.newLatLngBounds(
+            LatLngBounds(
+              southwest: LatLng(
+                min(lat, currentLocation!.latitude),
+                min(lng, currentLocation!.longitude),
+              ),
+              northeast: LatLng(
+                max(lat, currentLocation!.latitude),
+                max(lng, currentLocation!.longitude),
+              ),
+            ),
+
+            36,
+          ),
+        );
+      }
 
       emit(MapSuccess()); // Rebuild UI with new marker
     }
+  }
+
+  void showMyLocation() {
+    CameraPosition cameraPosition = CameraPosition(
+      target: currentLocation!,
+      zoom: 16,
+    );
+    googleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(cameraPosition),
+    );
   }
 
   void _updateBusMarker(double lat, double lng, double bearing) {
@@ -101,7 +132,9 @@ class MapCubit extends Cubit<MapState> {
     try {
       await mapServices.updateCurrentLocation(
         googleMapController: googleMapController,
-        onUpdateCurrentLocation: () {},
+        onUpdateCurrentLocation: (location) {
+          currentLocation = location;
+        },
       );
     } on LocationServiceException {
       // TODO

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/colors.dart';
+import 'package:safe_bus/core/utils/toast.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
-import 'package:safe_bus/features/teacher/dashboard/trip_card.dart';
-import 'package:safe_bus/features/teacher/dashboard/recent_trip_item.dart';
+import 'package:safe_bus/features/teacher/Home/presentation/managers/cubit/teacher_home_cubit.dart';
+import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/trip_card.dart';
+import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/recent_trip_item.dart';
+import 'package:safe_bus/features/teacher/Home/data/models/teacher_home/trip.dart';
 
-import '../attendance_overview/attendance_overview_screen.dart';
-import '../models/trip.dart';
+import '../../../attendance_overview/presentation/views/attendance_overview_screen.dart';
 
 class TeacherDashboardScreen extends StatefulWidget {
   const TeacherDashboardScreen({super.key});
@@ -17,109 +19,76 @@ class TeacherDashboardScreen extends StatefulWidget {
 
 class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
   int _currentIndex = 1;
-  late List<Trip> _allTrips;
-  late Trip? _currentTrip;
-  late Trip? _upcomingTrip;
-  late List<Trip> _recentTrips;
+  Trip? _currentTrip;
+  Trip? _upcomingTrip;
+  List<Trip> _recentTrips = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _loadTripData();
-  }
+  void _loadTripData({
+    required List<Trip> recent,
+    required Trip? current,
+    required Trip? upcoming,
+  }) {
+    _currentTrip = current;
+    _upcomingTrip = upcoming;
+    _recentTrips = recent;
 
-  void _loadTripData() {
-    final now = DateTime.now();
-
-    _allTrips = [
-      Trip(
-        id: '1',
-        zoneName: 'Zone Three',
-        date: now,
-        tripNumber: '129384',
-        distance: 40,
-        studentCount: 10,
-        duration: const Duration(hours: 2, minutes: 30),
-        status: TripStatus.current,
-        startTime: now.add(const Duration(hours: 2, minutes: 30)),
-      ),
-      Trip(
-        id: '2',
-        zoneName: 'Zone Eight',
-        date: now.add(const Duration(hours: 5)),
-        tripNumber: '129385',
-        distance: 35,
-        studentCount: 12,
-        duration: const Duration(hours: 2, minutes: 30),
-        status: TripStatus.upcoming,
-        startTime: now.add(const Duration(hours: 2, minutes: 30)),
-      ),
-      Trip(
-        id: '3',
-        zoneName: 'Zone One',
-        date: DateTime(2024, 2, 6),
-        tripNumber: '129384',
-        distance: 40,
-        studentCount: 10,
-        duration: const Duration(hours: 2, minutes: 30),
-        status: TripStatus.pending,
-      ),
-      Trip(
-        id: '4',
-        zoneName: 'Zone Three',
-        date: DateTime(2024, 2, 6),
-        tripNumber: '129384',
-        distance: 40,
-        studentCount: 10,
-        duration: const Duration(hours: 2, minutes: 30),
-        status: TripStatus.completed,
-      ),
-    ];
-
-    _currentTrip = _allTrips.firstWhere(
-      (trip) => trip.status == TripStatus.current,
-      orElse: () => _allTrips.first,
-    );
-
-    _upcomingTrip = _allTrips.firstWhere(
-      (trip) => trip.status == TripStatus.upcoming,
-    );
-
-    _recentTrips =
-        _allTrips
-            .where(
-              (trip) =>
-                  trip.status == TripStatus.completed ||
-                  trip.status == TripStatus.pending,
-            )
-            .toList();
+    _upcomingTrip?.status = TripStatus.upcoming;
+    _currentTrip?.status = TripStatus.current;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 16.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(),
-                const SizedBox(height: 20),
-                _buildTripCardsSection(),
-                const SizedBox(height: 30),
-                _buildRecentTripsSection(),
-              ],
-            ),
+    return BlocProvider(
+      create: (context) => TeacherHomeCubit()..getHome(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: BlocConsumer<TeacherHomeCubit, TeacherHomeState>(
+            listener: (context, state) {
+              if (state is TeacherHomeFailure) {
+                print(state.errMessage);
+                Toast(
+                  context,
+                ).showToast(message: state.errMessage, color: KColors.fadedRed);
+              }
+              if (state is TeacherHomeSuccess) {
+                _loadTripData(
+                  recent: state.home.recentTrips ?? [],
+                  current:
+                      state.home.currentTrips!.isNotEmpty
+                          ? state.home.currentTrips!.first
+                          : null,
+                  upcoming:
+                      state.home.upcomingTrips!.isNotEmpty
+                          ? state.home.upcomingTrips!.first
+                          : null,
+                );
+              }
+            },
+            builder: (context, state) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 16.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(),
+                      const SizedBox(height: 20),
+                      _buildTripCardsSection(),
+                      const SizedBox(height: 30),
+                      _buildRecentTripsSection(),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
+        bottomNavigationBar: _buildBottomNavBar(),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
@@ -182,7 +151,9 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                     ? TripCard(
                       trip: _currentTrip!,
                       isActive: true, // Keep green styling
-                      onPressed: _navigateToAttendanceScreen,
+                      onPressed:
+                          () =>
+                              _navigateToAttendanceScreen(trip: _currentTrip!),
                     )
                     : const EmptyTripCard(isActive: true),
               ],
@@ -213,7 +184,9 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                     ? TripCard(
                       trip: _upcomingTrip!,
                       isActive: false, // Keep grey styling
-                      onPressed: _navigateToAttendanceScreen,
+                      onPressed:
+                          () =>
+                              _navigateToAttendanceScreen(trip: _upcomingTrip!),
                     )
                     : const EmptyTripCard(isActive: false),
               ],
@@ -256,7 +229,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
               padding: const EdgeInsets.only(bottom: 15.0),
               child: RecentTripItem(
                 trip: trip,
-                onDetailsPressed: _navigateToAttendanceScreen,
+                onDetailsPressed: () => _navigateToAttendanceScreen(trip: trip),
               ),
             );
           }),
@@ -264,10 +237,12 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     );
   }
 
-  void _navigateToAttendanceScreen() {
+  void _navigateToAttendanceScreen({required Trip trip}) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AttendanceOverviewScreen()),
+      MaterialPageRoute(
+        builder: (context) => AttendanceOverviewScreen(trip: trip),
+      ),
     );
   }
 

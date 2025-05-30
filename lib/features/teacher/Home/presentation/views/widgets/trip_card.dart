@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/teacher/models/trip.dart';
+import '../../../data/models/teacher_home/trip.dart';
 
 class TripCard extends StatelessWidget {
   final Trip trip;
@@ -22,7 +22,7 @@ class TripCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          trip.zoneName,
+          trip.zoneName!,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -43,7 +43,7 @@ class TripCard extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor:
                   isActive
-                      ? const Color.fromARGB(48, 255, 255, 255)
+                      ? const Color.fromARGB(88, 255, 255, 255)
                       : Colors.grey.shade300,
               foregroundColor: isActive ? Colors.white : Colors.grey,
               minimumSize: const Size(120, 36),
@@ -67,7 +67,6 @@ class EmptyTripCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: isActive ? KColors.greenSecondary : Colors.grey.shade200,

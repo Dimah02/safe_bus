@@ -11,4 +11,5 @@ class KImage {
   static const schoolImagesvg = "assets/images/background/school.svg";
   static const child = "assets/images/background/child.jpg";
   static const busGif = "assets/images/background/bus.gif";
+  static const shoolIcon = "assets/images/icons/school-2.png";
 }

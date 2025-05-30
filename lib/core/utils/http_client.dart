@@ -27,7 +27,8 @@ class KHTTP {
     } else if (Platform.isWindows) {
       url = "https://localhost:$port/api/";
     }
-    url = "https://safe-api-hbgkbrbwaqh0g6ge.eastus2-01.azurewebsites.net/api/";
+    String baseURL = dotenv.env["BASEURL"] ?? '';
+    url = baseURL;
     return url;
   }
 
@@ -95,6 +96,36 @@ class KHTTP {
     String url = _baseURL();
 
     Response response = await http.put(
+      Uri.parse('$url$endpoint'),
+      headers: headers,
+      body: json.encode(body),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      return data;
+    } else {
+      throw Exception(
+        'Failed to get data from the API ${response.statusCode} with body ${jsonDecode(response.body)}',
+      );
+    }
+  }
+
+  Future<dynamic> patch({
+    required String endpoint,
+    dynamic body,
+    String? token,
+  }) async {
+    Map<String, String> headers = {};
+    if (token != null) {
+      headers.addAll({"Authorization": "Bearer $token"});
+    }
+    headers.addAll({"Content-Type": "application/json"});
+    body ??= {};
+
+    String url = _baseURL();
+
+    Response response = await http.patch(
       Uri.parse('$url$endpoint'),
       headers: headers,
       body: json.encode(body),
