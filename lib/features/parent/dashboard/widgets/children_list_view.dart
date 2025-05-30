@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
+import 'package:safe_bus/features/parent/data/models/parents.dart';
+import 'package:safe_bus/features/parent/data/models/students.dart';
 
 class ChildrenList extends StatefulWidget {
-  const ChildrenList({super.key});
+  
+  final Parents parent;
+  final Function(Students) onChildSelected;
+
+  const ChildrenList({super.key, required this.parent, required this.onChildSelected});
 
   @override
   State<ChildrenList> createState() => _ChildrenListState();
 }
 
 class _ChildrenListState extends State<ChildrenList> {
-  final List<String> children = ["Adam", "Lina", "Hamza"];
-  String selectedChild = "Adam";
+  late List<Students> children;
+  late Students selectedChild;
 
+
+  @override
+  void initState() {
+    super.initState();
+    children = widget.parent.students;
+    selectedChild = children.first;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -42,6 +56,7 @@ class _ChildrenListState extends State<ChildrenList> {
               setState(() {
                 selectedChild = currentChild;
               });
+              widget.onChildSelected(currentChild);
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 5),
@@ -54,7 +69,7 @@ class _ChildrenListState extends State<ChildrenList> {
                         : KColors.greenAccent,
               ),
               child: Text(
-                currentChild,
+                currentChild.studentName,
                 style: TextStyle(
                   color: KColors.white,
                   fontSize: KSizes.fontSizeMd,

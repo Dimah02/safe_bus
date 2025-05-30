@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/core/styles/colors.dart';
-import 'package:safe_bus/features/parent/home/presentation/widgets/absence_report.dart';
-import 'package:safe_bus/features/parent/home/presentation/widgets/absence_switch_button.dart';
-import 'package:safe_bus/features/parent/home/presentation/widgets/bus_schedule.dart';
-import 'package:safe_bus/features/parent/home/presentation/widgets/children_list_view.dart';
+import 'package:safe_bus/features/parent/dashboard/widgets/absence_report.dart';
+import 'package:safe_bus/features/parent/dashboard/widgets/absence_switch_button.dart';
+import 'package:safe_bus/features/parent/dashboard/widgets/bus_schedule.dart';
+import 'package:safe_bus/features/parent/dashboard/widgets/children_list_view.dart';
+import 'package:safe_bus/features/parent/data/manager/parent_cubit.dart';
+import 'package:safe_bus/features/parent/data/models/parents.dart';
+import 'package:safe_bus/features/parent/data/models/students.dart';
 
 class ParentHomeScreen extends StatefulWidget {
   const ParentHomeScreen({super.key});
@@ -14,10 +18,42 @@ class ParentHomeScreen extends StatefulWidget {
 }
 
 class _ParentHomeScreenState extends State<ParentHomeScreen> {
+  Parents? parent;
+  Students? selectedChild;
   bool isAbsent = false;
 
+@override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ParentCubit>(context).getParent();
+  }
+  
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: BlocBuilder<ParentCubit, ParentState>(
+          builder: (context, state) {
+            if (state is ParentLoaded) {
+              if(parent == null || selectedChild == null){
+                parent = (state).parent;
+              selectedChild = parent!.students.first;
+              }
+              return _buildHomePage();
+            } else if (state is ParentError) {
+              return Center(child: Text('Error: ${state.message}'));
+            } else {
+              return Center(
+                child: CircularProgressIndicator(color: KColors.greenAccent),
+              );
+            }
+          },
+        )
+      ),
+    );
+  }
+
+  Widget _buildHomePage() {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -30,7 +66,14 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               children: [
                 _buildHeader(),
                 SizedBox(height: KSizes.spaceBtwItems),
-                ChildrenList(),
+                ChildrenList(
+                  parent: parent!,
+                  onChildSelected: (child) {
+                    setState(() {
+                      selectedChild = child;
+                    });
+                  },
+                ),
                 SizedBox(height: KSizes.defaultSpace),
                 AbsenceSwitch(
                   onChanged: (value) {
@@ -95,8 +138,8 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const Text(
-              'Ahmad',
+            Text(
+              parent?.name ?? '',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
