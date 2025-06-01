@@ -17,7 +17,7 @@ class MapServices {
   final RoutesService routesService;
   int updateCameraOnce; // if 0 yes if one  no
   static bool routeDisplayed = false;
-  LatLng? currentLocation;
+  LatLng? currentLocation, prevLocation;
 
   MapServices({
     required this.locationService,
@@ -28,6 +28,7 @@ class MapServices {
   Future<List<LatLng>> getRouteData({
     required LatLng currentDestination,
     required List<LatLng> waypoints,
+    required Function(String? newDuration, int? newDistance) onRouteDataUpdate,
   }) async {
     LocationInfoModel origin, destination;
     origin = LocationInfoModel(
@@ -65,6 +66,11 @@ class MapServices {
       origin: origin,
       destination: destination,
       intermediates: intermediates,
+    );
+
+    onRouteDataUpdate(
+      routes.routes!.first.duration,
+      routes.routes!.first.distanceMeters,
     );
     PolylinePoints polylinePoints = PolylinePoints();
 

@@ -6,7 +6,7 @@ import 'package:safe_bus/features/driver/map/data/repo/trip_students_repo.dart';
 part 'students_state.dart';
 
 class StudentsCubit extends Cubit<StudentsState> {
-  StudentsCubit({required this.busRouteId}) : super(StudentsLoading()) {
+  StudentsCubit({required this.busRouteId}) : super(StudentsInitial()) {
     _loadStudents();
   }
 
@@ -26,7 +26,7 @@ class StudentsCubit extends Cubit<StudentsState> {
       // Extract additional info if available
       if (_students.isNotEmpty) {}
 
-      emit(StudentsLoaded(_students));
+      emit(StudentsSuccess(_students));
     } catch (e) {
       emit(StudentsError('Failed to load students: $e'));
     }

@@ -25,12 +25,6 @@ final class DriverMapRouteFailure extends DriverMapState {
 
 final class DriverMapRouteSuccess extends DriverMapState {}
 
-final class StudnetsLoading extends DriverMapState {}
+final class UpdatingRouteSuccess extends DriverMapState {}
 
-final class StudnetsFailure extends DriverMapState {
-  final String errMessage;
-
-  StudnetsFailure(this.errMessage);
-}
-
-final class StudnetsSuccess extends DriverMapState {}
+final class CalculationSuccess extends DriverMapState {}
