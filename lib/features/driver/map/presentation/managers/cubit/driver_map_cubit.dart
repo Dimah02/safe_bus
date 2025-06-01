@@ -81,7 +81,9 @@ class DriverMapCubit extends Cubit<DriverMapState> {
         student.activeLocations!.first.latitude!,
         student.activeLocations!.first.longitude!,
       );
-      waypoints.add(loc);
+      if (student.isPending()) {
+        waypoints.add(loc);
+      }
     }
     await mapServices
         .getRouteData(

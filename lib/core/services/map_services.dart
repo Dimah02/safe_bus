@@ -121,15 +121,27 @@ class MapServices {
     required Set<Marker> markers,
     required List<StudentModel> students,
   }) async {
-    BitmapDescriptor customIcon;
-    customIcon = await BitmapDescriptor.asset(
+    BitmapDescriptor schoolIcon, pendingIcon, absentIcon, presentIcon;
+    schoolIcon = await BitmapDescriptor.asset(
       ImageConfiguration(),
       KImage.shoolIcon,
+    );
+    pendingIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.pendingIcon,
+    );
+    absentIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.absentIcon,
+    );
+    presentIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.presentIcon,
     );
     Marker destinationMarker = Marker(
       markerId: MarkerId("Destination"),
       position: currentDestination,
-      icon: customIcon,
+      icon: schoolIcon,
     );
     markers.clear();
     for (var student in students) {
@@ -145,11 +157,16 @@ class MapServices {
         Marker(
           markerId: MarkerId("waypoint ${student.studentId}"),
           position: loc,
-
           infoWindow: InfoWindow(
             title: "${student.studentName}",
             snippet: student.activeLocations?.first.description ?? '',
           ),
+          icon:
+              (student.isAbsent())
+                  ? absentIcon
+                  : (student.isPresent())
+                  ? presentIcon
+                  : pendingIcon,
         ),
       );
     }
