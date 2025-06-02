@@ -20,13 +20,13 @@ class KHTTP {
 
   String _baseURL() {
     String ipAddress = dotenv.env["IP_ADDRESS"] ?? '';
-    String port = dotenv.env["PORT"] ?? '';
-    String url = "https://$ipAddress:$port/api/";
+    String url = "https://$ipAddress:7149/api/";
     if (Platform.isAndroid || Platform.isIOS) {
-      url = "https://$ipAddress:$port/api/";
+      url = "https://$ipAddress:7149/api/";
     } else if (Platform.isWindows) {
-      url = "https://localhost:$port/api/";
+      url = "https://localhost:7149/api/";
     }
+
     String baseURL = dotenv.env["BASEURL"] ?? '';
     url = baseURL;
     return url;
