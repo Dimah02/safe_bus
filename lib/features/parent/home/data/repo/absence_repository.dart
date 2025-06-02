@@ -1,5 +1,5 @@
 import 'package:safe_bus/core/utils/http_client.dart';
-import 'package:safe_bus/features/parent/data/models/absences_model.dart';
+import 'package:safe_bus/features/parent/home/data/models/absences_model.dart';
 
 class AbsenceRepository {
   static final AbsenceRepository instance = AbsenceRepository._();
@@ -14,8 +14,6 @@ class AbsenceRepository {
   }
 
   Future<void> deleteAbsence(int absenceId) async {
-    await KHTTP.instance.delete(
-      endpoint: 'absences/$absenceId',
-    );
+    await KHTTP.instance.delete(endpoint: 'absences/$absenceId');
   }
 }
