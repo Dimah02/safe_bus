@@ -180,7 +180,7 @@ class LoginScreen extends StatelessWidget {
   void _navigateToRolePage(BuildContext context, String role) {
     switch (role.toLowerCase()) {
       case 'parent':
-        GoRouter.of(context).push(AppRouter.parentHomePage);
+        GoRouter.of(context).push(AppRouter.parentDashboard);
         break;
       case 'teacher':
         GoRouter.of(context).push(AppRouter.teacherDashboard);
