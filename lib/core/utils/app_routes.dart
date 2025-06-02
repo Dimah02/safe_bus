@@ -7,6 +7,7 @@ import 'package:safe_bus/features/parent/data/manager/parent_cubit.dart';
 import 'package:safe_bus/features/parent/data/repo/parent_repository.dart';
 import 'package:safe_bus/features/parent/map/presentation/views/parent_map_screen.dart';
 import 'package:safe_bus/features/parent/dashboard/parent_home_screen.dart';
+
 import 'package:safe_bus/features/shared/login/presentation/views/login_screen.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/splash_screen.dart';
 import 'package:safe_bus/features/teacher/Home/presentation/views/teacher_dashboard_screen.dart';

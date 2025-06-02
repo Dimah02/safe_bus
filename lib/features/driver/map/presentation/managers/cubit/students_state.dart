@@ -7,9 +7,9 @@ final class StudentsInitial extends StudentsState {}
 
 class StudentsLoading extends StudentsState {}
 
-class StudentsLoaded extends StudentsState {
+class StudentsSuccess extends StudentsState {
   final List<StudentModel> students;
-  StudentsLoaded(this.students);
+  StudentsSuccess(this.students);
 }
 
 class StudentsError extends StudentsState {
