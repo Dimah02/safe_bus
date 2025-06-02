@@ -9,18 +9,26 @@ import 'package:safe_bus/core/services/models/location_info/location_info_model.
 import 'package:safe_bus/core/services/models/location_info/location_model.dart';
 import 'package:safe_bus/core/services/models/routes_model/intermediates.dart';
 import 'package:safe_bus/core/services/routes_service.dart';
+import 'package:safe_bus/core/styles/image_strings.dart';
+import 'package:safe_bus/features/driver/map/data/models/student_model/student_model.dart';
 
 class MapServices {
   final LocationService locationService;
   final RoutesService routesService;
+  int updateCameraOnce; // if 0 yes if one  no
   static bool routeDisplayed = false;
-  LatLng? currentLocation;
+  LatLng? currentLocation, prevLocation;
 
-  MapServices({required this.locationService, required this.routesService});
+  MapServices({
+    required this.locationService,
+    required this.routesService,
+    this.updateCameraOnce = 1,
+  });
 
   Future<List<LatLng>> getRouteData({
     required LatLng currentDestination,
     required List<LatLng> waypoints,
+    required Function(String? newDuration, int? newDistance) onRouteDataUpdate,
   }) async {
     LocationInfoModel origin, destination;
     origin = LocationInfoModel(
@@ -59,6 +67,11 @@ class MapServices {
       destination: destination,
       intermediates: intermediates,
     );
+
+    onRouteDataUpdate(
+      routes.routes!.first.duration,
+      routes.routes!.first.distanceMeters,
+    );
     PolylinePoints polylinePoints = PolylinePoints();
 
     return polylinePoints
@@ -82,7 +95,7 @@ class MapServices {
     polylines.add(route);
 
     LatLngBounds bounds = getLatLngBound(points);
-    googleMapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 16));
+    googleMapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 24));
     routeDisplayed = true;
   }
 
@@ -105,18 +118,56 @@ class MapServices {
 
   void displayMarkers({
     required LatLng currentDestination,
-    required List<LatLng> waypoints,
     required Set<Marker> markers,
-  }) {
+    required List<StudentModel> students,
+  }) async {
+    BitmapDescriptor schoolIcon, pendingIcon, absentIcon, presentIcon;
+    schoolIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.shoolIcon,
+    );
+    pendingIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.pendingIcon,
+    );
+    absentIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.absentIcon,
+    );
+    presentIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.presentIcon,
+    );
     Marker destinationMarker = Marker(
       markerId: MarkerId("Destination"),
       position: currentDestination,
+      icon: schoolIcon,
     );
     markers.clear();
+    for (var student in students) {
+      if (student.activeLocations?.first.latitude == null) {
+        continue;
+      }
 
-    for (int i = 0; i < waypoints.length; i++) {
+      LatLng loc = LatLng(
+        student.activeLocations!.first.latitude!,
+        student.activeLocations!.first.longitude!,
+      );
       markers.add(
-        Marker(markerId: MarkerId("waypoint${i + 1}"), position: waypoints[i]),
+        Marker(
+          markerId: MarkerId("waypoint ${student.studentId}"),
+          position: loc,
+          infoWindow: InfoWindow(
+            title: "${student.studentName}",
+            snippet: student.activeLocations?.first.description ?? '',
+          ),
+          icon:
+              (student.isAbsent())
+                  ? absentIcon
+                  : (student.isPresent())
+                  ? presentIcon
+                  : pendingIcon,
+        ),
       );
     }
     markers.add(destinationMarker);
@@ -124,25 +175,27 @@ class MapServices {
 
   Future<void> updateCurrentLocation({
     required GoogleMapController googleMapController,
-    required Function onUpdateCurrentLocation,
+    required Function(LatLng? newLocation) onUpdateCurrentLocation,
   }) async {
     locationService.getRealTimeLocationData((locationData) {
       currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
 
-      // Marker currentLocationMarker = Marker(
-      //   markerId: MarkerId("Current Location"),
-      //   position: currentLocation!,
-      // );
-      //markers.add(currentLocationMarker);
       CameraPosition cameraPosition = CameraPosition(
         target: currentLocation!,
         zoom: 16,
       );
 
-      googleMapController.animateCamera(
-        CameraUpdate.newCameraPosition(cameraPosition),
-      );
-      onUpdateCurrentLocation();
+      if (updateCameraOnce == 0) {
+        googleMapController.animateCamera(
+          CameraUpdate.newCameraPosition(cameraPosition),
+        );
+        updateCameraOnce = 2;
+      } else if (updateCameraOnce == 1) {
+        googleMapController.animateCamera(
+          CameraUpdate.newCameraPosition(cameraPosition),
+        );
+      }
+      onUpdateCurrentLocation(currentLocation);
     });
   }
 }

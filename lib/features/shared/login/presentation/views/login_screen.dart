@@ -35,7 +35,6 @@ class LoginScreen extends StatelessWidget {
             Toast(
               context,
             ).showToast(message: state.errMessage, color: KColors.fadedRed);
-            print(state.errMessage);
           }
         },
         builder: (context, state) {

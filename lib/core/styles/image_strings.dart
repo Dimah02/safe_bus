@@ -11,4 +11,8 @@ class KImage {
   static const schoolImagesvg = "assets/images/background/school.svg";
   static const child = "assets/images/background/child.jpg";
   static const busGif = "assets/images/background/bus.gif";
+  static const shoolIcon = "assets/images/icons/school_green.png";
+  static const pendingIcon = "assets/images/icons/location_pending.png";
+  static const absentIcon = "assets/images/icons/location_absent.png";
+  static const presentIcon = "assets/images/icons/location_present.png";
 }

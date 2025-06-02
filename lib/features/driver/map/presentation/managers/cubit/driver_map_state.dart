@@ -24,3 +24,7 @@ final class DriverMapRouteFailure extends DriverMapState {
 }
 
 final class DriverMapRouteSuccess extends DriverMapState {}
+
+final class UpdatingRouteSuccess extends DriverMapState {}
+
+final class CalculationSuccess extends DriverMapState {}

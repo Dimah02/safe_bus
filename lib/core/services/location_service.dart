@@ -29,7 +29,7 @@ class LocationService {
   void getRealTimeLocationData(void Function(LocationData)? onData) async {
     await checkAndRequestLocationService();
     await checkAndRequestLocationPermission();
-    location.changeSettings(distanceFilter: 2);
+    location.changeSettings(distanceFilter: 5);
     location.onLocationChanged.listen(onData);
   }
 
