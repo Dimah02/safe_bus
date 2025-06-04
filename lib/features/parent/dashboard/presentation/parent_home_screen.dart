@@ -91,7 +91,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                 create: (_) => AbsenceCubit(AbsenceRepository.instance),
                 child: AbsenceReport(
                   student: selectedChild!,
-                  onAbsenceCancelled: (absent){
+                  onAbsent: (absent){
                     setState(() {
                       absenceMap[selectedChild!.studentId] = absent;
                     });

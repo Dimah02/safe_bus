@@ -6,65 +6,60 @@ import 'package:safe_bus/core/utils/toast.dart';
 import 'package:safe_bus/features/parent/data/manager/absence_cubit.dart';
 import 'package:safe_bus/features/parent/data/models/absences_model.dart';
 import 'package:safe_bus/features/parent/data/models/students_model.dart';
-import 'package:safe_bus/features/parent/dashboard/presentation/parent_home_screen.dart';
 
 class AbsenceReport extends StatefulWidget {
   final Students student;
-  final Function(bool) onAbsenceCancelled;
+  final Function(bool) onAbsent;
 
-  const AbsenceReport({super.key, required this.student, required this.onAbsenceCancelled});
+  const AbsenceReport({super.key, required this.student, required this.onAbsent});
 
   @override
   State<AbsenceReport> createState() => _AbsenceReportState();
 }
 
 class _AbsenceReportState extends State<AbsenceReport> {
-  late final Absences absence;
+  Absences? absence;
 
   @override
   void initState() {
     super.initState();
-    absence = _createAbsence();
-    _sendAbsence(context);
-  }
-
-  Absences _createAbsence() {
-    return Absences(
-      absenceId: 0,
-      studentId: widget.student.studentId,
-      date: _calculateAbsenceDate(),
-      pickupStatus: false,
-      dropoffStatus: false,
-      student: widget.student,
-    );
-  }
-
-  static DateTime _calculateAbsenceDate() {
-    final now = DateTime.now();
-    return now.isAfter(DateTime(now.year, now.month, now.day, 7, 30))
-        ? now.add(const Duration(days: 1))
-        : now;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _sendAbsence(context);
+    });
   }
 
   Future<void> _sendAbsence(BuildContext context) async {
-    final updatedAbsence = await context.read<AbsenceCubit>().reportAbsence(absence);
-    if (updatedAbsence != null) {
-      setState(() {
-        absence = updatedAbsence;
-      });
-    }
+    final updatedAbsence = await context.read<AbsenceCubit>().reportAbsence(widget.student.studentId);
+    try{
+      if (updatedAbsence != null) {
+        setState(() {
+          absence = updatedAbsence;
+        });
+      } else {
+        Toast(context).showToast(message: "Absence reported.");
+      }
+    } catch (e) {
+    Toast(context).showToast(message: "Error: $e", color: KColors.fadedRed);
+  }
   }
 
   Future<void> _deleteAbsence(BuildContext context) async {
-    await context.read<AbsenceCubit>().deleteAbsence(absence.absenceId);
+    await context.read<AbsenceCubit>().deleteAbsence(absence!.absenceId);
+    widget.onAbsent(false);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (absence == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onAbsent(true);
+      });
+      return const Center(child: CircularProgressIndicator());
+    }
     return BlocConsumer<AbsenceCubit, AbsenceState>(
       listener: (context, state) {
         if (state is AbsenceSent) {
-          Toast(context).showToast(message: "Absence reported successfully");
+          Toast(context).showToast(message: "Absence reported successfully for ${absence!.date}");
         } else if (state is AbsenceDeleted) {
           Toast(context).showToast(message: "Absence report deleted");
           
@@ -96,7 +91,7 @@ class _AbsenceReportState extends State<AbsenceReport> {
               ),
               SizedBox(height: 16),
               Text(
-                "${widget.student.studentName} is reported absent today",
+                "${widget.student.studentName} is reported absent on ${absence!.date}",
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: KSizes.fonstSizeLg,
@@ -121,17 +116,16 @@ class _AbsenceReportState extends State<AbsenceReport> {
                     foregroundColor: KColors.white,
                     side: const BorderSide(color: KColors.fadedRed),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Cancel absence report",
                     style: TextStyle(
-                      color: KColors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: KSizes.fonstSizeSm,
                     ),
                   ),
                   onPressed: () {
                     _deleteAbsence(context);
-                    widget.onAbsenceCancelled(false);
+                    widget.onAbsent(false);
                   }
                 ),
               ),
@@ -146,7 +140,7 @@ class _AbsenceReportState extends State<AbsenceReport> {
                   ),
                   SizedBox(width: 4),
                   Text(
-                    "Cancellation available until 7:30",
+                    "Cancellation available until 7:00",
                     style: TextStyle(
                       color: KColors.lighterGrey,
                       fontSize: KSizes.fonstSizeSm,
