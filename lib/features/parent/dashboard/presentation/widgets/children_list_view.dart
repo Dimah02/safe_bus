@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/parent/home/data/models/parents.dart';
-import 'package:safe_bus/features/parent/home/data/models/students.dart';
+import 'package:safe_bus/features/parent/data/models/parents_model.dart';
+import 'package:safe_bus/features/parent/data/models/students_model.dart';
 
 class ChildrenList extends StatefulWidget {
   final Parents parent;
   final Function(Students) onChildSelected;
-
-  const ChildrenList({
-    super.key,
-    required this.parent,
-    required this.onChildSelected,
-  });
+  
+  const ChildrenList({super.key, required this.parent, required this.onChildSelected});
 
   @override
   State<ChildrenList> createState() => _ChildrenListState();
@@ -27,6 +23,7 @@ class _ChildrenListState extends State<ChildrenList> {
     super.initState();
     children = widget.parent.students;
     selectedChild = children.first;
+    //widget.onChildSelected(selectedChild);
   }
 
   @override

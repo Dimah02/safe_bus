@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:safe_bus/features/parent/home/data/models/parents.dart';
-
-import 'package:safe_bus/features/parent/home/data/repo/parent_repository.dart';
+import 'package:safe_bus/features/parent/data/models/parents_model.dart';
+import 'package:safe_bus/features/parent/data/repo/parent_repository.dart';
 
 part 'parent_state.dart';
 
