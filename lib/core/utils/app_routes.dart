@@ -4,9 +4,9 @@ import 'package:safe_bus/features/driver/dashboard/data/models/driver_home/trip.
 import 'package:safe_bus/features/driver/dashboard/presentation/views/driver_dashboard_screen.dart';
 import 'package:safe_bus/features/driver/map/presentation/views/driver_map_screen.dart';
 
-import 'package:safe_bus/features/parent/dashboard/presentation/parent_home_screen.dart';
-import 'package:safe_bus/features/parent/data/manager/parent_cubit.dart';
-import 'package:safe_bus/features/parent/data/repo/parent_repository.dart';
+import 'package:safe_bus/features/parent/dashboard/presentation/views/parent_home_screen.dart';
+import 'package:safe_bus/features/parent/dashboard/presentation/manager/parent_cubit.dart';
+import 'package:safe_bus/features/parent/dashboard/data/repo/parent_repository.dart';
 import 'package:safe_bus/features/parent/map/presentation/views/parent_map_screen.dart';
 
 import 'package:safe_bus/features/shared/login/presentation/views/login_screen.dart';

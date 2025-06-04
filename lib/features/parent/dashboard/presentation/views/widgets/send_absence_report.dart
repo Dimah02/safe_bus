@@ -3,15 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/utils/toast.dart';
-import 'package:safe_bus/features/parent/data/manager/absence_cubit.dart';
-import 'package:safe_bus/features/parent/data/models/absences_model.dart';
-import 'package:safe_bus/features/parent/data/models/students_model.dart';
+import 'package:safe_bus/features/parent/dashboard/presentation/manager/absence_cubit.dart';
+import 'package:safe_bus/features/parent/dashboard/data/models/absences_model.dart';
+import 'package:safe_bus/features/parent/dashboard/data/models/students_model.dart';
 
 class AbsenceReport extends StatefulWidget {
   final Students student;
   final Function(bool) onAbsent;
 
-  const AbsenceReport({super.key, required this.student, required this.onAbsent});
+  const AbsenceReport({
+    super.key,
+    required this.student,
+    required this.onAbsent,
+  });
 
   @override
   State<AbsenceReport> createState() => _AbsenceReportState();
@@ -29,8 +33,10 @@ class _AbsenceReportState extends State<AbsenceReport> {
   }
 
   Future<void> _sendAbsence(BuildContext context) async {
-    final updatedAbsence = await context.read<AbsenceCubit>().reportAbsence(widget.student.studentId);
-    try{
+    final updatedAbsence = await context.read<AbsenceCubit>().reportAbsence(
+      widget.student.studentId,
+    );
+    try {
       if (updatedAbsence != null) {
         setState(() {
           absence = updatedAbsence;
@@ -39,8 +45,8 @@ class _AbsenceReportState extends State<AbsenceReport> {
         Toast(context).showToast(message: "Absence reported.");
       }
     } catch (e) {
-    Toast(context).showToast(message: "Error: $e", color: KColors.fadedRed);
-  }
+      Toast(context).showToast(message: "Error: $e", color: KColors.fadedRed);
+    }
   }
 
   Future<void> _deleteAbsence(BuildContext context) async {
@@ -59,12 +65,16 @@ class _AbsenceReportState extends State<AbsenceReport> {
     return BlocConsumer<AbsenceCubit, AbsenceState>(
       listener: (context, state) {
         if (state is AbsenceSent) {
-          Toast(context).showToast(message: "Absence reported successfully for ${absence!.date}");
+          Toast(context).showToast(
+            message: "Absence reported successfully for ${absence!.date}",
+          );
         } else if (state is AbsenceDeleted) {
           Toast(context).showToast(message: "Absence report deleted");
-          
         } else if (state is AbsenceError) {
-          Toast(context).showToast(message: "Error: ${state.message}", color: KColors.fadedRed);
+          Toast(context).showToast(
+            message: "Error: ${state.message}",
+            color: KColors.fadedRed,
+          );
         }
       },
       builder: (context, state) {
@@ -126,7 +136,7 @@ class _AbsenceReportState extends State<AbsenceReport> {
                   onPressed: () {
                     _deleteAbsence(context);
                     widget.onAbsent(false);
-                  }
+                  },
                 ),
               ),
               SizedBox(height: KSizes.sm),

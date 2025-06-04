@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:safe_bus/features/parent/data/models/absences_model.dart';
-import 'package:safe_bus/features/parent/data/repo/absence_repository.dart';
+import 'package:safe_bus/features/parent/dashboard/data/models/absences_model.dart';
+import 'package:safe_bus/features/parent/dashboard/data/repo/absence_repository.dart';
 
 part 'absence_state.dart';
 
