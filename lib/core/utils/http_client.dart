@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
@@ -25,7 +24,8 @@ class KHTTP {
     } else if (Platform.isWindows) {
       url = "https://localhost:7149/api/";
     }
-    url = "http://safebus.runasp.net/api/";
+    //url = "http://safebus.runasp.net/api/";
+    url = "https://10.0.2.2:7149/api/";
     return url;
   }
 
@@ -73,6 +73,7 @@ class KHTTP {
       return data;
     } else {
       throw Exception(
+        jsonDecode(response.body)['message'] ??
         'Failed to get data from the API ${response.statusCode} with body ${jsonDecode(response.body)}',
       );
     }

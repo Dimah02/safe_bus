@@ -10,10 +10,10 @@ class AbsenceCubit extends Cubit<AbsenceState> {
 
   AbsenceCubit(this.absenceRepository) : super(AbsenceInitial());
 
-  Future<Absences?> reportAbsence(Absences absence) async {
+  Future<Absences?> reportAbsence(int studentId) async {
     emit(AbsenceInitial());
     try {
-      final reportedAbsence = await absenceRepository.postAbsence(absence);
+      final reportedAbsence = await absenceRepository.postAbsence(studentId);
       emit(AbsenceSent());
       return reportedAbsence;
     } catch (e) {

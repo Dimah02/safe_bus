@@ -5,12 +5,18 @@ class AbsenceRepository {
   static final AbsenceRepository instance = AbsenceRepository._();
   AbsenceRepository._();
 
-  Future<Absences> postAbsence(Absences absence) async {
+  Future<Absences> postAbsence(int studentId) async {
+    try {
     final response = await KHTTP.instance.post(
-      endpoint: 'absences',
-      body: absence.toJson(),
+      endpoint: 'absences/report',
+      body: {"studentId": studentId},
     );
+    print('API response: $response');
     return Absences.fromJson(response);
+  } catch (e) {
+    print('postAbsence error: $e');
+    rethrow;
+  }
   }
 
   Future<void> deleteAbsence(int absenceId) async {
