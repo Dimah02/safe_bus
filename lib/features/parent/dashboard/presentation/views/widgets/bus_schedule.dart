@@ -3,15 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
+import 'package:safe_bus/core/utils/helper_functions.dart';
+import 'package:safe_bus/core/utils/toast.dart';
+import 'package:safe_bus/features/parent/dashboard/data/models/parent_home/student_route.dart';
 
-class BusSchedule extends StatefulWidget {
-  const BusSchedule({super.key});
-
-  @override
-  State<BusSchedule> createState() => _BusScheduleState();
-}
-
-class _BusScheduleState extends State<BusSchedule> {
+class BusSchedule extends StatelessWidget {
+  const BusSchedule({super.key, required this.studentRoute});
+  final StudentRoute studentRoute;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,18 +21,18 @@ class _BusScheduleState extends State<BusSchedule> {
       child: Column(
         children: [
           Text(
-            "Mon, 19 February 2025",
+            studentRoute.getFormattedDate(),
             style: TextStyle(
               color: KColors.black,
               fontWeight: FontWeight.w500,
               fontSize: KSizes.fontSizeMd,
             ),
           ),
-          SizedBox(height: KSizes.defaultSpace),
-          _asistantTeacherInfo(),
-          SizedBox(height: KSizes.defaultSpace),
+          SizedBox(height: KSizes.spaceBtwItems),
+          _asistantTeacherInfo(context: context),
+          SizedBox(height: KSizes.spaceBtwItems),
           _pickupAndDropoffInfo(),
-          SizedBox(height: KSizes.defaultSpace),
+          SizedBox(height: KSizes.spaceBtwItems),
           _busArrivalInfo(),
           SizedBox(height: KSizes.defaultSpace),
           SizedBox(
@@ -60,35 +58,33 @@ class _BusScheduleState extends State<BusSchedule> {
 
   Row _busArrivalInfo() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Spacer(),
         Icon(Icons.bus_alert, size: KSizes.iconMd),
+        SizedBox(width: 8),
         Text(
-          "Bus 01",
+          studentRoute.bus?.busNumber ?? '',
           style: TextStyle(
             color: KColors.black,
             fontWeight: FontWeight.bold,
             fontSize: KSizes.fonstSizeSm,
           ),
         ),
-        Spacer(),
+        SizedBox(width: 8),
         Text(
-          "Arrival at",
+          "Arrival at ",
           style: TextStyle(color: KColors.black, fontSize: KSizes.fonstSizeSm),
         ),
         Text(
-          " 7:30 ",
+          studentRoute.getFormattedEndTime(),
           style: TextStyle(
             color: KColors.greenSecondary,
             fontSize: KSizes.fonstSizeSm,
           ),
         ),
         Text(
-          "to XYZ School",
+          " to the school. ",
           style: TextStyle(color: KColors.black, fontSize: KSizes.fonstSizeSm),
         ),
-        Spacer(),
       ],
     );
   }
@@ -96,32 +92,42 @@ class _BusScheduleState extends State<BusSchedule> {
   Row _pickupAndDropoffInfo() {
     return Row(
       children: [
-        Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(
-            color: KColors.fontBlue,
-            borderRadius: BorderRadius.circular(KSizes.borderRadiusSm),
-          ),
-          child: Icon(
-            Icons.location_on,
-            color: KColors.white,
-            size: KSizes.iconSm,
-          ),
-        ),
-        SizedBox(width: KSizes.xs),
         Expanded(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Pick-up Point",
-                style: TextStyle(
-                  color: KColors.black,
-                  fontSize: KSizes.fonstSizexSm,
-                ),
+              Row(
+                children: [
+                  Container(
+                    height: 20,
+                    width: 20,
+                    decoration: BoxDecoration(
+                      color: KColors.fontBlue,
+                      borderRadius: BorderRadius.circular(
+                        KSizes.borderRadiusSm,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.location_on,
+                      color: KColors.white,
+                      size: KSizes.iconSm,
+                    ),
+                  ),
+                  SizedBox(width: KSizes.sm),
+                  Expanded(
+                    child: Text(
+                      "Pick-up Point",
+                      style: TextStyle(
+                        color: KColors.black,
+                        fontSize: KSizes.fonstSizexSm,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Text(
-                "XYZ Home",
+                "${studentRoute.zoneName} Home",
                 style: TextStyle(
                   color: KColors.black,
                   fontSize: KSizes.fonstSizeSm,
@@ -139,7 +145,7 @@ class _BusScheduleState extends State<BusSchedule> {
             borderRadius: BorderRadius.circular(KSizes.borderRadiusLg),
           ),
           child: Text(
-            "Est. 30 min",
+            studentRoute.getTimeLeftString(),
             style: TextStyle(
               color: KColors.black,
               fontSize: KSizes.fonstSizexSm,
@@ -149,29 +155,43 @@ class _BusScheduleState extends State<BusSchedule> {
         ),
         Text("--"),
         SizedBox(width: 8),
-        Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(
-            color: KColors.greenSecondary,
-            borderRadius: BorderRadius.circular(KSizes.borderRadiusxLg),
-          ),
-          child: Icon(Icons.circle, color: KColors.white, size: KSizes.sm),
-        ),
-        SizedBox(width: KSizes.xs),
+
         Expanded(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Drop-off Point",
-                style: TextStyle(
-                  color: KColors.black,
-                  fontSize: KSizes.fonstSizexSm,
-                ),
+              Row(
+                children: [
+                  Container(
+                    height: 20,
+                    width: 20,
+                    decoration: BoxDecoration(
+                      color: KColors.greenSecondary,
+                      borderRadius: BorderRadius.circular(
+                        KSizes.borderRadiusxLg,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.circle,
+                      color: KColors.white,
+                      size: KSizes.sm,
+                    ),
+                  ),
+                  SizedBox(width: KSizes.sm),
+                  Expanded(
+                    child: Text(
+                      "Drop-off Point",
+                      style: TextStyle(
+                        color: KColors.black,
+                        fontSize: KSizes.fonstSizexSm,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Text(
-                "XYZ School",
+                "${studentRoute.schoolName}",
                 style: TextStyle(
                   color: KColors.black,
                   fontSize: KSizes.fonstSizeSm,
@@ -184,7 +204,7 @@ class _BusScheduleState extends State<BusSchedule> {
     );
   }
 
-  Row _asistantTeacherInfo() {
+  Row _asistantTeacherInfo({required BuildContext context}) {
     return Row(
       children: [
         CircleAvatar(
@@ -198,7 +218,7 @@ class _BusScheduleState extends State<BusSchedule> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Assma Awad",
+              studentRoute.assistantTeacher?.name ?? '',
               style: TextStyle(
                 color: KColors.black,
                 fontWeight: FontWeight.bold,
@@ -222,8 +242,16 @@ class _BusScheduleState extends State<BusSchedule> {
             padding: EdgeInsets.all(0),
             icon: Icon(Icons.messenger),
             color: KColors.white,
-            onPressed: () {
-              //ToDo:
+            onPressed: () async {
+              try {
+                await KHlper.launchSMS(
+                  phoneNumber: studentRoute.assistantTeacher?.phoneNo ?? '',
+                );
+              } catch (e) {
+                Toast(
+                  context,
+                ).showToast(message: e.toString(), color: KColors.fadedRed);
+              }
             },
           ),
         ),
@@ -235,8 +263,16 @@ class _BusScheduleState extends State<BusSchedule> {
             padding: EdgeInsets.all(0),
             icon: Icon(Icons.phone),
             color: KColors.white,
-            onPressed: () {
-              //ToDo:
+            onPressed: () async {
+              try {
+                await KHlper.launchPhoneCall(
+                  phoneNumber: studentRoute.assistantTeacher?.phoneNo ?? '',
+                );
+              } catch (e) {
+                Toast(
+                  context,
+                ).showToast(message: e.toString(), color: KColors.fadedRed);
+              }
             },
           ),
         ),

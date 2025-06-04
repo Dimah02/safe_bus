@@ -1,25 +1,19 @@
 import 'package:safe_bus/core/utils/http_client.dart';
-import 'package:safe_bus/features/parent/dashboard/data/models/absences_model.dart';
 
 class AbsenceRepository {
   static final AbsenceRepository instance = AbsenceRepository._();
   AbsenceRepository._();
 
-  Future<Absences> postAbsence(int studentId) async {
+  Future<void> updateStudentStatus({
+    required int ridId,
+    required int status,
+  }) async {
     try {
-      final response = await KHTTP.instance.post(
-        endpoint: 'absences/report',
-        body: {"studentId": studentId},
+      await KHTTP.instance.patch(
+        endpoint: "Rides/UpdateStatus/$ridId?status=$status",
       );
-      print('API response: $response');
-      return Absences.fromJson(response);
     } catch (e) {
-      print('postAbsence error: $e');
-      rethrow;
+      throw Exception(e.toString());
     }
-  }
-
-  Future<void> deleteAbsence(int absenceId) async {
-    await KHTTP.instance.delete(endpoint: 'absences/$absenceId');
   }
 }

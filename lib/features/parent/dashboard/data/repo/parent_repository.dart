@@ -1,26 +1,22 @@
 import 'package:safe_bus/core/utils/http_client.dart';
-import 'package:safe_bus/features/parent/dashboard/data/models/parents_model.dart';
-import 'package:safe_bus/features/parent/dashboard/data/models/students_model.dart';
+import 'package:safe_bus/features/parent/dashboard/data/models/parent_home/student.dart';
 import 'package:safe_bus/features/shared/login/data/repo/login_repo.dart';
 
 class ParentRepository {
   static final ParentRepository instance = ParentRepository._();
   ParentRepository._();
 
-  Future<Parents> getParent() async {
+  Future<List<Student>> getHomePage() async {
     final userId = await LoginRepo.instance.getID();
 
-    final parentJson = await KHTTP.instance.get(endpoint: 'parents/$userId');
-    Parents parent = Parents.fromJson(parentJson);
+    final data = await KHTTP.instance.get(
+      endpoint: 'parents/$userId/students-with-bus-routes',
+    );
+    List<Student> students = [];
+    for (var student in data) {
+      students.add(Student.fromJson(student));
+    }
 
-    final studentsJson = await KHTTP.instance.get(endpoint: 'students');
-    List<Students> allStudents =
-        (studentsJson as List).map((s) => Students.fromJson(s)).toList();
-    List<Students> children =
-        allStudents.where((s) => s.parentId == parent.userId).toList();
-
-    parent.students = children;
-
-    return parent;
+    return students;
   }
 }
