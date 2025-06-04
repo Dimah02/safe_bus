@@ -1,15 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safe_bus/features/driver/dashboard/driver_dashboard_screen.dart';
+import 'package:safe_bus/features/driver/dashboard/data/models/driver_home/trip.dart';
+import 'package:safe_bus/features/driver/dashboard/presentation/views/driver_dashboard_screen.dart';
 import 'package:safe_bus/features/driver/map/presentation/views/driver_map_screen.dart';
 import 'package:safe_bus/features/parent/dashboard/presentation/parent_home_screen.dart';
 import 'package:safe_bus/features/parent/data/manager/parent_cubit.dart';
 import 'package:safe_bus/features/parent/data/repo/parent_repository.dart';
 import 'package:safe_bus/features/parent/map/presentation/parent_map_screen.dart';
+
 import 'package:safe_bus/features/shared/login/presentation/views/login_screen.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/splash_screen.dart';
-import 'package:safe_bus/features/teacher/attendance_overview/attendance_overview_screen.dart';
-import 'package:safe_bus/features/teacher/dashboard/teacher_dashboard_screen.dart';
+import 'package:safe_bus/features/teacher/Home/presentation/views/teacher_dashboard_screen.dart';
 
 //GoRouter.of(context).push(AppRouter.login);
 
@@ -27,10 +28,6 @@ abstract class AppRouter {
   static final String attendance = "/attendance";
   static final router = GoRouter(
     routes: [
-      GoRoute(
-        path: attendance,
-        builder: (context, state) => const AttendanceOverviewScreen(),
-      ),
       GoRoute(path: splash, builder: (context, state) => const SplashScreen()),
       GoRoute(
         path: login,
@@ -56,7 +53,7 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: driverMap,
-        builder: (context, state) => const DriverMapScreen(),
+        builder: (context, state) => DriverMapScreen(trip: state.extra as Trip),
       ),
       GoRoute(
         path: parentMap,

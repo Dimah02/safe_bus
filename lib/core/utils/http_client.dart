@@ -8,12 +8,13 @@ class KHTTP {
   late IOClient http;
   static final KHTTP instance = KHTTP._constructor();
   KHTTP._constructor() {
-    try {
-      final ioc = HttpClient();
-      ioc.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      http = IOClient(ioc);
-    } catch (_) {}
+    // try {
+    //   final ioc = HttpClient();
+    //   ioc.badCertificateCallback =
+    //       (X509Certificate cert, String host, int port) => true;
+    //   http = IOClient(ioc);
+    // } catch (_) {}
+    http = IOClient();
   }
 
   String _baseURL() {
@@ -24,8 +25,9 @@ class KHTTP {
     } else if (Platform.isWindows) {
       url = "https://localhost:7149/api/";
     }
-    //url = "http://safebus.runasp.net/api/";
-    url = "https://10.0.2.2:7149/api/";
+    String baseURL = dotenv.env["BASEURL"] ?? '';
+    url = baseURL;
+    //url = "https://10.0.2.2:7149/api/";
     return url;
   }
 
@@ -94,6 +96,36 @@ class KHTTP {
     String url = _baseURL();
 
     Response response = await http.put(
+      Uri.parse('$url$endpoint'),
+      headers: headers,
+      body: json.encode(body),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      return data;
+    } else {
+      throw Exception(
+        'Failed to get data from the API ${response.statusCode} with body ${jsonDecode(response.body)}',
+      );
+    }
+  }
+
+  Future<dynamic> patch({
+    required String endpoint,
+    dynamic body,
+    String? token,
+  }) async {
+    Map<String, String> headers = {};
+    if (token != null) {
+      headers.addAll({"Authorization": "Bearer $token"});
+    }
+    headers.addAll({"Content-Type": "application/json"});
+    body ??= {};
+
+    String url = _baseURL();
+
+    Response response = await http.patch(
       Uri.parse('$url$endpoint'),
       headers: headers,
       body: json.encode(body),

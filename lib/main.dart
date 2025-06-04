@@ -4,12 +4,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:safe_bus/core/theme/theme.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
-import 'package:safe_bus/core/utils/service_locator.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
-  setupServiceLocator();
+
   runApp(const SafeApp());
 }
 
