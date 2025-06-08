@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safe_bus/core/styles/colors.dart';
+import 'package:safe_bus/core/utils/app_routes.dart';
 import 'package:safe_bus/core/utils/toast.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
+import 'package:safe_bus/features/shared/login/presentation/views/profile.dart';
+import 'package:safe_bus/features/shared/login/presentation/views/widgets/bottom_nav_bar.dart';
 import 'package:safe_bus/features/teacher/Home/presentation/managers/cubit/teacher_home_cubit.dart';
 import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/trip_card.dart';
 import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/recent_trip_item.dart';
@@ -18,7 +22,7 @@ class TeacherDashboardScreen extends StatefulWidget {
 }
 
 class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   Trip? _currentTrip;
   Trip? _upcomingTrip;
   List<Trip> _recentTrips = [];
@@ -42,52 +46,75 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
       create: (context) => TeacherHomeCubit()..getHome(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          child: BlocConsumer<TeacherHomeCubit, TeacherHomeState>(
-            listener: (context, state) {
-              if (state is TeacherHomeFailure) {
-                print(state.errMessage);
-                Toast(
-                  context,
-                ).showToast(message: state.errMessage, color: KColors.fadedRed);
-              }
-              if (state is TeacherHomeSuccess) {
-                _loadTripData(
-                  recent: state.home.recentTrips ?? [],
-                  current:
-                      state.home.currentTrips!.isNotEmpty
-                          ? state.home.currentTrips!.first
-                          : null,
-                  upcoming:
-                      state.home.upcomingTrips!.isNotEmpty
-                          ? state.home.upcomingTrips!.first
-                          : null,
-                );
-              }
-            },
-            builder: (context, state) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 16.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHeader(),
-                      const SizedBox(height: 20),
-                      _buildTripCardsSection(),
-                      const SizedBox(height: 30),
-                      _buildRecentTripsSection(),
-                    ],
-                  ),
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: SafeArea(
+                child: BlocConsumer<TeacherHomeCubit, TeacherHomeState>(
+                  listener: (context, state) {
+                    if (state is TeacherHomeFailure) {
+                      print(state.errMessage);
+                      Toast(context).showToast(
+                        message: state.errMessage,
+                        color: KColors.fadedRed,
+                      );
+                    }
+                    if (state is TeacherHomeSuccess) {
+                      _loadTripData(
+                        recent: state.home.recentTrips ?? [],
+                        current:
+                            state.home.currentTrips!.isNotEmpty
+                                ? state.home.currentTrips!.first
+                                : null,
+                        upcoming:
+                            state.home.upcomingTrips!.isNotEmpty
+                                ? state.home.upcomingTrips!.first
+                                : null,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 16.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildHeader(),
+                            const SizedBox(height: 20),
+                            _buildTripCardsSection(),
+                            const SizedBox(height: 30),
+                            _buildRecentTripsSection(),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
+              ),
+            ),
+            Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: BottomNavBar(
+                  currentIndex: _currentIndex,
+                  userType: context.read<AuthCubit>().user.userType ?? 0,
+                  onTap: (index) {
+                    setState(() => _currentIndex = index);
+                    if (index == 1) {
+                      context.go(AppRouter.profile);
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
-        bottomNavigationBar: _buildBottomNavBar(),
       ),
     );
   }
@@ -242,50 +269,6 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => AttendanceOverviewScreen(trip: trip),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavBar() {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromARGB(5, 0, 0, 0),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(Icons.view_list, 0),
-          _buildNavItem(Icons.home, 1),
-          _buildNavItem(Icons.more_horiz, 2),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, int index) {
-    final isSelected = _currentIndex == index;
-    return InkWell(
-      onTap: () => setState(() => _currentIndex = index),
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade100 : Colors.transparent,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          icon,
-          color: isSelected ? Colors.blue : Colors.grey,
-          size: 26,
-        ),
       ),
     );
   }

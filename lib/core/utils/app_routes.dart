@@ -9,6 +9,7 @@ import 'package:safe_bus/features/parent/dashboard/presentation/manager/parent_h
 import 'package:safe_bus/features/parent/map/presentation/views/parent_map_screen.dart';
 
 import 'package:safe_bus/features/shared/login/presentation/views/login_screen.dart';
+import 'package:safe_bus/features/shared/login/presentation/views/profile.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/splash_screen.dart';
 import 'package:safe_bus/features/teacher/Home/presentation/views/teacher_dashboard_screen.dart';
 
@@ -19,6 +20,7 @@ abstract class AppRouter {
 
   static final String splash = "/";
   static final String login = "/login";
+  static final String profile = "/profile";
   static final String driverMap = "/driverMap";
   static final String parentMap = "/parentMap";
   static final String parentDashboard = "/parentHomePage";
@@ -35,6 +37,10 @@ abstract class AppRouter {
           final extraData = state.extra as Map<String, dynamic>?;
           return LoginScreen(extraData: extraData);
         },
+      ),
+      GoRoute(
+        path: profile,
+        builder: (context, state) => ProfilePage(),
       ),
       GoRoute(
         path: parentDashboard,
