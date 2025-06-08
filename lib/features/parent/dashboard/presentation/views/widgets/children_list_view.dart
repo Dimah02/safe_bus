@@ -1,40 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/parent/data/models/parents.dart';
-import 'package:safe_bus/features/parent/data/models/students.dart';
+import 'package:safe_bus/features/parent/dashboard/presentation/manager/parent_home_cubit.dart';
 
-class ChildrenList extends StatefulWidget {
-  
-  final Parents parent;
-  final Function(Students) onChildSelected;
-
-  const ChildrenList({super.key, required this.parent, required this.onChildSelected});
-
-  @override
-  State<ChildrenList> createState() => _ChildrenListState();
-}
-
-class _ChildrenListState extends State<ChildrenList> {
-  late List<Students> children;
-  late Students selectedChild;
-
-
-  @override
-  void initState() {
-    super.initState();
-    children = widget.parent.students;
-    selectedChild = children.first;
-  }
-  
+class ChildrenList extends StatelessWidget {
+  const ChildrenList({super.key});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 35,
-
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: children.length + 1,
+        itemCount:
+            BlocProvider.of<ParentHomeCubit>(context).students!.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return Padding(
@@ -50,13 +29,13 @@ class _ChildrenListState extends State<ChildrenList> {
             );
           }
           index--;
-          final currentChild = children[index];
+          final currentChild =
+              BlocProvider.of<ParentHomeCubit>(context).students![index];
           return GestureDetector(
             onTap: () {
-              setState(() {
-                selectedChild = currentChild;
-              });
-              widget.onChildSelected(currentChild);
+              BlocProvider.of<ParentHomeCubit>(
+                context,
+              ).changeIndex(index: index);
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 5),
@@ -64,12 +43,12 @@ class _ChildrenListState extends State<ChildrenList> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 color:
-                    selectedChild == currentChild
+                    BlocProvider.of<ParentHomeCubit>(context).index == index
                         ? KColors.greenPrimary
                         : KColors.greenAccent,
               ),
               child: Text(
-                currentChild.studentName,
+                currentChild.studentName ?? '',
                 style: TextStyle(
                   color: KColors.white,
                   fontSize: KSizes.fontSizeMd,

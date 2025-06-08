@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class KHlper {
   static void showSnackBar(BuildContext context, String message) {
@@ -52,5 +53,23 @@ class KHlper {
 
   static double screenHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
+  }
+
+  static Future<void> launchPhoneCall({required String phoneNumber}) async {
+    final url = 'tel:$phoneNumber';
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  static Future<void> launchSMS({required String phoneNumber}) async {
+    final url = 'sms:$phoneNumber';
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

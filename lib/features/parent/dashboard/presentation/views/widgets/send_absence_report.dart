@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:safe_bus/core/styles/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
+import 'package:safe_bus/core/styles/colors.dart';
+import 'package:safe_bus/features/parent/dashboard/presentation/manager/parent_home_cubit.dart';
 
-class AbsenceReport extends StatefulWidget {
+class AbsenceReport extends StatelessWidget {
   const AbsenceReport({super.key});
 
-  @override
-  State<AbsenceReport> createState() => _AbsenceReportState();
-}
-
-class _AbsenceReportState extends State<AbsenceReport> {
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-
       decoration: BoxDecoration(
         border: Border.all(color: KColors.lighterGrey),
         borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -25,7 +21,6 @@ class _AbsenceReportState extends State<AbsenceReport> {
           SizedBox(
             height: 60,
             width: 60,
-
             child: CircleAvatar(
               backgroundColor: KColors.pinkishRed,
               child: Icon(
@@ -37,17 +32,16 @@ class _AbsenceReportState extends State<AbsenceReport> {
           ),
           SizedBox(height: 16),
           Text(
-            "Adam is reported absent today",
+            "${BlocProvider.of<ParentHomeCubit>(context).student?.studentName ?? ''} is reported absent on ${BlocProvider.of<ParentHomeCubit>(context).student?.rides?.first.studentRoute?.getFormattedDate() ?? ''}",
             style: TextStyle(
               fontWeight: FontWeight.w800,
-
               fontSize: KSizes.fonstSizeLg,
             ),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: KSizes.spaceBtwItems),
           Text(
-            "We hope Adam is doing fine and will be back soon!",
+            "We hope  is doing fine and will be back soon!",
             style: TextStyle(
               color: KColors.lighterGrey,
               fontSize: KSizes.fonstSizeSm,
@@ -58,24 +52,22 @@ class _AbsenceReportState extends State<AbsenceReport> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(KColors.fadedRed),
-                side: WidgetStatePropertyAll(
-                  BorderSide(color: KColors.fadedRed),
-                ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: KColors.fadedRed,
+                foregroundColor: KColors.white,
+                side: const BorderSide(color: KColors.fadedRed),
               ),
-              child: Text(
+              child: const Text(
                 "Cancel absence report",
                 style: TextStyle(
-                  color: KColors.white,
                   fontWeight: FontWeight.w700,
                   fontSize: KSizes.fonstSizeSm,
                 ),
               ),
-              onPressed: () {
-                setState(() {
-                  //ToDo:
-                });
+              onPressed: () async {
+                await BlocProvider.of<ParentHomeCubit>(
+                  context,
+                ).updateStudentStatus(status: 0);
               },
             ),
           ),
@@ -90,7 +82,7 @@ class _AbsenceReportState extends State<AbsenceReport> {
               ),
               SizedBox(width: 4),
               Text(
-                "Cancellation available for 29:51",
+                "Cancellation available before ${BlocProvider.of<ParentHomeCubit>(context).student?.rides?.first.studentRoute?.getFormattedStartTime()}",
                 style: TextStyle(
                   color: KColors.lighterGrey,
                   fontSize: KSizes.fonstSizeSm,

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/parent/data/models/students_model.dart';
+import 'package:safe_bus/features/parent/dashboard/presentation/manager/parent_home_cubit.dart';
 
 class AbsenceButton extends StatelessWidget {
-  final Students student;
-  final Function(bool) onAbsent;
-
-  const AbsenceButton({super.key, required this.student, required this.onAbsent});
+  const AbsenceButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,10 @@ class AbsenceButton extends StatelessWidget {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 24,
+                  ),
                   backgroundColor: KColors.blueAccent,
                   side: const BorderSide(color: KColors.blueAccent),
                 ),
@@ -42,15 +43,17 @@ class AbsenceButton extends StatelessWidget {
                     fontSize: KSizes.fonstSizeSm,
                   ),
                 ),
-                onPressed: () {
-                  onAbsent(true);
+                onPressed: () async {
+                  await BlocProvider.of<ParentHomeCubit>(
+                    context,
+                  ).updateStudentStatus(status: 2);
                 },
               ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 8),
           Text(
-            "Click this if ${student.studentName} will not be attending school today.",
+            "Click this if ${BlocProvider.of<ParentHomeCubit>(context).student?.studentName ?? ''} will not be attending school today.",
             style: TextStyle(color: KColors.grey, fontSize: KSizes.fonstSizeSm),
           ),
         ],
