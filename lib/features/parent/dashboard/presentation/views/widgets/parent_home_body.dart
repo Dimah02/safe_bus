@@ -103,6 +103,7 @@ class ParentHomeBody extends StatelessWidget {
                       ),
                     ],
                   ),
+              SizedBox(height: 30),
             ],
           ),
         ),

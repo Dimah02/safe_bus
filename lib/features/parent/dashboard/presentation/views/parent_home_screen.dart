@@ -8,52 +8,52 @@ import 'package:safe_bus/features/parent/dashboard/presentation/manager/parent_h
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/widgets/bottom_nav_bar.dart';
 
-class ParentHomeScreen extends StatefulWidget {
-  const ParentHomeScreen({super.key});
+class ParentHomeScreen extends StatelessWidget {
+  ParentHomeScreen({super.key});
 
-  @override
-  State<ParentHomeScreen> createState() => _ParentHomeScreenState();
-}
-
-class _ParentHomeScreenState extends State<ParentHomeScreen> {
-  int _currentIndex = 0;
+  int? _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<ParentHomeCubit, ParentHomeState>(
-        builder: (context, state) {
-          if (state is ParentHomeLoading) {
-            return Center(
-              child: CircularProgressIndicator(color: KColors.greenPrimary),
-            );
-          } else if (state is ParentHomeError) {
-            return Center(child: Text('Error: ${state.message}'));
-          } else {
-            return Stack(
-              children: [
-                ParentHomeBody(),
-                Positioned(
-                  bottom: 16,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: BottomNavBar(
-                      currentIndex: _currentIndex,
-                      userType: context.read<AuthCubit>().user.userType ?? 0,
-                      onTap: (index) {
-                        setState(() => _currentIndex = index);
-                        if (index == 1) {
-                          context.go(AppRouter.profile);
-                        }
-                      },
+      body: Stack(
+        children: [
+          SizedBox(
+            height: double.infinity,
+            child: BlocBuilder<ParentHomeCubit, ParentHomeState>(
+              builder: (context, state) {
+                if (state is ParentHomeLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: KColors.greenPrimary,
                     ),
-                  ),
-                ),
-              ],
-            );
-          }
-        },
+                  );
+                } else if (state is ParentHomeError) {
+                  return Center(child: Text('Error: ${state.message}'));
+                } else {
+                  return ParentHomeBody();
+                }
+              },
+            ),
+          ),
+          Positioned(
+            bottom: 16,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: BottomNavBar(
+                currentIndex: _currentIndex!,
+                userType: context.read<AuthCubit>().user.userType ?? 0,
+                onTap: (index) {
+                  _currentIndex = index;
+                  if (index == 1) {
+                    context.go(AppRouter.profile);
+                  }
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

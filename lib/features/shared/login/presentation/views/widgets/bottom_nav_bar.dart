@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
   final int userType;
@@ -14,6 +14,11 @@ class BottomNavBar extends StatelessWidget {
     required this.userType,
   });
 
+  @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,15 +43,21 @@ class BottomNavBar extends StatelessWidget {
             _NavBarIcon(
               icon: Icons.home,
               index: 0,
-              currentIndex: currentIndex,
-              onTap: () => onTap(0),
+              currentIndex: widget.currentIndex,
+              onTap: () {
+                widget.onTap(0);
+                setState(() {});
+              },
             ),
             SizedBox(width: KSizes.spaceBtwItems),
             _NavBarIcon(
               icon: Icons.person,
               index: 1,
-              currentIndex: currentIndex,
-              onTap: () => onTap(1),
+              currentIndex: widget.currentIndex,
+              onTap: () {
+                widget.onTap(1);
+                setState(() {});
+              },
             ),
           ],
         ),
@@ -59,7 +70,7 @@ class _NavBarIcon extends StatelessWidget {
   final IconData icon;
   final int index;
   final int currentIndex;
-  final VoidCallback  onTap;
+  final VoidCallback onTap;
 
   const _NavBarIcon({
     required this.icon,
