@@ -17,9 +17,7 @@ class ParentMapScreen extends StatelessWidget {
       providers: [
         BlocProvider(
           lazy: false,
-          create:
-              (context) =>
-                  MapCubit(studentAndBusRoute.studnetroute.busRouteId!),
+          create: (context) => MapCubit(studentAndBusRoute),
         ),
         BlocProvider(
           lazy: false,
@@ -64,14 +62,23 @@ class _MapView extends StatelessWidget {
       builder:
           (context, constraints) => SizedBox(
             height: constraints.maxHeight - (constraints.maxHeight * 0.25),
-            child: GoogleMap(
-              zoomControlsEnabled: false,
-              initialCameraPosition:
-                  BlocProvider.of<MapCubit>(context).initialCameraPosition,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: false,
-              markers: BlocProvider.of<MapCubit>(context).markers,
-              onMapCreated: BlocProvider.of<MapCubit>(context).onMapCreated,
+            child: BlocBuilder<MapCubit, MapState>(
+              builder: (context, state) {
+                return GoogleMap(
+                  zoomControlsEnabled: false,
+                  initialCameraPosition:
+                      BlocProvider.of<MapCubit>(context).initialCameraPosition,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  markers: BlocProvider.of<MapCubit>(context).markers,
+                  onMapCreated:
+                      (controller) =>
+                          BlocProvider.of<MapCubit>(context).onMapCreated(
+                            controller,
+                            BlocProvider.of<StudentRouteCubit>(context).ride!,
+                          ),
+                );
+              },
             ),
           ),
     );

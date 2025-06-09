@@ -14,3 +14,5 @@ final class MapFailure extends MapState {
 }
 
 final class MapSuccess extends MapState {}
+
+final class LocationsSuccess extends MapState {}
