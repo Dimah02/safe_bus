@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/features/parent/dashboard/data/models/studentandbusroute.dart';
 import 'package:safe_bus/features/parent/map/presentation/managers/cubit/map_cubit.dart';
 import 'package:safe_bus/features/parent/map/presentation/managers/cubit/student_route_cubit.dart';
@@ -33,12 +34,21 @@ class ParentMapScreen extends StatelessWidget {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(),
-        body: Stack(
-          children: [
-            _MapView(),
+        body: BlocBuilder<StudentRouteCubit, StudentRouteState>(
+          builder: (context, state) {
+            if (state is StudentRouteLoading) {
+              return Center(
+                child: CircularProgressIndicator(color: KColors.greenPrimary),
+              );
+            }
+            return Stack(
+              children: [
+                _MapView(),
 
-            CustomeDraggableSheet(studentAndBusRoute: studentAndBusRoute),
-          ],
+                CustomeDraggableSheet(studentAndBusRoute: studentAndBusRoute),
+              ],
+            );
+          },
         ),
       ),
     );

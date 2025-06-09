@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
-import 'package:safe_bus/features/driver/map/presentation/views/widgets/busroute_listview_header.dart';
 import 'package:safe_bus/features/parent/dashboard/data/models/studentandbusroute.dart';
 import 'package:safe_bus/features/parent/map/presentation/managers/cubit/student_route_cubit.dart';
+import 'package:safe_bus/features/parent/map/presentation/views/widgets/busroute_listview_header.dart';
 
 class CustomeDraggableSheet extends StatelessWidget {
   const CustomeDraggableSheet({super.key, required this.studentAndBusRoute});
@@ -40,110 +40,114 @@ class CustomeDraggableSheet extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    "Pick Up Bus Route",
+                    studentAndBusRoute.isMorning
+                        ? "Pick Up Bus Route"
+                        : "Drop Off Bus Route",
                     style: TextStyle(
                       fontSize: KSizes.fonstSizeLg,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   SizedBox(height: 16),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(40, 118, 118, 128),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("From", style: TextStyle(color: KColors.grey)),
-                            Text(
-                              studentAndBusRoute.isMorning
-                                  ? BlocProvider.of<StudentRouteCubit>(
-                                        context,
-                                      ).ride?.pickupLocation?.description ??
-                                      ''
-                                  : studentAndBusRoute
-                                          .studnetroute
-                                          .schoolName ??
-                                      '',
-                              style: TextStyle(color: KColors.grey),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          studentAndBusRoute.studnetroute
-                              .getFormattedStartTime(),
-                          style: TextStyle(color: KColors.grey),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _from(context),
                   SizedBox(height: 24),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: KColors.orangeAccent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("To", style: TextStyle(color: KColors.white)),
-                            Text(
-                              studentAndBusRoute.isMorning
-                                  ? studentAndBusRoute
-                                          .studnetroute
-                                          .schoolName ??
-                                      ''
-                                  : BlocProvider.of<StudentRouteCubit>(
-                                        context,
-                                      ).ride?.dropoffLocation?.description ??
-                                      '',
-                              style: TextStyle(color: KColors.white),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          studentAndBusRoute.studnetroute.getFormattedEndTime(),
-                          style: TextStyle(color: KColors.white),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _to(context),
                   SizedBox(height: 24),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(40, 118, 118, 128),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.info, color: KColors.fontBlue),
-                        SizedBox(width: 16),
-                        Text(
-                          "Report An Issue",
-                          style: TextStyle(color: KColors.grey),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _reportIssueButton(),
                 ],
               );
             },
           ),
         );
       },
+    );
+  }
+
+  Container _reportIssueButton() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(40, 118, 118, 128),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.info, color: KColors.fontBlue),
+          SizedBox(width: 16),
+          Text("Report An Issue", style: TextStyle(color: KColors.grey)),
+        ],
+      ),
+    );
+  }
+
+  Container _to(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: KColors.orangeAccent,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("To", style: TextStyle(color: KColors.white)),
+              Text(
+                studentAndBusRoute.isMorning
+                    ? studentAndBusRoute.studnetroute.schoolName ?? ''
+                    : BlocProvider.of<StudentRouteCubit>(
+                          context,
+                        ).ride?.dropoffLocation?.description ??
+                        '',
+                style: TextStyle(color: KColors.white),
+              ),
+            ],
+          ),
+          Text(
+            studentAndBusRoute.studnetroute.getFormattedEndTime(),
+            style: TextStyle(color: KColors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _from(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(40, 118, 118, 128),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("From", style: TextStyle(color: KColors.grey)),
+              Text(
+                studentAndBusRoute.isMorning
+                    ? BlocProvider.of<StudentRouteCubit>(
+                          context,
+                        ).ride?.pickupLocation?.description ??
+                        ''
+                    : studentAndBusRoute.studnetroute.schoolName ?? '',
+                style: TextStyle(color: KColors.grey),
+              ),
+            ],
+          ),
+          Text(
+            studentAndBusRoute.studnetroute.getFormattedStartTime(),
+            style: TextStyle(color: KColors.grey),
+          ),
+        ],
+      ),
     );
   }
 }
