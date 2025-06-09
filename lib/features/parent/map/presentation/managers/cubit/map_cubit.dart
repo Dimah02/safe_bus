@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
@@ -8,6 +9,7 @@ import 'package:safe_bus/core/services/location_service.dart';
 import 'package:safe_bus/core/services/map_services.dart';
 import 'package:safe_bus/core/services/routes_service.dart';
 import 'package:safe_bus/core/services/signal_r_service.dart';
+import 'package:safe_bus/core/styles/image_strings.dart';
 import 'package:safe_bus/features/parent/dashboard/data/models/studentandbusroute.dart';
 import 'package:safe_bus/features/parent/map/data/models/student_route/ride.dart';
 
@@ -29,7 +31,7 @@ class MapCubit extends Cubit<MapState> {
   final Studentandbusroute studentandbusroute;
   SignalRService? signalRService;
   late GoogleMapController googleMapController;
-  static LatLng? currentLocation;
+  static LatLng? currentLocation, busLocation;
   Set<Marker> markers = {};
   CameraPosition initialCameraPosition = const CameraPosition(
     target: LatLng(0, 0),
@@ -63,6 +65,35 @@ class MapCubit extends Cubit<MapState> {
           ride.schoolLongitude ?? 35.896327963398846,
         );
       }
+      BitmapDescriptor schoolIcon, locationIcon;
+      schoolIcon = await BitmapDescriptor.asset(
+        ImageConfiguration(),
+        KImage.buildingpng35,
+      );
+      locationIcon = await BitmapDescriptor.asset(
+        ImageConfiguration(),
+        KImage.locationpng35,
+      );
+      markers.add(
+        Marker(
+          markerId: MarkerId("Source"),
+          position: currentSource,
+          icon: studentandbusroute.isMorning ? locationIcon : schoolIcon,
+          infoWindow: InfoWindow(
+            title: studentandbusroute.isMorning ? "Home" : "School",
+          ),
+        ),
+      );
+      markers.add(
+        Marker(
+          markerId: MarkerId("Destination"),
+          position: currentDestination,
+          icon: studentandbusroute.isMorning ? schoolIcon : locationIcon,
+          infoWindow: InfoWindow(
+            title: studentandbusroute.isMorning ? "School" : "Home",
+          ),
+        ),
+      );
 
       await _initializeSignalR();
       await updateCurrentLocation();
@@ -96,9 +127,8 @@ class MapCubit extends Cubit<MapState> {
       final lat = data['latitude'].toDouble() as double;
       final lng = data['longitude'].toDouble() as double;
       final bearing = data['bearing'].toDouble() ?? 0;
-
+      busLocation = LatLng(lat, lng);
       _updateBusMarker(lat, lng, bearing);
-
       if (currentLocation != null) {
         googleMapController.animateCamera(
           CameraUpdate.newLatLngBounds(
@@ -106,21 +136,21 @@ class MapCubit extends Cubit<MapState> {
               southwest: LatLng(
                 min(
                   min(currentDestination.latitude, currentSource.latitude),
-                  min(lat, currentLocation!.latitude),
+                  min(lat, currentLocation?.latitude ?? 10000),
                 ),
                 min(
                   min(currentDestination.longitude, currentSource.longitude),
-                  min(lng, currentLocation!.longitude),
+                  min(lng, currentLocation?.longitude ?? 10000),
                 ),
               ),
               northeast: LatLng(
                 max(
                   max(currentDestination.latitude, currentSource.latitude),
-                  max(lat, currentLocation!.latitude),
+                  max(lat, currentLocation?.latitude ?? -10000),
                 ),
                 max(
                   max(currentDestination.longitude, currentSource.longitude),
-                  max(lng, currentLocation!.longitude),
+                  max(lng, currentLocation?.longitude ?? -10000),
                 ),
               ),
             ),
@@ -144,14 +174,20 @@ class MapCubit extends Cubit<MapState> {
     );
   }
 
-  void _updateBusMarker(double lat, double lng, double bearing) {
+  void _updateBusMarker(double lat, double lng, double bearing) async {
     final busMarkerId = MarkerId('bus_location');
+
+    BitmapDescriptor busIcon;
+    busIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(),
+      KImage.buspng35,
+    );
 
     _busMarker = Marker(
       markerId: busMarkerId,
       position: LatLng(lat, lng),
       rotation: bearing,
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      icon: busIcon,
       infoWindow: const InfoWindow(title: 'School Bus'),
     );
 
@@ -171,44 +207,45 @@ class MapCubit extends Cubit<MapState> {
         onUpdateCurrentLocation: (location) {
           currentLocation = location;
           if (currentLocation != null) {
-            markers.add(
-              Marker(markerId: MarkerId("Source"), position: currentSource),
-            );
-            markers.add(
-              Marker(
-                markerId: MarkerId("Destination"),
-                position: currentDestination,
-              ),
-            );
-            emit(MapSuccess());
-
             googleMapController.animateCamera(
               CameraUpdate.newLatLngBounds(
                 LatLngBounds(
                   southwest: LatLng(
                     min(
                       min(currentDestination.latitude, currentSource.latitude),
-                      currentLocation!.latitude,
+                      min(
+                        currentLocation!.latitude,
+                        busLocation?.latitude ?? 10000,
+                      ),
                     ),
                     min(
                       min(
                         currentDestination.longitude,
                         currentSource.longitude,
                       ),
-                      currentLocation!.longitude,
+                      min(
+                        currentLocation!.longitude,
+                        busLocation?.longitude ?? 10000,
+                      ),
                     ),
                   ),
                   northeast: LatLng(
                     max(
                       max(currentDestination.latitude, currentSource.latitude),
-                      currentLocation!.latitude,
+                      max(
+                        currentLocation!.latitude,
+                        busLocation?.latitude ?? -10000,
+                      ),
                     ),
                     max(
                       max(
                         currentDestination.longitude,
                         currentSource.longitude,
                       ),
-                      currentLocation!.longitude,
+                      max(
+                        currentLocation!.longitude,
+                        busLocation?.longitude ?? -10000,
+                      ),
                     ),
                   ),
                 ),

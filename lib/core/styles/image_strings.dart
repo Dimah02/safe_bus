@@ -11,8 +11,26 @@ class KImage {
   static const schoolImagesvg = "assets/images/background/school.svg";
   static const child = "assets/images/background/child.jpg";
   static const busGif = "assets/images/background/bus.gif";
-  static const shoolIcon = "assets/images/icons/school_green.png";
-  static const pendingIcon = "assets/images/icons/location_pending.png";
-  static const absentIcon = "assets/images/icons/location_absent.png";
-  static const presentIcon = "assets/images/icons/location_present.png";
+  static const shoolIcon = "assets/images/icons/schoolblue.png";
+  static const pendingIcon = "assets/images/icons/pending.png";
+  static const absentIcon = "assets/images/icons/absent.png";
+  static const presentIcon = "assets/images/icons/present.png";
+
+  static const buildingSvg48 =
+      "assets/images/icons/parent_map/location_city_48_svg.svg";
+
+  static const buildingPng40 =
+      "assets/images/icons/parent_map/location_city_40_png.png";
+  static const buildingjpg48 =
+      "assets/images/icons/parent_map/location_city_48_jpg.jpg";
+
+  static const buildingpng48 =
+      "assets/images/icons/parent_map/location_city_48_png.png";
+
+  static const buildingpng35 =
+      "assets/images/icons/parent_map/location_city_35_png.png";
+  static const buspng35 =
+      "assets/images/icons/parent_map/directions_bus_35_png.png";
+  static const locationpng35 =
+      "assets/images/icons/parent_map/person_pin_circle_35_png.png";
 }
