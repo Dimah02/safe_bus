@@ -9,6 +9,7 @@ import 'package:safe_bus/features/driver/dashboard/presentation/manager/cubit/dr
 import 'package:safe_bus/features/driver/dashboard/presentation/views/widgets/recent_trip_item.dart';
 import 'package:safe_bus/features/driver/dashboard/presentation/views/widgets/trip_card.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
+import 'package:safe_bus/features/shared/login/presentation/views/widgets/bottom_nav_bar.dart';
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});
@@ -18,7 +19,7 @@ class DriverDashboardScreen extends StatefulWidget {
 }
 
 class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   Trip? _currentTrip;
   Trip? _upcomingTrip;
   List<Trip> _recentTrips = [];
@@ -42,52 +43,75 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
       create: (context) => DriverHomeCubit()..getHome(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          child: BlocConsumer<DriverHomeCubit, DriverHomeState>(
-            listener: (context, state) {
-              if (state is DriverHomeFailure) {
-                print(state.errMessage);
-                Toast(
-                  context,
-                ).showToast(message: state.errMessage, color: KColors.fadedRed);
-              }
-              if (state is DriverHomeSuccess) {
-                _loadTripData(
-                  recent: state.home.recentTrips ?? [],
-                  current:
-                      state.home.currentTrips!.isNotEmpty
-                          ? state.home.currentTrips!.first
-                          : null,
-                  upcoming:
-                      state.home.upcomingTrips!.isNotEmpty
-                          ? state.home.upcomingTrips!.first
-                          : null,
-                );
-              }
-            },
-            builder: (context, state) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 16.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHeader(),
-                      const SizedBox(height: 20),
-                      _buildTripCardsSection(),
-                      const SizedBox(height: 30),
-                      _buildRecentTripsSection(),
-                    ],
-                  ),
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: SafeArea(
+                child: BlocConsumer<DriverHomeCubit, DriverHomeState>(
+                  listener: (context, state) {
+                    if (state is DriverHomeFailure) {
+                      print(state.errMessage);
+                      Toast(context).showToast(
+                        message: state.errMessage,
+                        color: KColors.fadedRed,
+                      );
+                    }
+                    if (state is DriverHomeSuccess) {
+                      _loadTripData(
+                        recent: state.home.recentTrips ?? [],
+                        current:
+                            state.home.currentTrips!.isNotEmpty
+                                ? state.home.currentTrips!.first
+                                : null,
+                        upcoming:
+                            state.home.upcomingTrips!.isNotEmpty
+                                ? state.home.upcomingTrips!.first
+                                : null,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 16.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildHeader(),
+                            const SizedBox(height: 20),
+                            _buildTripCardsSection(),
+                            const SizedBox(height: 30),
+                            _buildRecentTripsSection(),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
+              ),
+            ),
+            Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: BottomNavBar(
+                  currentIndex: _currentIndex,
+                  userType: context.read<AuthCubit>().user.userType ?? 0,
+                  onTap: (index) {
+                    setState(() => _currentIndex = index);
+                    if (index == 1) {
+                      context.go(AppRouter.profile);
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
-        bottomNavigationBar: _buildBottomNavBar(),
       ),
     );
   }
@@ -237,49 +261,5 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
 
   void _navigateToDriverMap({required Trip trip}) {
     GoRouter.of(context).push(AppRouter.driverMap, extra: trip);
-  }
-
-  Widget _buildBottomNavBar() {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromARGB(5, 0, 0, 0),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(Icons.view_list, 0),
-          _buildNavItem(Icons.home, 1),
-          _buildNavItem(Icons.more_horiz, 2),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, int index) {
-    final isSelected = _currentIndex == index;
-    return InkWell(
-      onTap: () => setState(() => _currentIndex = index),
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade100 : Colors.transparent,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          icon,
-          color: isSelected ? Colors.blue : Colors.grey,
-          size: 26,
-        ),
-      ),
-    );
   }
 }
