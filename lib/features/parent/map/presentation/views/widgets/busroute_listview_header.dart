@@ -48,25 +48,30 @@ class BusRouteListViewHeader extends StatelessWidget {
           ),
         ),
         SizedBox(height: KSizes.sm),
-        SizedBox(width: double.infinity, child: Divider(thickness: 1)),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: RouteInfo(
-                title: "ESTIMATED TIME FOR THE TRIP",
-                data: time,
+        if (distance.isNotEmpty)
+          Column(
+            children: [
+              SizedBox(width: double.infinity, child: Divider(thickness: 1)),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: RouteInfo(
+                      title: "ESTIMATED TIME FOR THE TRIP",
+                      data: time,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 60,
+                    width: 50,
+                    child: VerticalDivider(thickness: 1, width: 4),
+                  ),
+                  Expanded(child: RouteInfo(title: "DISTANCE", data: distance)),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 60,
-              width: 50,
-              child: VerticalDivider(thickness: 1, width: 4),
-            ),
-            Expanded(child: RouteInfo(title: "DISTANCE", data: distance)),
-          ],
-        ),
-        SizedBox(width: double.infinity, child: Divider(thickness: 1)),
+              SizedBox(width: double.infinity, child: Divider(thickness: 1)),
+            ],
+          ),
       ],
     );
   }

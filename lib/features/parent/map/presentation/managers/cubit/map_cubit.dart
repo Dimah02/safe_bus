@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:safe_bus/core/services/location_service.dart';
@@ -11,14 +12,20 @@ import 'package:safe_bus/core/services/signal_r_service.dart';
 part 'map_state.dart';
 
 class MapCubit extends Cubit<MapState> {
-  MapCubit(this.busRouteId, this.signalRService) : super(MapInitial());
+  MapCubit(this.busRouteId) : super(MapInitial()) {
+    String baseurl = dotenv.env["SOCKETURL"] ?? '';
+    signalRService = SignalRService(
+      baseUrl: baseurl,
+      hubName: 'busTrackingHub',
+    );
+  }
   MapServices mapServices = MapServices(
     locationService: LocationService(),
     routesService: RoutesService(),
     updateCameraOnce: 0,
   );
   final int busRouteId;
-  final SignalRService signalRService;
+  SignalRService? signalRService;
   late GoogleMapController googleMapController;
   static LatLng? currentLocation;
   Set<Marker> markers = {};
@@ -45,20 +52,15 @@ class MapCubit extends Cubit<MapState> {
 
   Future<void> _initializeSignalR() async {
     try {
-      // Start SignalR connection
-      await signalRService.connect();
+      await signalRService?.connect();
 
-      // Register parent for specific bus route
-      await signalRService.invoke('RegisterAsParent', [busRouteId.toString()]);
+      await signalRService?.invoke('RegisterAsParent', [busRouteId.toString()]);
 
-      // Listen for location updates
-      signalRService.on('LocationUpdated', _handleLocationUpdate);
+      signalRService?.on('LocationUpdated', _handleLocationUpdate);
     } catch (e) {
-      print(e.toString());
       emit(
         MapFailure(errorMessage: 'Failed to connect to real-time service: $e'),
       );
-      // Implement retry logic here if needed
     }
   }
 
@@ -69,13 +71,10 @@ class MapCubit extends Cubit<MapState> {
       final lng = data['longitude'] as double;
       final bearing = data['bearing'].toDouble() ?? 0;
 
-      // Update bus marker
       _updateBusMarker(lat, lng, bearing);
 
-      // Move camera to follow bus (optional)
       if (currentLocation != null) {
         googleMapController.animateCamera(
-          //CameraUpdate.newLatLng(LatLng(lat, lng)),
           CameraUpdate.newLatLngBounds(
             LatLngBounds(
               southwest: LatLng(
@@ -93,7 +92,7 @@ class MapCubit extends Cubit<MapState> {
         );
       }
 
-      emit(MapSuccess()); // Rebuild UI with new marker
+      emit(MapSuccess());
     }
   }
 
@@ -123,8 +122,7 @@ class MapCubit extends Cubit<MapState> {
 
   @override
   Future<void> close() {
-    // Clean up SignalR connection when cubit is closed
-    signalRService.disconnect();
+    signalRService?.disconnect();
     return super.close();
   }
 

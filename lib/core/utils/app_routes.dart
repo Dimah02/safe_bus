@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:safe_bus/features/driver/dashboard/data/models/driver_home/trip.dart';
 import 'package:safe_bus/features/driver/dashboard/presentation/views/driver_dashboard_screen.dart';
 import 'package:safe_bus/features/driver/map/presentation/views/driver_map_screen.dart';
+import 'package:safe_bus/features/parent/dashboard/data/models/studentandbusroute.dart';
 
 import 'package:safe_bus/features/parent/dashboard/presentation/views/parent_home_screen.dart';
 import 'package:safe_bus/features/parent/dashboard/presentation/manager/parent_home_cubit.dart';
@@ -58,7 +59,10 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: parentMap,
-        builder: (context, state) => const ParentMapScreen(),
+        builder:
+            (context, state) => ParentMapScreen(
+              studentAndBusRoute: state.extra as Studentandbusroute,
+            ),
       ),
     ],
   );

@@ -5,11 +5,11 @@ import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
 import 'package:safe_bus/core/utils/helper_functions.dart';
 import 'package:safe_bus/core/utils/toast.dart';
-import 'package:safe_bus/features/parent/dashboard/data/models/parent_home/student_route.dart';
+import 'package:safe_bus/features/parent/dashboard/data/models/studentandbusroute.dart';
 
 class BusSchedule extends StatelessWidget {
-  const BusSchedule({super.key, required this.studentRoute});
-  final StudentRoute studentRoute;
+  const BusSchedule({super.key, required this.studentAndBusRoute});
+  final Studentandbusroute studentAndBusRoute;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +21,7 @@ class BusSchedule extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            studentRoute.getFormattedDate(),
+            studentAndBusRoute.studnetroute.getFormattedDate(),
             style: TextStyle(
               color: KColors.black,
               fontWeight: FontWeight.w500,
@@ -47,7 +47,9 @@ class BusSchedule extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                GoRouter.of(context).push(AppRouter.parentMap);
+                GoRouter.of(
+                  context,
+                ).push(AppRouter.parentMap, extra: studentAndBusRoute);
               },
             ),
           ),
@@ -62,7 +64,7 @@ class BusSchedule extends StatelessWidget {
         Icon(Icons.bus_alert, size: KSizes.iconMd),
         SizedBox(width: 8),
         Text(
-          studentRoute.bus?.busNumber ?? '',
+          studentAndBusRoute.studnetroute.bus?.busNumber ?? '',
           style: TextStyle(
             color: KColors.black,
             fontWeight: FontWeight.bold,
@@ -75,7 +77,7 @@ class BusSchedule extends StatelessWidget {
           style: TextStyle(color: KColors.black, fontSize: KSizes.fonstSizeSm),
         ),
         Text(
-          studentRoute.getFormattedEndTime(),
+          studentAndBusRoute.studnetroute.getFormattedEndTime(),
           style: TextStyle(
             color: KColors.greenSecondary,
             fontSize: KSizes.fonstSizeSm,
@@ -127,7 +129,9 @@ class BusSchedule extends StatelessWidget {
                 ],
               ),
               Text(
-                "${studentRoute.zoneName} Home",
+                studentAndBusRoute.isMorning
+                    ? "${studentAndBusRoute.studnetroute.zoneName} Home"
+                    : "${studentAndBusRoute.studnetroute.schoolName}",
                 style: TextStyle(
                   color: KColors.black,
                   fontSize: KSizes.fonstSizeSm,
@@ -145,7 +149,7 @@ class BusSchedule extends StatelessWidget {
             borderRadius: BorderRadius.circular(KSizes.borderRadiusLg),
           ),
           child: Text(
-            studentRoute.getTimeLeftString(),
+            studentAndBusRoute.studnetroute.getTimeLeftString(),
             style: TextStyle(
               color: KColors.black,
               fontSize: KSizes.fonstSizexSm,
@@ -191,7 +195,9 @@ class BusSchedule extends StatelessWidget {
                 ],
               ),
               Text(
-                "${studentRoute.schoolName}",
+                studentAndBusRoute.isMorning
+                    ? "${studentAndBusRoute.studnetroute.schoolName}"
+                    : "${studentAndBusRoute.studnetroute.zoneName} Home",
                 style: TextStyle(
                   color: KColors.black,
                   fontSize: KSizes.fonstSizeSm,
@@ -218,7 +224,7 @@ class BusSchedule extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              studentRoute.assistantTeacher?.name ?? '',
+              studentAndBusRoute.studnetroute.assistantTeacher?.name ?? '',
               style: TextStyle(
                 color: KColors.black,
                 fontWeight: FontWeight.bold,
@@ -245,7 +251,12 @@ class BusSchedule extends StatelessWidget {
             onPressed: () async {
               try {
                 await KHlper.launchSMS(
-                  phoneNumber: studentRoute.assistantTeacher?.phoneNo ?? '',
+                  phoneNumber:
+                      studentAndBusRoute
+                          .studnetroute
+                          .assistantTeacher
+                          ?.phoneNo ??
+                      '',
                 );
               } catch (e) {
                 Toast(
@@ -266,7 +277,12 @@ class BusSchedule extends StatelessWidget {
             onPressed: () async {
               try {
                 await KHlper.launchPhoneCall(
-                  phoneNumber: studentRoute.assistantTeacher?.phoneNo ?? '',
+                  phoneNumber:
+                      studentAndBusRoute
+                          .studnetroute
+                          .assistantTeacher
+                          ?.phoneNo ??
+                      '',
                 );
               } catch (e) {
                 Toast(

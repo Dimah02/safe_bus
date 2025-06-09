@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
+import 'package:safe_bus/features/parent/dashboard/data/models/studentandbusroute.dart';
 import 'package:safe_bus/features/parent/dashboard/presentation/manager/parent_home_cubit.dart';
 import 'package:safe_bus/features/parent/dashboard/presentation/views/widgets/absence_button.dart';
 import 'package:safe_bus/features/parent/dashboard/presentation/views/widgets/bus_schedule.dart';
@@ -51,10 +52,17 @@ class ParentHomeBody extends StatelessWidget {
                                 ),
                                 SizedBox(height: KSizes.sm),
                                 BusSchedule(
-                                  studentRoute:
-                                      BlocProvider.of<ParentHomeCubit>(
-                                        context,
-                                      ).student!.morningRoute()!,
+                                  studentAndBusRoute: Studentandbusroute(
+                                    studnetroute:
+                                        BlocProvider.of<ParentHomeCubit>(
+                                          context,
+                                        ).student!.morningRoute()!,
+                                    isMorning: true,
+                                    studentId:
+                                        BlocProvider.of<ParentHomeCubit>(
+                                          context,
+                                        ).student!.studentId!,
+                                  ),
                                 ),
                                 SizedBox(height: KSizes.spaceBtwItems),
                               ],
@@ -76,10 +84,17 @@ class ParentHomeBody extends StatelessWidget {
                                 ),
                                 SizedBox(height: KSizes.sm),
                                 BusSchedule(
-                                  studentRoute:
-                                      BlocProvider.of<ParentHomeCubit>(
-                                        context,
-                                      ).student!.afternoonRoute()!,
+                                  studentAndBusRoute: Studentandbusroute(
+                                    studnetroute:
+                                        BlocProvider.of<ParentHomeCubit>(
+                                          context,
+                                        ).student!.afternoonRoute()!,
+                                    isMorning: false,
+                                    studentId:
+                                        BlocProvider.of<ParentHomeCubit>(
+                                          context,
+                                        ).student!.studentId!,
+                                  ),
                                 ),
                                 SizedBox(height: KSizes.spaceBtwItems),
                               ],
