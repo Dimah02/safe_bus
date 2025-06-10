@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1060173909746",
+    "project_id": "safe-notifications",
+    "storage_bucket": "safe-notifications.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060173909746:android:8594980e5d4864d32aca6b",
+        "android_client_info": {
+          "package_name": "com.example.safe_bus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgelYvNtcL4LFXdXacFRXMaov5OomxoJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
