@@ -123,6 +123,9 @@ class DriverMapCubit extends Cubit<DriverMapState> {
               prevLocation = location;
               await displayRoute(students: studnets);
             } else if (_distanceBetween(prevLocation!, location) > 20) {
+              students = await TripStudentsRepo.instance.getStudents(
+                busRouteId: trip.busRouteId!,
+              );
               await displayRoute(students: students);
               prevLocation = location;
             }
