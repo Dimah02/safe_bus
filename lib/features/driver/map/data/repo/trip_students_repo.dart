@@ -19,4 +19,20 @@ class TripStudentsRepo {
       throw Exception(e.toString());
     }
   }
+
+  Future<void> updateBusInfo(
+    int busId,
+    int busRouteId,
+    double lat,
+    double lon,
+  ) async {
+    try {
+      await KHTTP.instance.put(
+        endpoint: "buses/updatelocation/$busId",
+        body: {'BusRouteId': busRouteId, 'latitude': lat, 'longitude': lon},
+      );
+    } catch (e) {
+      print('Error updating bus: $e');
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:safe_bus/core/services/firebase_api.dart';
 import 'package:safe_bus/core/utils/http_client.dart';
 import 'package:safe_bus/features/shared/login/data/models/user_model.dart';
 
@@ -46,6 +47,11 @@ class LoginRepo {
       await storeID(data["user"]["userId"].toString());
       await storeRole(_getUserRole(data["user"]["userType"]));
       UserModel user = UserModel.fromJson(data);
+
+      await FirebaseApi().initNotifications(
+        id: data["user"]["userId"].toString(),
+      );
+
       return user;
     } catch (e) {
       if (e.toString().contains("Invalid credentials")) {
