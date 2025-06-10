@@ -6,11 +6,11 @@ import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/styles/image_strings.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
+import 'package:app_settings/app_settings.dart';
+import 'package:safe_bus/core/utils/toast.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/widgets/bottom_nav_bar.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/widgets/profile_fields.dart';
-import 'package:safe_bus/features/teacher/Home/presentation/views/teacher_dashboard_screen.dart';
-import 'splash_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({super.key});
@@ -21,6 +21,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   int _currentIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().user;
@@ -64,19 +65,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: CircleAvatar(
-                                      radius: 14,
-                                      backgroundColor: KColors.strokColor,
-                                      child: Icon(
-                                        Icons.edit,
-                                        size: KSizes.iconSm,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
+                                  // Positioned(
+                                  //   bottom: 0,
+                                  //   right: 0,
+                                  //   child: CircleAvatar(
+                                  //     radius: 14,
+                                  //     backgroundColor: KColors.strokColor,
+                                  //     child: Icon(
+                                  //       Icons.edit,
+                                  //       size: KSizes.iconSm,
+                                  //       color: Colors.black,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                               const SizedBox(width: KSizes.spaceBtwItems),
@@ -105,46 +106,40 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Column(
                         children: [
                           ProfileOption(
-                            icon: Icons.info_outline,
+                            icon: Icons.home_work_outlined,
                             iconColor: Colors.green,
-                            text: "Edit profile information",
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => Placeholder(),
-                                ),
-                              );
-                            },
+                            text: _getUserRole(user.userType),
+                            onTap: null
+                          ),
+                          Divider(),
+                          ProfileOption(
+                            icon: Icons.mail_outline,
+                            iconColor: Colors.purple,
+                            text: user.email.toString(),
+                            onTap: null
+                          ),
+                          Divider(),
+                          ProfileOption(
+                            icon: Icons.phone_outlined,
+                            iconColor: Colors.orange,
+                            text: user.phoneNo.toString(),
+                            onTap: null
                           ),
                           Divider(),
                           ProfileOption(
                             icon: Icons.notifications_outlined,
                             iconColor: Colors.blue,
                             text: "Notifications",
-                            trailing: Text(
-                              "ON",
+                            trailing: Text("ON/OFF",
                               style: TextStyle(
                                 color: KColors.fontBlue,
                                 fontSize: KSizes.fonstSizeLg,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            onTap: () {},
-                          ),
-                          Divider(),
-                          ProfileOption(
-                            icon: Icons.support_agent_outlined,
-                            iconColor: Colors.purple,
-                            text: "Help and Support",
-                            onTap: () {},
-                          ),
-                          Divider(),
-                          ProfileOption(
-                            icon: Icons.lock_outline,
-                            iconColor: Colors.orange,
-                            text: "Privacy policy",
-                            onTap: () {},
+                            onTap: () {
+                              AppSettings.openAppSettings();
+                            },
                           ),
 
                           //Logout Button
@@ -175,9 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onTap: (index) {
                       setState(() => _currentIndex = index);
                       if (index == 0) {
-                        final userType =
-                            context.read<AuthCubit>().user.userType;
-
+                        final userType = context.read<AuthCubit>().user.userType;
                         switch (userType) {
                           case 2: //Driver
                             context.go(AppRouter.driverDashboard);
@@ -190,6 +183,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             break;
                           default:
                             context.go(AppRouter.splash);
+                            Toast(context,)
+                              .showToast(message: "UNdefined role.", color: KColors.fadedRed);
                         }
                       }
                     },
@@ -202,4 +197,17 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
+  String _getUserRole(int? userType) {
+  switch (userType) {
+    case 2:
+      return "Driver";
+    case 3:
+      return "Assistant Teacher";
+    case 4:
+      return "Parent";
+    default:
+      return "Unknown";
+  }
+}
 }
