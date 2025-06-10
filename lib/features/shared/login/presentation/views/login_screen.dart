@@ -74,6 +74,12 @@ class LoginScreen extends StatelessWidget {
                           controller: _email,
                           cursorColor: KColors.textFieldHintColor,
                           decoration: InputDecoration(label: Text("Email")),
+                          validator: (val) {
+                            if (val == null || val.trim().isEmpty) {
+                              return "Email is required";
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: KSizes.defaultSpace),
                         TextFormField(
@@ -82,6 +88,12 @@ class LoginScreen extends StatelessWidget {
                           obscureText: true,
                           cursorColor: KColors.textFieldHintColor,
                           decoration: InputDecoration(label: Text("Password")),
+                          validator: (val) {
+                            if (val == null || val.trim().isEmpty) {
+                              return "Password is required";
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: KSizes.defaultSpace),
                         Row(
@@ -123,8 +135,8 @@ class LoginScreen extends StatelessWidget {
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 BlocProvider.of<AuthCubit>(context).signIn(
-                                  email: _email.text,
-                                  password: _password.text,
+                                  email: _email.text.trim(),
+                                  password: _password.text.trim(),
                                   userType: _getUserRole(selectedRole),
                                 );
                               }
