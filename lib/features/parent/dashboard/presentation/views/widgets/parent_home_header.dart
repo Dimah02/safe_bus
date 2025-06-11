@@ -33,29 +33,29 @@ class ParentHomeHeader extends StatelessWidget {
             ),
           ],
         ),
-        Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            color: KColors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(KSizes.buttonRadius),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: KColors.lighterGrey,
-                blurRadius: 10,
-                spreadRadius: 0.5,
-                offset: Offset(0, 8),
-              ),
-            ],
-          ),
-          child: IconButton(
-            icon: Icon(Icons.notifications),
-            iconSize: KSizes.iconMd,
-            onPressed: () {},
-          ),
-        ),
+        // Container(
+        //   height: 40,
+        //   width: 40,
+        //   decoration: BoxDecoration(
+        //     color: KColors.white,
+        //     borderRadius: BorderRadius.all(
+        //       Radius.circular(KSizes.buttonRadius),
+        //     ),
+        //     boxShadow: [
+        //       BoxShadow(
+        //         color: KColors.lighterGrey,
+        //         blurRadius: 10,
+        //         spreadRadius: 0.5,
+        //         offset: Offset(0, 8),
+        //       ),
+        //     ],
+        //   ),
+        //   child: IconButton(
+        //     icon: Icon(Icons.notifications),
+        //     iconSize: KSizes.iconMd,
+        //     onPressed: () {},
+        //   ),
+        // ),
       ],
     );
   }

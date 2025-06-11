@@ -70,6 +70,7 @@ class LoginScreen extends StatelessWidget {
                         SizedBox(height: KSizes.defaultSpace),
 
                         TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           enabled: (state is AuthLoading) ? false : true,
                           controller: _email,
                           cursorColor: KColors.textFieldHintColor,
@@ -78,11 +79,18 @@ class LoginScreen extends StatelessWidget {
                             if (val == null || val.trim().isEmpty) {
                               return "Email is required";
                             }
+                            final emailREdExp = RegExp(
+                              r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                            );
+                            if (!emailREdExp.hasMatch(val)) {
+                              return 'Invalid email address';
+                            }
                             return null;
                           },
                         ),
                         SizedBox(height: KSizes.defaultSpace),
                         TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           enabled: (state is AuthLoading) ? false : true,
                           controller: _password,
                           obscureText: true,
@@ -95,39 +103,39 @@ class LoginScreen extends StatelessWidget {
                             return null;
                           },
                         ),
-                        SizedBox(height: KSizes.defaultSpace),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: Checkbox(
-                                    value: false,
-                                    onChanged: (value) {},
-                                  ),
-                                ),
-                                SizedBox(width: KSizes.xs),
-                                Text(
-                                  "Remember me",
-                                  style: TextStyle(
-                                    color: KColors.grey,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                color: KColors.greenSecondary,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
+                        // SizedBox(height: KSizes.defaultSpace),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Row(
+                        //       children: [
+                        //         SizedBox(
+                        //           height: 24,
+                        //           width: 24,
+                        //           child: Checkbox(
+                        //             value: false,
+                        //             onChanged: (value) {},
+                        //           ),
+                        //         ),
+                        //         SizedBox(width: KSizes.xs),
+                        //         Text(
+                        //           "Remember me",
+                        //           style: TextStyle(
+                        //             color: KColors.grey,
+                        //             fontWeight: FontWeight.w700,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     Text(
+                        //       "Forgot Password?",
+                        //       style: TextStyle(
+                        //         color: KColors.greenSecondary,
+                        //         fontWeight: FontWeight.w700,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                         SizedBox(height: KSizes.spaceBtwSections),
                         SizedBox(
                           width: double.infinity,

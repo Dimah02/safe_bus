@@ -141,10 +141,10 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             ),
           ],
         ),
-        IconButton(
-          icon: const Icon(Icons.notifications_none_rounded, size: 26),
-          onPressed: () {},
-        ),
+        // IconButton(
+        //   icon: const Icon(Icons.notifications_none_rounded, size: 26),
+        //   onPressed: () {},
+        // ),
       ],
     );
   }

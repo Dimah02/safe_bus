@@ -16,9 +16,9 @@ class CustomeDraggableSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.25,
-      minChildSize: 0.25,
-      maxChildSize: 0.7,
+      initialChildSize: 0.20,
+      minChildSize: 0.20,
+      maxChildSize: 0.5,
       builder: (context, controller) {
         return Container(
           decoration: BoxDecoration(color: KColors.white),
@@ -53,7 +53,7 @@ class CustomeDraggableSheet extends StatelessWidget {
                   SizedBox(height: 24),
                   _to(context),
                   SizedBox(height: 24),
-                  _reportIssueButton(),
+                  // _reportIssueButton(),
                 ],
               );
             },

@@ -61,7 +61,7 @@ class _MapView extends StatelessWidget {
     return LayoutBuilder(
       builder:
           (context, constraints) => SizedBox(
-            height: constraints.maxHeight - (constraints.maxHeight * 0.25),
+            height: constraints.maxHeight - (constraints.maxHeight * 0.20),
             child: BlocBuilder<MapCubit, MapState>(
               builder: (context, state) {
                 return GoogleMap(

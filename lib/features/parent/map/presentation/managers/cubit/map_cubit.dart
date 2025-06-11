@@ -123,7 +123,6 @@ class MapCubit extends Cubit<MapState> {
   void _handleLocationUpdate(dynamic data) {
     if (data != null && data.isNotEmpty) {
       //{busRouteId: 1, latitude: 31.993227496908702, longitude: 35.93561771597489, speed: 15, bearing: 0, timestamp: 2023-11-15T14:30:45.123456}
-      print("===================");
       final lat = data['latitude'].toDouble() as double;
       final lng = data['longitude'].toDouble() as double;
       final bearing = data['bearing'].toDouble() ?? 0;
@@ -160,7 +159,7 @@ class MapCubit extends Cubit<MapState> {
         );
       }
 
-      emit(MapSuccess());
+      emit(LocationsSuccess());
     }
   }
 
@@ -249,7 +248,6 @@ class MapCubit extends Cubit<MapState> {
                     ),
                   ),
                 ),
-
                 36,
               ),
             );

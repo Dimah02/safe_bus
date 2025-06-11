@@ -144,10 +144,10 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             ),
           ],
         ),
-        IconButton(
-          icon: const Icon(Icons.notifications_none_rounded, size: 26),
-          onPressed: () {},
-        ),
+        // IconButton(
+        //   icon: const Icon(Icons.notifications_none_rounded, size: 26),
+        //   onPressed: () {},
+        // ),
       ],
     );
   }

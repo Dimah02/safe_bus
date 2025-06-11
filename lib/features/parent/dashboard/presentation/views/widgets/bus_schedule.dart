@@ -63,29 +63,45 @@ class BusSchedule extends StatelessWidget {
       children: [
         Icon(Icons.bus_alert, size: KSizes.iconMd),
         SizedBox(width: 8),
-        Text(
-          studentAndBusRoute.studnetroute.bus?.busNumber ?? '',
-          style: TextStyle(
-            color: KColors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: KSizes.fonstSizeSm,
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: studentAndBusRoute.studnetroute.bus?.busNumber ?? '',
+                  style: TextStyle(
+                    color: KColors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: KSizes.fonstSizeSm,
+                  ),
+                ),
+                TextSpan(
+                  text: " Arrival at ",
+                  style: TextStyle(
+                    color: KColors.black,
+                    fontSize: KSizes.fonstSizeSm,
+                  ),
+                ),
+                TextSpan(
+                  text: studentAndBusRoute.studnetroute.getFormattedEndTime(),
+                  style: TextStyle(
+                    color: KColors.greenSecondary,
+                    fontSize: KSizes.fonstSizeSm,
+                  ),
+                ),
+                TextSpan(
+                  text:
+                      studentAndBusRoute.isMorning
+                          ? " to the school."
+                          : " to studnet's home",
+                  style: TextStyle(
+                    color: KColors.black,
+                    fontSize: KSizes.fonstSizeSm,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(width: 8),
-        Text(
-          "Arrival at ",
-          style: TextStyle(color: KColors.black, fontSize: KSizes.fonstSizeSm),
-        ),
-        Text(
-          studentAndBusRoute.studnetroute.getFormattedEndTime(),
-          style: TextStyle(
-            color: KColors.greenSecondary,
-            fontSize: KSizes.fonstSizeSm,
-          ),
-        ),
-        Text(
-          " to the school. ",
-          style: TextStyle(color: KColors.black, fontSize: KSizes.fonstSizeSm),
         ),
       ],
     );
