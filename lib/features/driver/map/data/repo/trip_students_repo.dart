@@ -35,4 +35,14 @@ class TripStudentsRepo {
       print('Error updating bus: $e');
     }
   }
+
+  Future<void> completedTrip(int busRouteId) async {
+    try {
+      await KHTTP.instance.get(
+        endpoint: "CompletedTrips/CompleteTrip/$busRouteId",
+      );
+    } catch (e) {
+      print('Error updating bus: $e');
+    }
+  }
 }

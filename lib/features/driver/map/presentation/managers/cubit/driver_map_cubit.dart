@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:safe_bus/core/services/location_service.dart';
 import 'package:safe_bus/core/services/map_services.dart';
 import 'package:safe_bus/core/services/routes_service.dart';
+import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/features/driver/dashboard/data/models/driver_home/trip.dart';
 import 'package:safe_bus/features/driver/map/data/models/student_model/student_model.dart';
 import 'package:safe_bus/features/driver/map/data/repo/trip_students_repo.dart';
@@ -119,6 +122,22 @@ class DriverMapCubit extends Cubit<DriverMapState> {
         googleMapController: googleMapController,
         onUpdateCurrentLocation: (location) async {
           if (location != null) {
+            if (_distanceBetween(
+                  location,
+                  LatLng(trip.schoolLatitude, trip.schoolLongitude),
+                ) <=
+                50) {
+              TripStudentsRepo.instance.completedTrip(trip.busRouteId!);
+              Fluttertoast.showToast(
+                msg: "Trip is completed succesfully",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: KColors.greenPrimary,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            }
+
             if (prevLocation == null) {
               prevLocation = location;
               await displayRoute(students: studnets);
