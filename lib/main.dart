@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:safe_bus/core/theme/theme.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
+import 'package:safe_bus/core/utils/dependency_injection.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
 import 'package:safe_bus/firebase_options.dart';
 
@@ -16,6 +17,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
   runApp(const SafeApp());
+  DependencyInjection.init();
 }
 
 class SafeApp extends StatelessWidget {
