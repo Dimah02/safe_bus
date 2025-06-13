@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 class StudentAttendanceDialog extends StatelessWidget {
   final String studentName;
-  final String timeRecorded;
+  final String grade;
   final String location;
-  final String recordedBy;
+  final String image;
   final String remarks;
   final Function(bool isPresent) onStatusChanged;
 
   const StudentAttendanceDialog({
     super.key,
     required this.studentName,
-    required this.timeRecorded,
+    required this.grade,
     required this.location,
-    required this.recordedBy,
+    required this.image,
     required this.remarks,
     required this.onStatusChanged,
   });
@@ -21,9 +21,9 @@ class StudentAttendanceDialog extends StatelessWidget {
   static void show({
     required BuildContext context,
     required String studentName,
-    required String timeRecorded,
+    required String grade,
     required String location,
-    required String recordedBy,
+    required String image,
     required String remarks,
     required Function(bool isPresent) onStatusChanged,
   }) {
@@ -32,9 +32,9 @@ class StudentAttendanceDialog extends StatelessWidget {
       builder:
           (context) => StudentAttendanceDialog(
             studentName: studentName,
-            timeRecorded: timeRecorded,
+            grade: grade,
             location: location,
-            recordedBy: recordedBy,
+            image: image,
             remarks: remarks,
             onStatusChanged: onStatusChanged,
           ),
@@ -76,7 +76,7 @@ class StudentAttendanceDialog extends StatelessWidget {
                 CircleAvatar(
                   radius: 30,
                   backgroundColor: Colors.grey[200],
-                  child: Icon(Icons.person, size: 40, color: Colors.grey[400]),
+                  backgroundImage: NetworkImage(image),
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -97,11 +97,9 @@ class StudentAttendanceDialog extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildDetailRow('Time of Absence Recorded:', timeRecorded),
-                const SizedBox(height: 8),
                 _buildDetailRow('Location:', location),
                 const SizedBox(height: 8),
-                _buildDetailRow('Recorded By:', recordedBy),
+                _buildDetailRow('Student grade:', grade),
                 const SizedBox(height: 8),
                 _buildDetailRow('Remarks:', remarks),
               ],

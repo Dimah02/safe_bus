@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:safe_bus/core/styles/colors.dart';
-import 'package:safe_bus/core/styles/image_strings.dart';
 import 'package:safe_bus/core/styles/sizes.dart';
 import 'package:safe_bus/features/driver/map/data/models/student_model/student_model.dart';
 
@@ -44,7 +43,7 @@ class ChildrenListView extends StatelessWidget {
                 SizedBox(width: KSizes.sm),
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: AssetImage(KImage.child),
+                  backgroundImage: NetworkImage(students[index].image!),
                 ),
                 SizedBox(width: KSizes.sm),
                 Text(

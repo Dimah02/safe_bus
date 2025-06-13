@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safe_bus/core/styles/colors.dart';
-import 'package:safe_bus/core/styles/image_strings.dart';
 import 'package:safe_bus/core/utils/toast.dart';
 import 'package:safe_bus/features/teacher/Home/data/models/teacher_home/trip.dart';
 import 'package:safe_bus/features/teacher/attendance_overview/data/models/student_model/student_model.dart';
@@ -25,10 +24,19 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
     super.initState();
   }
 
-  void _updateStudentStatus(int index, bool isPresent) {
+  Future<void> _updateStudentStatus(
+    int index,
+    bool isPresent,
+    BuildContext context,
+  ) async {
+    await BlocProvider.of<StudentsAttendanceCubit>(context).updateStudentStatus(
+      ridId: students[index].rideId!,
+      status: isPresent ? 1 : 2,
+    );
     setState(() {
       if (isPresent) {
         students[index].rideStatus = 1;
+
         students[index].activeLocations!.first.statusColor = Colors.green;
       } else {
         students[index].rideStatus = 2;
@@ -42,12 +50,12 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
     StudentAttendanceDialog.show(
       context: context,
       studentName: student.studentName ?? '',
-      timeRecorded: "",
+      grade: student.grade.toString(),
       location: student.activeLocations?.first.description ?? ' ',
-      recordedBy: "",
+      image: student.image!,
       remarks: "",
       onStatusChanged: (isPresent) {
-        _updateStudentStatus(index, isPresent);
+        _updateStudentStatus(index, isPresent, context);
       },
     );
   }
@@ -146,23 +154,6 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                     ],
                   ),
                 ),
-
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(
-                //     horizontal: 16.0,
-                //     vertical: 8.0,
-                //   ),
-                //   child: Align(
-                //     alignment: Alignment.centerLeft,
-                //     child: Text(
-                //       'Mark Individually ${BlocProvider.of<StudentsAttendanceCubit>(context).markedIndividually}',
-                //       style: const TextStyle(
-                //         fontSize: 16,
-                //         fontWeight: FontWeight.w500,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 16.0,
@@ -215,17 +206,7 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                         child: ListTile(
                           leading: CircleAvatar(
                             backgroundColor: Colors.grey[200],
-                            child:
-                                student.image != null
-                                    ? Image.asset(
-                                      /*st.image??*/ KImage.child,
-                                      width: 40,
-                                      height: 40,
-                                    )
-                                    : Icon(
-                                      Icons.person,
-                                      color: Colors.grey[400],
-                                    ),
+                            backgroundImage: NetworkImage(student.image!),
                           ),
                           title: Text(student.studentName ?? ''),
                           trailing: Row(
@@ -240,12 +221,10 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                                     ? Colors.white
                                     : Colors.grey,
                                 () async {
-                                  _updateStudentStatus(index, true);
-                                  await BlocProvider.of<
-                                    StudentsAttendanceCubit
-                                  >(context).updateStudentStatus(
-                                    ridId: student.rideId!,
-                                    status: 1,
+                                  await _updateStudentStatus(
+                                    index,
+                                    true,
+                                    context,
                                   );
                                 },
                               ),
@@ -257,13 +236,11 @@ class _AttendanceOverviewScreenState extends State<AttendanceOverviewScreen> {
                                     : Colors.grey.shade300,
                                 student.isAbsent() ? Colors.white : Colors.grey,
                                 () async {
-                                  await BlocProvider.of<
-                                    StudentsAttendanceCubit
-                                  >(context).updateStudentStatus(
-                                    ridId: student.rideId!,
-                                    status: 2,
+                                  await _updateStudentStatus(
+                                    index,
+                                    false,
+                                    context,
                                   );
-                                  _updateStudentStatus(index, false);
                                 },
                               ),
                             ],
