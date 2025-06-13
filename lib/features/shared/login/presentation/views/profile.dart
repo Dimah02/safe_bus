@@ -13,7 +13,7 @@ import 'package:safe_bus/features/shared/login/presentation/views/widgets/bottom
 import 'package:safe_bus/features/shared/login/presentation/views/widgets/profile_fields.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -109,28 +109,29 @@ class _ProfilePageState extends State<ProfilePage> {
                             icon: Icons.home_work_outlined,
                             iconColor: Colors.green,
                             text: _getUserRole(user.userType),
-                            onTap: null
+                            onTap: null,
                           ),
                           Divider(),
                           ProfileOption(
                             icon: Icons.mail_outline,
                             iconColor: Colors.purple,
                             text: user.email.toString(),
-                            onTap: null
+                            onTap: null,
                           ),
                           Divider(),
                           ProfileOption(
                             icon: Icons.phone_outlined,
                             iconColor: Colors.orange,
                             text: user.phoneNo.toString(),
-                            onTap: null
+                            onTap: null,
                           ),
                           Divider(),
                           ProfileOption(
                             icon: Icons.notifications_outlined,
                             iconColor: Colors.blue,
                             text: "Notifications",
-                            trailing: Text("ON/OFF",
+                            trailing: Text(
+                              "ON/OFF",
                               style: TextStyle(
                                 color: KColors.fontBlue,
                                 fontSize: KSizes.fonstSizeLg,
@@ -170,7 +171,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     onTap: (index) {
                       setState(() => _currentIndex = index);
                       if (index == 0) {
-                        final userType = context.read<AuthCubit>().user.userType;
+                        final userType =
+                            context.read<AuthCubit>().user.userType;
                         switch (userType) {
                           case 2: //Driver
                             context.go(AppRouter.driverDashboard);
@@ -183,8 +185,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             break;
                           default:
                             context.go(AppRouter.splash);
-                            Toast(context,)
-                              .showToast(message: "UNdefined role.", color: KColors.fadedRed);
+                            Toast(context).showToast(
+                              message: "UNdefined role.",
+                              color: KColors.fadedRed,
+                            );
                         }
                       }
                     },
@@ -199,15 +203,15 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   String _getUserRole(int? userType) {
-  switch (userType) {
-    case 2:
-      return "Driver";
-    case 3:
-      return "Assistant Teacher";
-    case 4:
-      return "Parent";
-    default:
-      return "Unknown";
+    switch (userType) {
+      case 2:
+        return "Driver";
+      case 3:
+        return "Assistant Teacher";
+      case 4:
+        return "Parent";
+      default:
+        return "Unknown";
+    }
   }
-}
 }

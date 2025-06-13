@@ -20,6 +20,8 @@ class Trip {
   TripStatus? status;
   final DateTime? startTime;
   final DateTime? endTime;
+  final double schoolLatitude;
+  final double schoolLongitude;
 
   Trip({
     required this.busRouteId,
@@ -38,6 +40,8 @@ class Trip {
     required this.status,
     this.startTime,
     this.endTime,
+    required this.schoolLatitude,
+    required this.schoolLongitude,
   });
 
   factory Trip.fromJson(Map<String, dynamic> json) {
@@ -63,8 +67,8 @@ class Trip {
       zoneName: json['zoneName'] as String? ?? "Zone 1",
       distance: json['distance']?.round() as int? ?? 20,
       date: DateTime.now(),
-      tripNumber: '1',
-      studentCount: 10,
+      tripNumber: json['busRouteId']?.toString(),
+      studentCount: json['rides']?.length ?? 0,
       duration: Duration(hours: 2),
       status: TripStatus.current,
       startTime:
@@ -75,6 +79,8 @@ class Trip {
           json['endTime'] != null
               ? DateTime.parse(json['endTime'])
               : DateTime.now().add(Duration(hours: 1, minutes: 30)),
+      schoolLatitude: json['schoolLatitude'],
+      schoolLongitude: json['schoolLongitude'],
     );
   }
 

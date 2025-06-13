@@ -67,8 +67,8 @@ class Trip {
       zoneName: json['zoneName'] as String? ?? "Zone 1",
       distance: json['distance']?.round() as int? ?? 20,
       date: DateTime.now(),
-      tripNumber: '1',
-      studentCount: 10,
+      tripNumber: json['busRouteId']?.toString(),
+      studentCount: json['rides']?.length ?? 0,
       duration: Duration(hours: 2),
       status: TripStatus.current,
       startTime:

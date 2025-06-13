@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_bus/core/styles/colors.dart';
 import '../../../data/models/teacher_home/trip.dart';
 
 class RecentTripItem extends StatelessWidget {
@@ -13,7 +14,6 @@ class RecentTripItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String status = trip.status!.name;
     final Color statusColor = trip.status!.color;
 
     return Container(
@@ -52,6 +52,23 @@ class RecentTripItem extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildInfoRow(
+                  Icons.directions_bus_filled_sharp,
+                  "Bus ${trip.bus?.busNumber ?? ''}",
+                ),
+              ),
+              Expanded(
+                child: _buildInfoRow(
+                  Icons.person,
+                  "Driver ${trip.driver?.name ?? ''}",
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: _buildInfoRow(
                   Icons.people,
                   '${trip.studentCount} Students',
                 ),
@@ -65,8 +82,8 @@ class RecentTripItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildStatusBadge(status, statusColor),
-              _buildDetailsButton(),
+              _buildStatusBadge("Completed", KColors.fontBlue),
+              // _buildDetailsButton(),
             ],
           ),
         ],
@@ -88,7 +105,7 @@ class RecentTripItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withAlpha(100),
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: color),
       ),
@@ -103,7 +120,7 @@ class RecentTripItem extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailsButton() {
+  Widget buildDetailsButton() {
     return TextButton.icon(
       onPressed: onDetailsPressed,
       icon: const Text(
