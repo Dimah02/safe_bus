@@ -5,7 +5,6 @@ import 'package:safe_bus/core/styles/colors.dart';
 import 'package:safe_bus/core/utils/app_routes.dart';
 import 'package:safe_bus/core/utils/toast.dart';
 import 'package:safe_bus/features/shared/login/presentation/manager/cubit/auth_cubit.dart';
-import 'package:safe_bus/features/shared/login/presentation/views/profile.dart';
 import 'package:safe_bus/features/shared/login/presentation/views/widgets/bottom_nav_bar.dart';
 import 'package:safe_bus/features/teacher/Home/presentation/managers/cubit/teacher_home_cubit.dart';
 import 'package:safe_bus/features/teacher/Home/presentation/views/widgets/trip_card.dart';

@@ -43,7 +43,7 @@ class TripCard extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor:
                   isActive
-                      ? const Color.fromARGB(88, 255, 255, 255)
+                      ? const Color.fromARGB(48, 255, 255, 255)
                       : Colors.grey.shade300,
               foregroundColor: isActive ? Colors.white : Colors.grey,
               minimumSize: const Size(120, 36),
@@ -67,6 +67,7 @@ class EmptyTripCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 130,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: isActive ? KColors.greenSecondary : Colors.grey.shade200,
