@@ -60,7 +60,6 @@ This project contributes to **Sustainable Development Goals** (SDGs), particular
 
 [![Watch the video](https://img.youtube.com/vi/At66z-1LuNo/maxresdefault.jpg)](https://youtu.be/At66z-1LuNo)
 
-### [Watch this video on YouTube](https://youtu.be/At66z-1LuNo)
 ---
 
 
